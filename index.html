@@ -211,7 +211,7 @@ html.js .reveal.in{opacity:1;transform:none}
 /* desktop pinned scene */
 .appx-desktop{display:block}
 .appx-pin{position:relative;height:100svh;overflow:hidden}
-.appx-stage{position:absolute;top:0;bottom:0;left:var(--pad);right:auto;width:min(42%,440px)}
+.appx-stage{position:absolute;top:0;bottom:0;left:var(--pad);right:auto;width:min(36%,400px)} /* צר יותר — שלא ייגע בטלפון ב-1280–1536px */
 .appx-stage .ax{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
   opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s}
 .appx-stage .ax.on{opacity:1}
@@ -430,9 +430,9 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 .sph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;
   background:radial-gradient(70% 70% at 50% 38%,#1c1c1c,#0b0b0b);text-align:center;padding:1.4rem}
 .cslide.ai .sph{background:radial-gradient(70% 70% at 50% 60%,rgba(90,169,230,.16),#080b0e)}
-.sph .stag{font-size:.64rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.sph .stitle{font-weight:800;font-size:1.15rem;color:var(--fg-soft)}
-.sph .snote{font-size:.68rem;color:var(--muted)}
+/* הפלייסהולדר לא חוזר על הכיתוב הגדול (.cx) — מניעת "טקסט כפול" עד שיגיעו שקופיות אמיתיות */
+.sph .stag,.sph .stitle{display:none}
+.sph .snote{font-size:.75rem;color:var(--muted);border:1px dashed rgba(255,255,255,.18);border-radius:99px;padding:.5rem 1.1rem}
 /* legibility scrim */
 .commx-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(to top,rgba(8,8,8,.92) 0%,rgba(8,8,8,.5) 34%,rgba(8,8,8,.1) 62%,rgba(8,8,8,.4) 100%)}
@@ -464,7 +464,7 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal{opacity:1!important;transform:none!important}
+  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy{opacity:1!important;transform:none!important}
   .appx-desktop,.trainx-desktop,.commx-desktop{display:none!important}
   .appx-mobile,.trainx-mobile,.commx-mobile{display:block!important}
   .ps,.ax,.tx,.tv,.cx,.cslide{opacity:1!important}
@@ -476,6 +476,8 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
   /* scroll-snap-type הוסר בכוונה — גרם לתחושת "היאחזות"/תקיעה באצבע. פאנלים נשארים full-screen חלקים. */
+  /* תיקון חיתוך כותרת: ריווח עליון מפני ה-nav הקבוע — אם התוכן גבוה מהמסך, הוא זורם מטה במקום להיחתך למעלה */
+  .hero{padding-top:6rem}
   .msnap{display:block}
   .mpanel{position:relative;height:100svh;min-height:520px;scroll-snap-align:start;overflow:hidden}
   /* video/media panel (training) */
@@ -505,6 +507,11 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   .mpanel-commcopy h3{font-size:2rem;margin-bottom:.4rem;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.55)}
   .mpanel-commcopy.ai h3{color:#EAF4FF}
   .mpanel-commcopy p{color:rgba(255,255,255,.92);font-size:1.05rem;max-width:34ch;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+  /* תחושת "רגע נכנס" לכל פאנל — כניסה עדינה בלי scroll-snap (gated ב-html.js, נדלק ע"י IntersectionObserver) */
+  html.js .mpanel .mpanel-copy,html.js .mpanel .mpanel-appcopy,html.js .mpanel .mpanel-commcopy{
+    opacity:0;transform:translateY(30px);transition:opacity .55s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+  html.js .mpanel.mseen .mpanel-copy,html.js .mpanel.mseen .mpanel-appcopy,html.js .mpanel.mseen .mpanel-commcopy{
+    opacity:1;transform:none}
   /* swipe hint on first panel of each scene */
   .mswipe{position:absolute;z-index:3;bottom:5svh;inset-inline-start:50%;transform:translateX(-50%);
     color:rgba(255,255,255,.6);font-size:.8rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:.2rem;animation:mbob 1.8s ease-in-out infinite}
@@ -1061,6 +1068,21 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
       } else showAll();
     }catch(err){ showAll(); }
     setTimeout(showAll,2500); // fail-safe: never leave content hidden
+
+    // מובייל: תחושת "רגע נכנס" לכל פאנל — בלי snap. אותו דפוס עמידות כמו ה-reveals.
+    var mps=document.querySelectorAll('.mpanel');
+    function showPanels(){mps.forEach(function(p){p.classList.add('mseen')});}
+    if(mps.length){
+      try{
+        if('IntersectionObserver' in window){
+          var mio=new IntersectionObserver(function(es){es.forEach(function(e){
+            if(e.isIntersecting){e.target.classList.add('mseen');mio.unobserve(e.target);}
+          })},{threshold:.35});
+          mps.forEach(function(p){mio.observe(p)});
+        } else showPanels();
+      }catch(e2){ showPanels(); }
+      setTimeout(showPanels,3000); // fail-safe
+    }
   })();
 
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
