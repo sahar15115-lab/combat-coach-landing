@@ -121,6 +121,15 @@ a{color:inherit}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
 .btn-sm{padding:.6rem 1.3rem;font-size:.92rem;min-height:40px}
 
+/* ④ מצב-AI: באזור הבינה המלאכותית הפס העליון וה-CTA מתקררים לכחול; חוזרים לזהב בטופס ההרשמה */
+.nav .btn,.sticky-cta .btn,.logo span{transition:background .5s ease,box-shadow .5s ease,color .5s ease,filter .2s}
+body.ai-mode .nav{border-color:rgba(90,169,230,.28);background:rgba(8,11,14,.6)}
+body.ai-mode .nav.scrolled{background:rgba(8,11,14,.88)}
+body.ai-mode .logo span{color:var(--accent)}
+body.ai-mode .nav .btn,body.ai-mode .sticky-cta .btn{
+  background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;
+  box-shadow:0 10px 26px -8px rgba(90,169,230,.6),var(--surface-hi)}
+
 /* nav */
 .nav{position:fixed;inset-inline:0;top:0;z-index:50;backdrop-filter:blur(12px);
   background:rgba(10,10,10,.5);border-bottom:1px solid transparent;transition:.3s}
@@ -485,8 +494,22 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   /* "מוחלף במקום" גם במובייל — כמו בדסקטופ. מופעל רק ע"י JS אחרי שה-pin נרשם בהצלחה (.pin-active);
      בלי JS / אם ה-pin נכשל, הפאנלים נשארים ערוכים בזרימה רגילה למעלה — fallback בטוח, תמיד גלוי. */
   .msnap.pin-active{position:relative;height:100svh;overflow:hidden}
-  .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .45s ease}
+  .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .6s ease}
   .msnap.pin-active .mpanel.on{opacity:1}
+  /* כל החלפה = כניסת טקסט מחודשת (דינמי, לא "תקוע") */
+  .msnap.pin-active .mpanel .mpanel-copy,.msnap.pin-active .mpanel .mpanel-appcopy,.msnap.pin-active .mpanel .mpanel-commcopy{
+    opacity:0;transform:translateY(22px);transition:opacity .5s ease .12s,transform .55s cubic-bezier(.2,.7,.2,1) .12s}
+  .msnap.pin-active .mpanel.on .mpanel-copy,.msnap.pin-active .mpanel.on .mpanel-appcopy,.msnap.pin-active .mpanel.on .mpanel-commcopy{
+    opacity:1;transform:none}
+  /* מיקומי טקסט מובחנים לכל שלב (כמו בדסקטופ): תחתון-ימין → תחתון-שמאל → עליון → תחתון-מרכז */
+  .trainx-mobile.pin-active .mpanel:nth-child(2) .mpanel-copy{text-align:end}
+  .trainx-mobile.pin-active .mpanel:nth-child(3) .mpanel-copy{top:16svh;bottom:auto}
+  .trainx-mobile.pin-active .mpanel:nth-child(4) .mpanel-copy{text-align:center}
+  /* קהילה: גיוון מיקום/יישור בין שקופיות */
+  .commx-mobile.pin-active .mpanel:nth-child(even) .mpanel-commcopy{text-align:end}
+  .commx-mobile.pin-active .mpanel:nth-child(3) .mpanel-commcopy,.commx-mobile.pin-active .mpanel:nth-child(6) .mpanel-commcopy{top:16svh;bottom:auto}
+  /* אפליקציה: לסירוגין הטקסט מעל/מתחת לטלפון */
+  .appx-mobile.pin-active .mpanel:nth-child(even).mpanel-app{flex-direction:column-reverse}
   /* video/media panel (training) */
   .mpanel-media{position:absolute;inset:0;z-index:0}
   .mpanel-media .vph{position:absolute;inset:0}
@@ -1181,7 +1204,9 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
         coSl=gsap.utils.toArray('.commx-slide-wrap .cslide'),
         coDots=gsap.utils.toArray('.commx-dots i');
     if(coCx.length){ var commxPinEl=document.querySelector('.commx-pin');
-      pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i); if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=5); }); }
+      pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i);
+        if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=5);
+        document.body.classList.toggle('ai-mode',i>=5); }); }
   } else {
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
@@ -1203,21 +1228,46 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
           onUpdate:function(self){
             var raw=self.progress*N, i=Math.min(N-1,Math.floor(raw));
             setPanel(i);
-            if(onProgress) onProgress(i, Math.min(1,raw-i), panels[i]);
+            if(onProgress) onProgress(i, Math.min(1,raw-i), panels[i], raw, N);
           }
         });
       }catch(e3){ wrap.classList.remove('pin-active'); return null; }
     }
 
-    if(document.querySelector('.trainx-mobile .mpanel')) pinMobileScene('.trainx-mobile',300);
+    // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
+    if(document.querySelector('.trainx-mobile .mpanel')) pinMobileScene('.trainx-mobile',400);
 
-    pinMobileScene('.appx-mobile',340,function(i,local,panel){
-      var ph=panel&&panel.querySelector('.phone'); if(!ph)return;
-      gsap.set(ph,{rotationY:gsap.utils.mapRange(0,1,13,-13,local),transformPerspective:900,transformOrigin:'50% 50%'});
+    // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
+    // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
+    var mPhones=null;
+    function spinRot(raw,N){
+      var rot=0;
+      for(var k=1;k<N;k++){
+        var dir=(k%2?1:-1)*360;
+        if(raw>=k+0.25){ rot+=dir; }
+        else if(raw>k-0.25){ var t=(raw-(k-0.25))/0.5, e=t*t*(3-2*t); rot+=dir*e; break; }
+        else break;
+      }
+      return rot;
+    }
+    pinMobileScene('.appx-mobile',480,function(i,local,panel,raw,N){
+      if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
+      if(!mPhones.length) return;
+      var rot=spinRot(raw,N) + (local-0.5)*14; // + נטייה קלה בזמן קריאה לתחושת תלת-ממד
+      gsap.to(mPhones,{rotationY:rot,duration:.35,ease:'power2.out',overwrite:'auto',
+        transformPerspective:900,transformOrigin:'50% 50%'});
     });
 
-    pinMobileScene('.commx-mobile',420);
+    pinMobileScene('.commx-mobile',560,function(i){
+      document.body.classList.toggle('ai-mode', i>=5);
+    });
   }
+
+  // מצב-AI — כיבוי בטוח: חוזר לזהב כשמגיעים לטופס ההרשמה (רגע ההמרה), ונכבה גם בגלילה חזרה מעל הקהילה
+  ScrollTrigger.create({trigger:'#check',start:'top 85%',
+    onEnter:function(){document.body.classList.remove('ai-mode');}});
+  ScrollTrigger.create({trigger:'#community',start:'top bottom',
+    onLeaveBack:function(){document.body.classList.remove('ai-mode');}});
 
   document.querySelectorAll('.stepper').forEach(function(s){
     var v=s.querySelector('.reps');
