@@ -379,14 +379,20 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 /* legibility scrim — text is always readable over any video frame */
 .trainx-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(to top,rgba(8,8,8,.92) 0%,rgba(8,8,8,.5) 32%,rgba(8,8,8,.1) 60%,rgba(8,8,8,.45) 100%)}
-.trainx-text{position:absolute;z-index:2;bottom:13vh;inset-inline-start:var(--pad);inset-inline-end:var(--pad);
-  max-width:640px;min-height:200px}
-.tx{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
-  opacity:0;transform:translateY(20px);transition:opacity .4s,transform .4s}
+.trainx-text{position:absolute;z-index:2;inset:0}
+.tx{position:absolute;inset:0;display:flex;flex-direction:column;padding:clamp(1.4rem,6vw,4.5rem);
+  --fromX:0;--fromY:28px;
+  opacity:0;transform:translate(var(--fromX),var(--fromY));transition:opacity .5s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.tx>*{max-width:34ch}
 .tx.on{opacity:1;transform:none}
+/* מיקום דינמי לכל שלב — לא כולם באותו מקום (זה מה שהרגיש "משעמם") */
+.tx[data-i="0"]{justify-content:flex-end;align-items:flex-start;text-align:start}
+.tx[data-i="1"]{justify-content:flex-end;align-items:flex-end;text-align:end;--fromX:30px}
+.tx[data-i="2"]{justify-content:flex-start;align-items:flex-start;text-align:start;padding-top:15vh;--fromY:-30px}
+.tx[data-i="3"]{justify-content:flex-end;align-items:center;text-align:center;--fromY:34px}
 .tx .txn{color:var(--brand);font-weight:900;font-size:1rem;letter-spacing:.1em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .tx h3{font-size:clamp(2rem,5vw,3.4rem);margin:.4rem 0 .6rem;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.55)}
-.tx p{color:rgba(255,255,255,.9);font-size:var(--t-lead);max-width:34ch;text-shadow:0 1px 14px rgba(0,0,0,.6)}
+.tx p{color:rgba(255,255,255,.9);font-size:var(--t-lead);text-shadow:0 1px 14px rgba(0,0,0,.6)}
 .trainx-dots{position:absolute;z-index:3;bottom:7vh;inset-inline-start:50%;transform:translateX(-50%);display:flex;gap:.5rem}
 .trainx-dots i{width:26px;height:4px;border-radius:99px;background:rgba(255,255,255,.28);transition:.3s}
 .trainx-dots i.on{background:var(--brand)}
@@ -1111,7 +1117,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
           y:Math.sin(self.progress*Math.PI)*-12, transformPerspective:1200, transformOrigin:'50% 50%'});
       }
     });
-    function goToState(i){ scrollToY(stApp.start + (i+0.5)/Napp*(stApp.end-stApp.start)); }
+    function goToState(i){ i=Math.max(0,Math.min(Napp-1,i)); scrollToY(stApp.start + (i+0.5)/Napp*(stApp.end-stApp.start)); }
     document.querySelectorAll('.appx-phone-wrap [data-next]').forEach(function(b){
       b.addEventListener('click',function(){ goToState(+b.dataset.next); });
     });
@@ -1124,6 +1130,12 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
         coSl=gsap.utils.toArray('.commx-slide-wrap .cslide'),
         coDots=gsap.utils.toArray('.commx-dots i');
     if(coCx.length) pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i); });
+  } else {
+    // ===== מובייל: הטלפון מסתובב מצד לצד תוך כדי גלילה (parity עם דסקטופ, גם במובייל) =====
+    gsap.utils.toArray('.appx-mobile .phone').forEach(function(ph){
+      gsap.fromTo(ph,{rotationY:13},{rotationY:-13,ease:'none',transformPerspective:900,transformOrigin:'50% 50%',
+        scrollTrigger:{trigger:ph,start:'top 92%',end:'bottom 8%',scrub:.4}});
+    });
   }
 
   document.querySelectorAll('.stepper').forEach(function(s){
