@@ -451,7 +451,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
-  html{scroll-snap-type:y proximity}
+  /* scroll-snap-type הוסר בכוונה — גרם לתחושת "היאחזות"/תקיעה באצבע. פאנלים נשארים full-screen חלקים. */
   .msnap{display:block}
   .mpanel{position:relative;height:100svh;min-height:520px;scroll-snap-align:start;overflow:hidden}
   /* video/media panel (training) */
