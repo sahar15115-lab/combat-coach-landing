@@ -468,6 +468,8 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
   .appx-desktop,.trainx-desktop,.commx-desktop{display:none!important}
   .appx-mobile,.trainx-mobile,.commx-mobile{display:block!important}
   .ps,.ax,.tx,.tv,.cx,.cslide{opacity:1!important}
+  .msnap.pin-active{height:auto!important;overflow:visible!important}
+  .msnap.pin-active .mpanel{position:relative!important;inset:auto!important;height:100svh!important;opacity:1!important}
 }
 /* no-JS fallback: pinned scenes need JS — show stacked blocks so content is visible */
 html.no-js .appx-desktop,html.no-js .trainx-desktop,html.no-js .commx-desktop{display:none}
@@ -480,6 +482,11 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   .hero{padding-top:6rem}
   .msnap{display:block}
   .mpanel{position:relative;height:100svh;min-height:520px;scroll-snap-align:start;overflow:hidden}
+  /* "מוחלף במקום" גם במובייל — כמו בדסקטופ. מופעל רק ע"י JS אחרי שה-pin נרשם בהצלחה (.pin-active);
+     בלי JS / אם ה-pin נכשל, הפאנלים נשארים ערוכים בזרימה רגילה למעלה — fallback בטוח, תמיד גלוי. */
+  .msnap.pin-active{position:relative;height:100svh;overflow:hidden}
+  .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .45s ease}
+  .msnap.pin-active .mpanel.on{opacity:1}
   /* video/media panel (training) */
   .mpanel-media{position:absolute;inset:0;z-index:0}
   .mpanel-media .vph{position:absolute;inset:0}
@@ -1176,11 +1183,40 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
     if(coCx.length){ var commxPinEl=document.querySelector('.commx-pin');
       pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i); if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=5); }); }
   } else {
-    // ===== מובייל: הטלפון מסתובב מצד לצד תוך כדי גלילה (parity עם דסקטופ, גם במובייל) =====
-    gsap.utils.toArray('.appx-mobile .phone').forEach(function(ph){
-      gsap.fromTo(ph,{rotationY:13},{rotationY:-13,ease:'none',transformPerspective:900,transformOrigin:'50% 50%',
-        scrollTrigger:{trigger:ph,start:'top 92%',end:'bottom 8%',scrub:.4}});
+    // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
+    // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
+    function pinMobileScene(msnapSel, endPct, onProgress){
+      var wrap=document.querySelector(msnapSel);
+      if(!wrap) return null;
+      var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
+      var N=panels.length; if(!N) return null;
+      var cur=-1;
+      function setPanel(i){
+        if(i===cur)return; cur=i;
+        panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
+      }
+      try{
+        wrap.classList.add('pin-active');
+        setPanel(0);
+        return ScrollTrigger.create({
+          trigger:msnapSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
+          onUpdate:function(self){
+            var raw=self.progress*N, i=Math.min(N-1,Math.floor(raw));
+            setPanel(i);
+            if(onProgress) onProgress(i, Math.min(1,raw-i), panels[i]);
+          }
+        });
+      }catch(e3){ wrap.classList.remove('pin-active'); return null; }
+    }
+
+    if(document.querySelector('.trainx-mobile .mpanel')) pinMobileScene('.trainx-mobile',300);
+
+    pinMobileScene('.appx-mobile',340,function(i,local,panel){
+      var ph=panel&&panel.querySelector('.phone'); if(!ph)return;
+      gsap.set(ph,{rotationY:gsap.utils.mapRange(0,1,13,-13,local),transformPerspective:900,transformOrigin:'50% 50%'});
     });
+
+    pinMobileScene('.commx-mobile',420);
   }
 
   document.querySelectorAll('.stepper').forEach(function(s){

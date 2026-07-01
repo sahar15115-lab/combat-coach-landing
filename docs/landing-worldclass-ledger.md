@@ -144,7 +144,19 @@
 - 🖥️ D2 — "טקסט כפול" בקהילה (פלייסהולדר השקופית שיכפל את הכיתוב): **תוקן** — `.sph .stag/.stitle` מוסתרים, נשארת תגית `.snote` מקווקוות. יתבטל ממילא כשיגיעו שקופיות אמיתיות.
 - אומת: 0 שגיאות console בשני ה-viewports. ⚠️ הערה: הסרטון של המובייל צולם ב-WhatsApp in-app browser — האימות הסופי חייב Safari/Chrome אמיתי (Step E).
 
-**Step E (ממתין לסהר):** לפרוס מחדש את `dist/` ל-Vercel → לבדוק בטלפון בדפדפן אמיתי: כותרת שלמה, תחושת רגע-רגע, אין היאחזות.
+**Step E (ממתין לסהר):** לבדוק בטלפון בדפדפן אמיתי (Safari/Chrome): כותרת שלמה, תחושת רגע-רגע, אין היאחזות.
+
+## פריסה: מ-drag&drop ל-Git מחובר (2026-07-02)
+
+**שונה תשתית:** repo נדחף ל-GitHub (`github.com/sahar15115-lab/combat-coach-landing`) וחובר ל-Vercel כפרויקט Git (לא drag&drop). **מכאן כל `git push` מפרוס אוטומטית** — אין יותר גרירת תיקיית `dist` ידנית. URL חי: https://combat-coach-landing.vercel.app/
+
+## "מוחלף במקום" גם במובייל (2026-07-02, בעקבות משוב "עדיין גלילה ארוכה")
+
+**שונה:** שלוש הסצנות במובייל (trainx/appx/commx) עברו מ"פאנלים מוערמים בזרימה + כניסה עדינה" ל-**pin+crossfade אמיתי** — בדיוק אותו מנגנון כמו בדסקטופ (`pinScene`), על ה-DOM הקיים של `.mpanel` (לא נבנה מבנה חדש).
+- helper חדש `pinMobileScene(msnapSel,endPct,onProgress)` — עוטף כל סצנת מובייל ב-ScrollTrigger `pin:true`, מחליף `.on` בין פאנלים לפי התקדמות הגלילה (בדיוק כמו דסקטופ).
+- טלפוני `.appx-mobile` מקבלים סיבוב 3D לפי ה-progress המקומי של הפאנל הפעיל (mapRange 13→-13deg), משמר את Step 5.
+- **בטיחות (מאומת):** `.pin-active` מתווסף רק בתוך `try/catch` — אם ה-pin נכשל, הקלאס מוסר וחוזרים ל-flow הרגיל. הקלאס **לעולם לא** קיים סטטית ב-HTML (מאומת גם ב-grep). probe נקי (`.msnap`/`.mpanel` בלי `.pin-active`) מוכיח שברירת המחדל היא `position:relative, opacity:1, height:100%` — גלוי תמיד. reduced-motion מכיל override נוסף (`position:relative!important` וכו') כהגנה כפולה, וגם ה-JS חוזר (`return`) לפני שהקוד הזה בכלל רץ עבור reduced-motion.
+- אומת חי: 3 סצנות `pin-active=true`, index פעיל אחד בלבד בכל רגע (0→4 עוקב אחרי progress), רוטציית טלפון מתעדכנת (`matrix3d`), דסקטופ ללא רגרסיה (6 triggers, `pin-active` לא דלף), 0 שגיאות console.
 
 ## פתוחים לסהר (לא חוסמים בנייה)
 - יעד ה-CTA הסופי: הטופס בדף שולח ל-CRM/Make/WhatsApp — איזה webhook? (Step 7).
