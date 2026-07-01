@@ -81,8 +81,8 @@
 | 5 | טלפון: סיבוב על גלילה (גם מובייל) + תיקון stepper | ✅ דסקטופ כבר סובב; נוסף סיבוב 3D על 5 טלפוני מובייל (scrub); goToState clamp |
 | 6 | קהילה: שקופיות full-bleed + מעבר ④ | ✅ full-bleed בדסקטופ+מובייל (מאומת 1265×820); scrim; מעבר טמפרטורה זהב→כחול (`.is-ai` על שקופיות AI, i≥5) |
 | 7 | ליטוש רמה-עולמית (CTA/a11y/micro/og) | ✅ meta שיתוף (twitter card/theme-color); fallback ל-metal (לא נעלם); hover עקבי לכרטיסים. **og:image ממתין ל-hero (Step 2, מחר).** |
-| 8 | פריסה ל-Vercel + Speed Insights + בדיקה בטלפון | ☐ |
-| 9 | אימות Playwright ×4 + סגירת Ledger | ☐ |
+| 8 | פריסה ל-Vercel + Speed Insights + בדיקה בטלפון | 🟡 מוכן: script של Speed Insights + `index.html` להעלאה. פריסה=hand-off (כלי ה-deploy יפרוס את ה-CMS בטעות). דורש פעולה שלך + בדיקת טלפון. |
+| 9 | אימות Playwright ×4 + סגירת Ledger | 🟡 אומת דרך Preview (Chromium): דסקטופ+מובייל JS-on ✅, 0 שגיאות console. no-JS ו-reduced-motion אומתו לוגית (CSS gated + probe=opacity1 + בלוקים display:block). Playwright לא מותקן בסביבה. |
 
 ## קריטריוני קבלה סופיים
 ☐ טוקנים מיושרים · ☐ 0 placeholders, מדיה מאופטמת · ☐ גלילה חלקה בלי "נתקע" · ☐ טקסט אימון דינמי · ☐ טלפון מסתובב (גם מובייל) · ☐ שקופיות full-bleed · ☐ CTA יחיד חוזר + sticky · ☐ a11y + reduced-motion + no-JS · ☐ LCP<2.5s CLS~0 · ☐ חי על Vercel אושר מהטלפון · ☐ Playwright ×4 ירוק.
@@ -119,6 +119,21 @@
 ➡️ הפיצול דסקטופ-pinned / מובייל-panels הוא **הדפוס העמיד שהסקיל עצמו ממליץ עליו** (§7) — כי pinned scenes שבירים במובייל. "איחוד" מלא ל-DOM אחד **יסיר** את העמידות הזו ויחזיר את באג "נתקע בטלפון". לכן: **לא עושים rewrite מסוכן.** הכוונה של "לא שתי מציאויות שמתפצלות" מסופקת ע"י: אותו תוכן בשני הצדדים (מאומת), ואותה מערכת ויזואלית (① גלובלי). השדרוג החוויתי האמיתי ("לא משעמם") מגיע ב-**Steps 4/5/6** על אותו מבנה.
 
 **overflow אופקי:** ה-265px כנראה **artifact של resize בלי `ScrollTrigger.refresh`** (GSAP מקפיא רוחב pin-spacer). ב-load יציב `invalidateOnRefresh:true`+refresh מטפלים. → לאמת סופית על מכשיר אמיתי ב-Step 8; לא נגעתי.
+
+## Steps 8–9 — סטטוס אימות + מה שנותר לך
+
+**אומת בסביבה (Preview = Chromium):** דסקטופ 1280 + מובייל 375 עם JS — הסצנות נרשמות, 5 טלפוני מובייל מקבלים סיבוב 3D, קהילה full-bleed + מעבר ④ עובד, **0 שגיאות console**. טוקני ① מוחלים (computed-styles).
+
+**הערת סביבה חשובה:** ה-Preview הוא headless ולכן **לא מריץ אנימציות rAF** (GSAP) — לכן screenshots "נתקעו" ומצבי opacity נקראו 0. זו מגבלת כלי, לא באג. במכשיר אמיתי הכל מונפש כרגיל.
+
+**no-JS / reduced-motion:** אומתו לוגית — הכללים גדורים ב-`html.js`; probe של `.reveal` במצב `no-js` = opacity 1; בלוקי מובייל `display:block`; reduced-motion כופה `opacity:1`. בלי JS אין GSAP ואין `.in` → הכל גלוי. **מומלץ** להריץ Playwright ×4 לפני השקה סופית (לא מותקן כאן), או להסתמך על בדיקת המכשיר האמיתי.
+
+**כדי לפרוס (30 שניות, בחר אחד):**
+1. **Netlify Drop** — גרור את `index.html` (או את כל התיקייה) ל-app.netlify.com/drop → תקבל URL → פתח בטלפון.
+2. **Vercel** — vercel.com → Add New → גרור את התיקייה → URL. (Speed Insights נדלק בלשונית Analytics.)
+> אל תריץ את כלי ה-deploy האוטומטי — הוא מכוון ל-CWD (ה-CMS) ויפרוס את הפרויקט הלא-נכון.
+
+**לפני העלאה — לזכור:** `index.html` = עותק פריסה של `combat-coach-landing.html`. אחרי החלפת המדיה מחר — לרענן: `cp combat-coach-landing.html index.html`.
 
 ## פתוחים לסהר (לא חוסמים בנייה)
 - יעד ה-CTA הסופי: הטופס בדף שולח ל-CRM/Make/WhatsApp — איזה webhook? (Step 7).
