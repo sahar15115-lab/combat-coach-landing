@@ -9,7 +9,13 @@
 <meta property="og:title" content="קומבאט קואץ׳ — לא עוד אימון כושר. תהליך.">
 <meta property="og:description" content="אימון קבוצה + אפליקציה אישית + קהילה של התפתחות אישית ו-AI.">
 <meta property="og:type" content="website">
-<!-- og:image placeholder — הוסף תמונת שיתוף 1200x630 -->
+<meta property="og:site_name" content="קומבאט קואץ׳">
+<meta property="og:locale" content="he_IL">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="קומבאט קואץ׳ — לא עוד אימון כושר. תהליך.">
+<meta name="twitter:description" content="אימון קבוצה + אפליקציה אישית + קהילה של התפתחות אישית ו-AI.">
+<!-- og:image + twitter:image (1200×630 מ-Cloudinary) — יתווספו יחד עם ה-hero visual. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -156,6 +162,11 @@ html.js .reveal.in{opacity:1;transform:none}
 .hero-title,.metal{background:var(--brand-metal);background-size:230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 1px 0 rgba(0,0,0,.4)) drop-shadow(0 0 26px rgba(201,168,76,.20));animation:sheen 6s linear infinite}
 @keyframes sheen{to{background-position:-230% 0}}
+/* robustness: אם הדפדפן לא תומך ב-background-clip:text — הכותרת לא נעלמת, מוצגת בזהב מלא */
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){.hero-title,.metal{color:var(--brand-2)}}
+/* micro-interaction עקבי: הרמה עדינה על כרטיסי תוכן */
+.track,.fit,.tcard{transition:border-color .25s,transform .25s,box-shadow .25s}
+.track:hover,.fit:hover,.tcard:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 22px 44px -26px rgba(0,0,0,.75)}
 .hero .lead{max-width:54ch;margin-bottom:var(--s4)}
 .hero-cta-row{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center}
 .hero-tags{margin-top:var(--s6);display:flex;gap:.6rem;flex-wrap:wrap}
