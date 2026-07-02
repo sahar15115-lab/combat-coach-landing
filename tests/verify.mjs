@@ -25,6 +25,13 @@ const browser = await chromium.launch();
   check('desktop: 4 train videos', await page.locator('.trainx-desktop video').count() === 4);
   check('desktop: 4 app screens', await page.locator('.appx-desktop .ps.media').count() === 4);
   check('desktop: nav hidden at top', await page.evaluate(() => getComputedStyle(document.querySelector('#nav')).opacity === '0'));
+  check('desktop: title before white kicker', await page.evaluate(() => {
+    const t = document.querySelector('.hero-title'), k = document.querySelector('.hero-eyebrow');
+    return t && k && (t.compareDocumentPosition(k) & Node.DOCUMENT_POSITION_FOLLOWING) > 0;
+  }));
+  check('desktop: top CTA present, sticky gone', await page.evaluate(() =>
+    !!document.querySelector('.hero-topcta') && !document.querySelector('.sticky-cta')));
+  check('desktop: coach label above photo', (await page.textContent('.coach-label')).includes('סהר שמש'));
   check('desktop: no console errors', errors.length === 0);
   await page.screenshot({ path: 'tests/shots/desktop-hero.png' });
   await ctx.close();

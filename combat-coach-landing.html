@@ -183,19 +183,23 @@ html.js .reveal.in{opacity:1;transform:none}
 .hero .lead{max-width:54ch;margin-bottom:var(--s4)}
 /* hero חדש: ממורכז — כותרת מותג, שילוב דיסציפלינות, תמונה+מעטפת, כפתור גילוי רחב + CTA חצי */
 .hero-center{text-align:center;display:flex;flex-direction:column;align-items:center}
-/* המשפט העליון = כותרת-משנה אמיתית, לא תגית קטנה */
-.hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:var(--s1)}
+/* המשפט הלבן = כותרת-משנה מתחת לשם המותג */
+.hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:var(--s2)}
+/* כפתור בדיקת התאמה — למעלה, מופרד לגמרי מכפתור הגילוי */
+.hero-topcta{position:absolute;top:calc(1rem + env(safe-area-inset-top,0px));inset-inline-end:1rem;z-index:3}
+/* תמונת המאמן עם כיתוב מעליה */
+.hero-photowrap{display:flex;flex-direction:column;gap:.55rem;align-items:center;width:min(42%,360px);margin:0}
+.coach-label{color:var(--brand-2);font-weight:800;font-size:.95rem;letter-spacing:.04em}
 .hero-mix{color:var(--brand-2);font-weight:800;font-size:clamp(1.02rem,2.4vw,1.3rem);letter-spacing:.02em;margin-bottom:var(--s4)}
 .hero-mix.sm{font-size:.95rem;margin:0;color:var(--brand)}
-.hero-duo{display:flex;align-items:center;gap:clamp(1.2rem,3vw,2.5rem);margin-block:var(--s2) var(--s4);max-width:860px}
+.hero-duo{display:flex;align-items:center;gap:clamp(1.2rem,3vw,2.5rem);margin-block:var(--s4) var(--s4);max-width:860px}
 .hero-duo-copy{text-align:start;max-width:40ch}
 .hero-duo-copy p{margin-bottom:.6rem;color:var(--fg-soft)}
-.hero-photo{width:min(42%,360px);height:auto;border-radius:var(--radius);border:1px solid var(--line-strong);
+.hero-photo{width:100%;height:auto;border-radius:var(--radius);border:1px solid var(--line-strong);
   box-shadow:0 30px 60px -28px rgba(0,0,0,.85),var(--surface-hi);filter:grayscale(1) contrast(1.05)}
-.hero-cta-col{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:min(100%,560px)}
+.hero-cta-col{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:min(100%,560px);margin-top:var(--s2)}
 .hero-discover{width:100%;font-size:1.12rem;padding:1.1rem 2rem}
-.hero-check{width:52%;min-width:230px;font-size:.9rem;padding:.7rem 1.2rem;min-height:42px}
-@media(max-width:760px){.hero-duo{flex-direction:column;gap:1rem}.hero-photo{width:min(82%,320px)}.hero-duo-copy{text-align:center}}
+@media(max-width:760px){.hero-duo{flex-direction:column;gap:1rem}.hero-photowrap{width:min(82%,320px)}.hero-duo-copy{text-align:center}}
 .hero-tags{display:none}
 .tag{font-size:.82rem;color:var(--fg-soft);border:1px solid var(--line-strong);border-radius:999px;
   padding:.42rem 1rem;background:rgba(20,20,20,.6);backdrop-filter:blur(4px)}
@@ -609,7 +613,6 @@ body.cta-hide .scroll-cue{opacity:1}
   </div>
 </nav>
 
-<div class="sticky-cta" id="stickyCta"><a href="#check" class="btn">בדיקת התאמה למחזור הקרוב</a></div>
 <div class="scroll-cue" aria-hidden="true">גלול להמשך<span>↓</span></div>
 
 <!-- ===================== SCENE 1 — HERO ===================== -->
@@ -618,20 +621,23 @@ body.cta-hide .scroll-cue{opacity:1}
     <div class="ph-media"></div>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
+  <a href="#check" class="btn btn-sm hero-topcta">בדיקת התאמה</a>
   <div class="wrap hero-center">
-    <span class="eyebrow hero-eyebrow">תוכנית הליווי היחידה מסוגה בארץ שמשלבת</span>
     <h1 class="hero-title">קומבאט אתלט</h1>
+    <span class="eyebrow hero-eyebrow">תוכנית הליווי היחידה מסוגה בארץ שמשלבת</span>
     <p class="hero-sub hero-mix">קאליסטניקס · אגרוף תאילנדי · פיתוח יכולות אתלטיות</p>
     <div class="hero-duo">
       <div class="hero-duo-copy">
         <p>מעבר לאימון — כל מתאמן מקבל מעטפת שתעזור לו להתפתח בצורה הטובה ביותר, גם מחוץ לאימון:</p>
         <p class="hero-mix sm">אפליקציה · מפגשי קהילה · תוכנית אימון אישית</p>
       </div>
-      <img class="hero-photo" src="media/hero-sahar.jpg" alt="סהר שמש מאמן אגרוף תאילנדי באימון אישי" width="942" height="620">
+      <figure class="hero-photowrap">
+        <figcaption class="coach-label">מאמן ראשי · סהר שמש</figcaption>
+        <img class="hero-photo" src="media/hero-sahar.jpg" alt="סהר שמש מאמן אגרוף תאילנדי באימון אישי" width="942" height="620">
+      </figure>
     </div>
     <div class="hero-cta-col">
       <a href="#train" class="btn hero-cta hero-discover">לחץ כדי לגלות עוד פרטים</a>
-      <a href="#check" class="btn hero-cta hero-check">בדיקת התאמה למחזור הקרוב</a>
     </div>
     <p class="hero-proof"><b>סהר שמש</b> · מעל <span class="ltr">12</span> שנות ניסיון בלחימה, קאליסטניקס וליווי מתאמנים.</p>
   </div>
@@ -644,7 +650,7 @@ body.cta-hide .scroll-cue{opacity:1}
   <div class="trainx-desktop">
     <div class="trainx-pin" id="trainxPin">
       <div class="trainx-media">
-        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg" style="object-position:58% 50%"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="1"><video muted loop playsinline preload="metadata" poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="2"><video muted loop playsinline preload="metadata" poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="3"><video muted loop playsinline preload="metadata" poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
@@ -669,7 +675,7 @@ body.cta-hide .scroll-cue{opacity:1}
   <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
   <div class="trainx-mobile msnap">
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg" style="object-position:58% 50%"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
@@ -992,10 +998,9 @@ body.cta-hide .scroll-cue{opacity:1}
 
 <script>
 (function(){
-  var nav=document.getElementById('nav'),sticky=document.getElementById('stickyCta');
+  var nav=document.getElementById('nav');
   addEventListener('scroll',function(){
     nav.classList.toggle('scrolled',scrollY>innerHeight*0.6);
-    sticky.classList.toggle('show',scrollY>innerHeight*0.9);
   },{passive:true});
 
   /* ---------- QUIZ ---------- */
@@ -1072,8 +1077,8 @@ body.cta-hide .scroll-cue{opacity:1}
   gsap.to('.progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:true}});
 
   gsap.timeline({defaults:{ease:'power3.out'}})
-    .from('.hero-eyebrow',{y:20,opacity:0,duration:.5})
-    .from('.hero-title',{y:32,opacity:0,duration:.8},'-=.2')
+    .from('.hero-title',{y:32,opacity:0,duration:.8})
+    .from('.hero-eyebrow',{y:20,opacity:0,duration:.5},'-=.35')
     .from('.hero-sub',{y:22,opacity:0,duration:.6},'-=.45')
     .from('.hero-cta',{y:16,opacity:0,duration:.5,stagger:.1},'-=.35')
     .from('.hero-duo',{y:14,opacity:0,duration:.4},'-=.25')
