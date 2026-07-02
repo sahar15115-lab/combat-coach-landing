@@ -183,6 +183,8 @@ html.js .reveal.in{opacity:1;transform:none}
 .hero .lead{max-width:54ch;margin-bottom:var(--s4)}
 /* hero חדש: ממורכז — כותרת מותג, שילוב דיסציפלינות, תמונה+מעטפת, כפתור גילוי רחב + CTA חצי */
 .hero-center{text-align:center;display:flex;flex-direction:column;align-items:center}
+/* המשפט העליון = כותרת-משנה אמיתית, לא תגית קטנה */
+.hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:var(--s1)}
 .hero-mix{color:var(--brand-2);font-weight:800;font-size:clamp(1.02rem,2.4vw,1.3rem);letter-spacing:.02em;margin-bottom:var(--s4)}
 .hero-mix.sm{font-size:.95rem;margin:0;color:var(--brand)}
 .hero-duo{display:flex;align-items:center;gap:clamp(1.2rem,3vw,2.5rem);margin-block:var(--s2) var(--s4);max-width:860px}
@@ -236,7 +238,7 @@ html.js .reveal.in{opacity:1;transform:none}
 /* desktop pinned scene */
 .appx-desktop{display:block}
 .appx-pin{position:relative;height:100svh;overflow:hidden}
-.appx-stage{position:absolute;top:0;bottom:0;left:var(--pad);right:auto;width:min(36%,400px)} /* צר יותר — שלא ייגע בטלפון ב-1280–1536px */
+.appx-stage{position:absolute;top:0;bottom:0;left:var(--pad);right:auto;width:min(34%,380px)} /* צר יותר — הטלפון הוגדל ל-330px */
 .appx-stage .ax{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
   opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s}
 .appx-stage .ax.on{opacity:1}
@@ -509,8 +511,18 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 .axbtn{margin-top:var(--s3);align-self:flex-start}
 .mpanel-app .axbtn{align-self:center;margin-top:0}
 .mpanel-media video{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
-/* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/קהילה) — לא מסתיר תוכן */
+/* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
+/* חץ "המשך לגלול" — מופיע בדיוק כשה-CTA מוסתר, שלא ילכו לאיבוד */
+.scroll-cue{position:fixed;bottom:.8rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
+  color:rgba(255,255,255,.55);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:.05rem;pointer-events:none;opacity:0;transition:opacity .4s}
+.scroll-cue span{font-size:1rem;animation:cuebob 1.8s ease-in-out infinite}
+@keyframes cuebob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+body.cta-hide .scroll-cue{opacity:1}
+/* טלפון גדול יותר בסצנת האפליקציה */
+.appx-desktop .phone{width:330px}
+.mpanel-app .phone{height:min(62svh,540px)!important}
 
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
@@ -598,13 +610,12 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
 </nav>
 
 <div class="sticky-cta" id="stickyCta"><a href="#check" class="btn">בדיקת התאמה למחזור הקרוב</a></div>
+<div class="scroll-cue" aria-hidden="true">גלול להמשך<span>↓</span></div>
 
 <!-- ===================== SCENE 1 — HERO ===================== -->
 <header class="hero">
   <div class="hero-bg" aria-hidden="true">
-    <!-- ⚠️ החלף: תמונה שלך מלאת-מסך (object-fit:cover). כרגע placeholder. -->
     <div class="ph-media"></div>
-    <div class="ph-tag">⬆ כאן נכנסת התמונה שלך (רקע מלא)</div>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="wrap hero-center">
@@ -710,7 +721,7 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
       <div class="appx-phone-wrap">
         <div class="phone"><div class="phone-screen">
           <!-- מסכים אמיתיים מהאפליקציה -->
-          <div class="ps media on" data-i="0"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-programs.jpg"><source src="media/app-programs.mp4" type="video/mp4"></video></div>
+          <div class="ps media on" data-i="0"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
           <div class="ps media" data-i="1"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
           <div class="ps media" data-i="2"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
           <div class="ps media accent" data-i="3"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
@@ -724,7 +735,7 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
     <div class="mpanel mpanel-app">
       <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps media on"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-programs.jpg"><source src="media/app-programs.mp4" type="video/mp4"></video></div>
+        <div class="ps media on"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
       </div></div>
       <button type="button" class="btn btn-sm axbtn" data-mnext>איך זה עובד?</button>
     </div>
@@ -1047,6 +1058,17 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
   addEventListener('orientationchange',function(){setTimeout(function(){ScrollTrigger.refresh();},300);});
   function scrollToY(y){ window.scrollTo({top:y,behavior:'smooth'}); }
 
+  // תיקון שורש לכפתור "גלה עוד" ולניווט: קפיצת-עוגן של הדפדפן מפספסת כשיש סצנות pinned —
+  // מחשבים את המיקום האמיתי ברגע הלחיצה במקום לסמוך על העוגן.
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    var id=a.getAttribute('href'); if(id.length<2) return;
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(id); if(!t) return;
+      e.preventDefault();
+      scrollToY(t.getBoundingClientRect().top+scrollY+2);
+    });
+  });
+
   gsap.to('.progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:true}});
 
   gsap.timeline({defaults:{ease:'power3.out'}})
@@ -1192,7 +1214,7 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
       return rot;
     }
     var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
-    pinMobileScene('.appx-mobile',480,function(i,local,panel,raw,N){
+    pinMobileScene('.appx-mobile',600,function(i,local,panel,raw,N){
       playOnly(appMobScreens,i);
       if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
       if(!mPhones.length) return;
@@ -1212,11 +1234,11 @@ body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!importa
   ScrollTrigger.create({trigger:'#community',start:'top bottom',
     onLeaveBack:function(){document.body.classList.remove('ai-mode');}});
 
-  // ה-CTA הצף מתחבא בסצנות שהכיתוב שלהן יושב למטה — לא מסתיר תוכן
-  ScrollTrigger.create({trigger:'#train',start:'top 55%',end:'bottom 45%',
-    toggleClass:{targets:'body',className:'cta-hide'}});
-  ScrollTrigger.create({trigger:'#community',start:'top 55%',end:'bottom 45%',
-    toggleClass:{targets:'body',className:'cta-hide'}});
+  // ה-CTA הצף מתחבא בסצנות שהכיתוב/כפתורים שלהן למטה — לא מסתיר תוכן. חץ "גלול להמשך" מופיע במקומו.
+  ['#train','#app','#community'].forEach(function(sec){
+    ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',
+      toggleClass:{targets:'body',className:'cta-hide'}});
+  });
 
   document.querySelectorAll('.stepper').forEach(function(s){
     var v=s.querySelector('.reps');

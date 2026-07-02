@@ -4,3 +4,5 @@ combat-coach-landing (7).html
 ilp.zip
 serve.js
 dist/
+node_modules/
+tests/shots/
