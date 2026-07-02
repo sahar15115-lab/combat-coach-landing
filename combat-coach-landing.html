@@ -4,18 +4,19 @@
 <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>קומבאט קואץ׳ — תהליך ליווי: גוף, ביטחון, משמעת</title>
-<meta name="description" content="תהליך ליווי לצעירים: אימון קבוצה שבועי, אפליקציית אימון אישית שמתעדכנת לפי הביצועים, ומפגשי קהילה סביב התפתחות אישית ובינה מלאכותית.">
-<meta property="og:title" content="קומבאט קואץ׳ — לא עוד אימון כושר. תהליך.">
-<meta property="og:description" content="אימון קבוצה + אפליקציה אישית + קהילה של התפתחות אישית ו-AI.">
+<title>קומבאט אתלט — תוכנית ליווי: קאליסטניקס, אגרוף תאילנדי, אתלטיות</title>
+<meta name="description" content="קומבאט אתלט — תוכנית הליווי היחידה מסוגה בארץ שמשלבת קאליסטניקס, אגרוף תאילנדי ופיתוח יכולות אתלטיות, עם אפליקציה אישית, מפגשי קהילה ותוכנית אימון מותאמת.">
+<meta property="og:title" content="קומבאט אתלט — לא עוד אימון כושר. תוכנית ליווי.">
+<meta property="og:description" content="קאליסטניקס · אגרוף תאילנדי · אתלטיות — עם אפליקציה אישית, קהילה ותוכנית מותאמת.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="קומבאט קואץ׳">
+<meta property="og:site_name" content="קומבאט אתלט">
 <meta property="og:locale" content="he_IL">
+<meta property="og:image" content="https://combat-coach-landing.vercel.app/media/og.jpg">
 <meta name="theme-color" content="#0A0A0A">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="קומבאט קואץ׳ — לא עוד אימון כושר. תהליך.">
-<meta name="twitter:description" content="אימון קבוצה + אפליקציה אישית + קהילה של התפתחות אישית ו-AI.">
-<!-- og:image + twitter:image (1200×630 מ-Cloudinary) — יתווספו יחד עם ה-hero visual. -->
+<meta name="twitter:title" content="קומבאט אתלט — לא עוד אימון כושר. תוכנית ליווי.">
+<meta name="twitter:description" content="קאליסטניקס · אגרוף תאילנדי · אתלטיות — עם אפליקציה אישית, קהילה ותוכנית מותאמת.">
+<meta name="twitter:image" content="https://combat-coach-landing.vercel.app/media/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -134,6 +135,9 @@ body.ai-mode .nav .btn,body.ai-mode .sticky-cta .btn{
 .nav{position:fixed;inset-inline:0;top:0;z-index:50;backdrop-filter:blur(12px);
   background:rgba(10,10,10,.5);border-bottom:1px solid transparent;transition:.3s}
 .nav.scrolled{border-color:var(--line);background:rgba(10,10,10,.85)}
+/* הפס העליון נעלם בפתיחה (מסך ראשון נקי) ומופיע בעדינות רק אחרי גלילה. בלי JS — תמיד גלוי. */
+html.js .nav{transform:translateY(-110%);opacity:0}
+html.js .nav.scrolled{transform:none;opacity:1}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:.85rem}
 .logo{font-weight:900;font-size:1.22rem;letter-spacing:-.02em;color:var(--fg);text-decoration:none}
 .logo span{color:var(--brand)}
@@ -156,7 +160,7 @@ html.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease
 html.js .reveal.in{opacity:1;transform:none}
 
 /* ============ SCENE 1 — HERO ============ */
-.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding-bottom:clamp(3rem,8vh,6rem);overflow:hidden}
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding-block:clamp(4.5rem,10vh,6rem) clamp(3rem,8vh,6rem);overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
 /* ⚠️ החלף רקע זה בתמונה שלך: הוסף background-image, או <img>/<video> עם object-fit:cover */
 .hero-bg .ph-media{position:absolute;inset:0;background:
@@ -177,8 +181,20 @@ html.js .reveal.in{opacity:1;transform:none}
 .track,.fit,.tcard{transition:border-color .25s,transform .25s,box-shadow .25s}
 .track:hover,.fit:hover,.tcard:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 22px 44px -26px rgba(0,0,0,.75)}
 .hero .lead{max-width:54ch;margin-bottom:var(--s4)}
-.hero-cta-row{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center}
-.hero-tags{margin-top:var(--s6);display:flex;gap:.6rem;flex-wrap:wrap}
+/* hero חדש: ממורכז — כותרת מותג, שילוב דיסציפלינות, תמונה+מעטפת, כפתור גילוי רחב + CTA חצי */
+.hero-center{text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero-mix{color:var(--brand-2);font-weight:800;font-size:clamp(1.02rem,2.4vw,1.3rem);letter-spacing:.02em;margin-bottom:var(--s4)}
+.hero-mix.sm{font-size:.95rem;margin:0;color:var(--brand)}
+.hero-duo{display:flex;align-items:center;gap:clamp(1.2rem,3vw,2.5rem);margin-block:var(--s2) var(--s4);max-width:860px}
+.hero-duo-copy{text-align:start;max-width:40ch}
+.hero-duo-copy p{margin-bottom:.6rem;color:var(--fg-soft)}
+.hero-photo{width:min(42%,360px);height:auto;border-radius:var(--radius);border:1px solid var(--line-strong);
+  box-shadow:0 30px 60px -28px rgba(0,0,0,.85),var(--surface-hi);filter:grayscale(1) contrast(1.05)}
+.hero-cta-col{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:min(100%,560px)}
+.hero-discover{width:100%;font-size:1.12rem;padding:1.1rem 2rem}
+.hero-check{width:52%;min-width:230px;font-size:.9rem;padding:.7rem 1.2rem;min-height:42px}
+@media(max-width:760px){.hero-duo{flex-direction:column;gap:1rem}.hero-photo{width:min(82%,320px)}.hero-duo-copy{text-align:center}}
+.hero-tags{display:none}
 .tag{font-size:.82rem;color:var(--fg-soft);border:1px solid var(--line-strong);border-radius:999px;
   padding:.42rem 1rem;background:rgba(20,20,20,.6);backdrop-filter:blur(4px)}
 .tag b{color:var(--brand);font-weight:800}
@@ -484,6 +500,18 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 html.no-js .appx-desktop,html.no-js .trainx-desktop,html.no-js .commx-desktop{display:none}
 html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{display:block}
 
+/* ============ תוספות: כותרת ממוזגת, מסכי אפליקציה אמיתיים, כפתורי מסע, CTA מסתתר ============ */
+.txscene{color:var(--brand);font-weight:900;font-size:.95rem;letter-spacing:.05em;margin-bottom:.9rem;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.cxfirst{color:var(--brand-2);font-weight:800;margin-top:.5rem}
+/* מסך טלפון = תמונה/וידאו אמיתיים מהאפליקציה; חיתוך ~5% עליון מסתיר את שורת הסטטוס */
+.ps.media{padding:0}
+.psfull{position:absolute;left:0;right:0;bottom:0;width:100%;height:105.5%;object-fit:cover;object-position:50% 100%}
+.axbtn{margin-top:var(--s3);align-self:flex-start}
+.mpanel-app .axbtn{align-self:center;margin-top:0}
+.mpanel-media video{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+/* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/קהילה) — לא מסתיר תוכן */
+body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
+
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
   /* scroll-snap-type הוסר בכוונה — גרם לתחושת "היאחזות"/תקיעה באצבע. פאנלים נשארים full-screen חלקים. */
@@ -508,8 +536,9 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   /* קהילה: גיוון מיקום/יישור בין שקופיות */
   .commx-mobile.pin-active .mpanel:nth-child(even) .mpanel-commcopy{text-align:end}
   .commx-mobile.pin-active .mpanel:nth-child(3) .mpanel-commcopy,.commx-mobile.pin-active .mpanel:nth-child(6) .mpanel-commcopy{top:16svh;bottom:auto}
-  /* אפליקציה: לסירוגין הטקסט מעל/מתחת לטלפון */
-  .appx-mobile.pin-active .mpanel:nth-child(even).mpanel-app{flex-direction:column-reverse}
+  /* אפליקציה: לסירוגין הטקסט מעל/מתחת לטלפון (הכפתור תמיד אחרון) */
+  .appx-mobile.pin-active .mpanel:nth-child(even) .mpanel-appcopy{order:2}
+  .appx-mobile.pin-active .mpanel:nth-child(even) .axbtn{order:3}
   /* video/media panel (training) */
   .mpanel-media{position:absolute;inset:0;z-index:0}
   .mpanel-media .vph{position:absolute;inset:0}
@@ -556,7 +585,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 
 <nav class="nav" id="nav">
   <div class="wrap">
-    <a href="#" class="logo">קומבאט<span> קואץ׳</span></a>
+    <a href="#" class="logo">קומבאט<span> אתלט</span></a>
     <div class="nav-cta-wrap">
       <div class="nav-links">
         <a href="#train" class="nav-link">האימון</a>
@@ -578,173 +607,113 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
     <div class="ph-tag">⬆ כאן נכנסת התמונה שלך (רקע מלא)</div>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
-  <div class="wrap">
-    <span class="eyebrow hero-eyebrow">אימון · אפליקציה · קהילה</span>
-    <h1 class="hero-title">תהליך ליווי לצעירים שרוצים לבנות גוף חזק, ביטחון עצמי ומשמעת.</h1>
-    <p class="lead hero-sub">קומבאט קואץ׳ מחבר בין אימון קבוצה שבועי, אפליקציית אימון שמתעדכנת לפי ההתקדמות שלך, ומפגשי קהילה סביב התפתחות אישית ובינה מלאכותית. לא עוד אימון בודד — תהליך שלוקח אותך קדימה.</p>
-    <div class="hero-cta-row">
-      <a href="#check" class="btn hero-cta">בדיקת התאמה למחזור הקרוב</a>
-      <a href="#train" class="btn btn-ghost hero-cta">איך זה עובד?</a>
+  <div class="wrap hero-center">
+    <span class="eyebrow hero-eyebrow">תוכנית הליווי היחידה מסוגה בארץ שמשלבת</span>
+    <h1 class="hero-title">קומבאט אתלט</h1>
+    <p class="hero-sub hero-mix">קאליסטניקס · אגרוף תאילנדי · פיתוח יכולות אתלטיות</p>
+    <div class="hero-duo">
+      <div class="hero-duo-copy">
+        <p>מעבר לאימון — כל מתאמן מקבל מעטפת שתעזור לו להתפתח בצורה הטובה ביותר, גם מחוץ לאימון:</p>
+        <p class="hero-mix sm">אפליקציה · מפגשי קהילה · תוכנית אימון אישית</p>
+      </div>
+      <img class="hero-photo" src="media/hero-sahar.jpg" alt="סהר שמש מאמן אגרוף תאילנדי באימון אישי" width="942" height="620">
     </div>
-    <div class="hero-tags">
-      <span class="tag"><b>①</b> אימון קבוצה שבועי</span>
-      <span class="tag"><b>②</b> אפליקציה אישית</span>
-      <span class="tag"><b>③</b> קהילה והתפתחות אישית</span>
+    <div class="hero-cta-col">
+      <a href="#train" class="btn hero-cta hero-discover">לחץ כדי לגלות עוד פרטים</a>
+      <a href="#check" class="btn hero-cta hero-check">בדיקת התאמה למחזור הקרוב</a>
     </div>
-    <p class="hero-proof"><b>סהר שמש</b> · מעל <span class="ltr">12</span> שנות ניסיון בלחימה, קאליסטניקס וליווי מתאמנים · האפליקציה פותחה במיוחד עבור המתאמנים שלי.</p>
+    <p class="hero-proof"><b>סהר שמש</b> · מעל <span class="ltr">12</span> שנות ניסיון בלחימה, קאליסטניקס וליווי מתאמנים.</p>
   </div>
   <div class="scroll-hint" aria-hidden="true">גלול</div>
 </header>
 
 <!-- ===================== SCENE 2 — TRAINING (scroll-driven) ===================== -->
 <section id="train" class="train">
-  <div class="wrap">
-    <div class="train-head" style="text-align:center;margin-inline:auto">
-      <span class="eyebrow reveal">האימון הפרונטלי</span>
-      <h2 class="reveal">שעה אחת. ארבעה עולמות.</h2>
-      <p class="lead reveal" style="margin-inline:auto">גלול — וכל חלק מהאימון נפתח לבד, אחד אחרי השני.</p>
-    </div>
-  </div>
-
-  <!-- DESKTOP: full-bleed video, one stage at a time, text overlaid -->
+  <!-- DESKTOP: full-bleed video, one stage at a time, text overlaid. הכותרת הכללית מוזגה לשלב 1 (על הווידאו). -->
   <div class="trainx-desktop">
     <div class="trainx-pin" id="trainxPin">
       <div class="trainx-media">
-        <!-- ⚠️ כל שלב = וידאו מלא-מסך. החלף כל בלוק .vph ב:
-             <video muted loop playsinline preload="metadata" poster="POSTER.jpg"><source src="CLIP.mp4" type="video/mp4"></video>
-             muted+playsinline חובה (בלעדיהם iOS לא מנגן אוטומטית). השאר class="tv" + data-i על העוטף. -->
-        <div class="tv on" data-i="0"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו מלא-מסך: קפיצה בחבל</div></div></div>
-        <div class="tv" data-i="1"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו מלא-מסך: עמידת ידיים</div></div></div>
-        <div class="tv" data-i="2"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו מלא-מסך: תרגיל קואורדינציה</div></div></div>
-        <div class="tv" data-i="3"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו מלא-מסך: אגרוף תאילנדי</div></div></div>
+        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="1"><video muted loop playsinline preload="metadata" poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="2"><video muted loop playsinline preload="metadata" poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="3"><video muted loop playsinline preload="metadata" poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       </div>
       <div class="trainx-scrim" aria-hidden="true"></div>
       <div class="trainx-text">
-        <div class="tx on" data-i="0"><div class="txn"><span class="ltr">01</span> · חימום</div>
+        <div class="tx on" data-i="0">
+          <div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div>
+          <div class="txn"><span class="ltr">01</span> · חימום</div>
           <h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
         <div class="tx" data-i="1"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div>
-          <h3>כוח ושליטה בגוף</h3><p>בונים כוח אמיתי מהמשקל של עצמך — שליטה מלאה בתנועה.</p></div>
+          <h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלכם.</p></div>
         <div class="tx" data-i="2"><div class="txn"><span class="ltr">03</span> · אתלטיות</div>
-          <h3>מהירות וקואורדינציה</h3><p>זריזות, כוח מתפרץ ותחושת גוף — לזוז טוב יותר בכל דבר.</p></div>
+          <h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
         <div class="tx" data-i="3"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div>
-          <h3>טכניקה וביטחון</h3><p>לומדים להכות נכון — ואת הביטחון שמגיע יחד עם זה.</p></div>
+          <h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
       </div>
       <div class="trainx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
     </div>
   </div>
 
-  <!-- MOBILE: full-screen scroll-snap panels (pure CSS, works in any viewer) -->
+  <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
   <div class="trainx-mobile msnap">
     <div class="mpanel">
-      <div class="mpanel-media"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו: קפיצה בחבל</div></div></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
+      <div class="mpanel-copy"><div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו: עמידת ידיים</div></div></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>כוח ושליטה בגוף</h3><p>כוח אמיתי מהמשקל של עצמך — שליטה מלאה בתנועה.</p></div>
+      <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלכם.</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו: תרגיל קואורדינציה</div></div></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>מהירות וקואורדינציה</h3><p>זריזות, כוח מתפרץ ותחושת גוף.</p></div>
+      <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><div class="vph"><div class="play"></div><div class="lbl">⚠️ וידאו: אגרוף תאילנדי</div></div></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>טכניקה וביטחון</h3><p>לומדים להכות נכון — ואת הביטחון שבא עם זה.</p></div>
+      <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ===================== SCENE 3 — APP (centerpiece) ===================== -->
 <section id="app" class="appx">
-  <div class="wrap">
-    <div class="appx-intro">
-      <span class="eyebrow reveal">האפליקציה · לב התהליך</span>
-      <h2 class="reveal">כך נראה הליווי בפועל — צעד אחר צעד</h2>
-      <p class="lead reveal">גלול כדי לעבור את המסע בתוך האפליקציה. אפשר גם ללחוץ על הכפתורים בטלפון — אבל גם גלילה רגילה מתקדמת לבד.</p>
-    </div>
-  </div>
-
-  <!-- DESKTOP: pinned phone + state machine -->
+  <!-- DESKTOP: pinned phone + guided story — 4 מסכים, כל אחד עם כפתור שמקדם -->
   <div class="appx-desktop">
     <div class="appx-pin" id="appxPin">
       <div class="appx-stage">
         <div class="ax" data-i="0"><div class="sx-n"><span class="ltr">01</span></div>
-          <h3>ממשיכה איתך גם אחרי שהאימון נגמר</h3>
-          <p>קומבאט קואץ׳ בונה לך תוכנית לפי המטרה, הרמה, הציוד והזמן שלך — וממשיכה להתעדכן לפי הביצועים.</p>
-          <p class="appx-hint">↙ לחץ "התחל תוכנית" בטלפון, או פשוט גלול</p></div>
+          <h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3>
+          <p>האפליקציה שפיתחתי במיוחד עבור המתאמנים שלי מלווה אותך גם בין האימונים.</p>
+          <button type="button" class="btn btn-sm axbtn" data-next="1">איך זה עובד?</button></div>
         <div class="ax" data-i="1"><div class="sx-n"><span class="ltr">02</span></div>
-          <h3>אימון ברור, מוכן לביצוע</h3>
-          <p>במקום להגיע הביתה ולנחש מה לעשות — אתה מקבל אימון מותאם, עם סטים, חזרות ומנוחה.</p></div>
+          <h3>שאלון קצר — והאפליקציה מבינה אותך</h3>
+          <p>מבינה מה הרמה, המטרות והציוד שעומד לרשותך — ומתאימה תוכנית במיוחד בשבילך.</p>
+          <button type="button" class="btn btn-sm axbtn" data-next="2">בנה לי תוכנית</button></div>
         <div class="ax" data-i="2"><div class="sx-n"><span class="ltr">03</span></div>
-          <h3>אתה מדווח — המערכת לומדת</h3>
-          <p>בסוף כל סט אתה ממלא כמה עשית וכמה זה היה קשה. ככה המערכת לומדת את הקצב שלך.</p></div>
-        <div class="ax" data-i="3"><div class="sx-n"><span class="ltr">04</span></div>
-          <h3>התוכנית מתעדכנת לפי הביצועים</h3>
-          <p>לא עוד תוכנית שנשארת אותו דבר חודשיים. המערכת מנתחת ביצועים ומסייעת להתאים את ההמשך.</p></div>
-        <div class="ax" data-i="4"><div class="sx-n accent"><span class="ltr">05</span></div>
-          <h3>לא רק אימונים — גם הדרכות</h3>
-          <p>הדרכות פשוטות וברורות על תזונה, הרגלים והתאוששות — כדי שתתקדם בכל התחומים.</p></div>
+          <h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3>
+          <p>אתה מדווח בסוף כל סט — והתוכנית מתאימה את עצמה לקצב שלך.</p>
+          <button type="button" class="btn btn-sm axbtn" data-next="3">גלה לי עוד</button></div>
+        <div class="ax" data-i="3"><div class="sx-n accent"><span class="ltr">04</span></div>
+          <h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3>
+          <p>תזונה, הרגלים, יסודות מואי תאי ועוד — הכל בתוך האפליקציה.</p>
+          <button type="button" class="btn btn-sm axbtn" data-goto="#community">להמשך המסע ↓</button></div>
       </div>
 
-      <div class="appx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      <div class="appx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
 
       <div class="appx-phone-wrap">
         <div class="phone"><div class="phone-screen">
-          <!-- state 0: home -->
-          <div class="ps on" data-i="0">
-            <span class="pl">קומבאט קואץ׳</span>
-            <span class="ph-title">שלום סהר 👋<br>מוכן להתחיל?</span>
-            <div class="pvideo"><div class="play"></div><span class="lbl">וידאו הדגמה · החלף</span></div>
-            <div class="pchip">האפליקציה מלווה אותך בין האימונים</div>
-            <button class="pbtn" data-next="1">התחל תוכנית</button>
-          </div>
-          <!-- state 1: today's workout -->
-          <div class="ps" data-i="1">
-            <span class="pl">האימון של היום</span>
-            <span class="ph-title">אימון כוח ושליטה</span>
-            <div class="pchip row"><span>שכיבות סמיכה</span><span>4×10</span></div>
-            <div class="pchip row"><span>מתח</span><span>4×6</span></div>
-            <div class="pchip row"><span>סקוואט</span><span>3×12</span></div>
-            <div class="pchip row"><span>מנוחה בין סטים</span><span><span class="ltr">60</span> שנ'</span></div>
-            <button class="pbtn" data-next="2">סיימתי סט</button>
-          </div>
-          <!-- state 2: end-of-set data entry -->
-          <div class="ps" data-i="2">
-            <span class="pl">סוף סט · דיווח</span>
-            <span class="ph-title">כמה חזרות ביצעת?</span>
-            <div class="stepper"><button type="button" aria-label="הפחת" data-step="-1">−</button><b class="reps ltr">10</b><button type="button" aria-label="הוסף" data-step="1">+</button></div>
-            <span class="pl" style="margin-top:.3rem">כמה קשה זה היה?</span>
-            <div class="rpe">
-              <button type="button" aria-pressed="false">קל</button>
-              <button type="button" aria-pressed="false">בינוני</button>
-              <button type="button" aria-pressed="false">קשה</button>
-            </div>
-            <button class="pbtn" data-save data-next="3">שמור סט</button>
-            <span class="psaved">✓ הנתונים נשמרו. התוכנית תתעדכן לפי הביצועים שלך.</span>
-          </div>
-          <!-- state 3: auto progress -->
-          <div class="ps" data-i="3">
-            <span class="pl">התקדמות</span>
-            <span class="ph-title">ביצעת את כל הסטים 💪</span>
-            <div class="pbar"><i style="width:100%"></i></div>
-            <div class="pchip">התוכנית עודכנה אוטומטית</div>
-            <div class="pchip row"><span>באימון הבא</span><span>+ דרגת קושי</span></div>
-            <div class="pchip">נבנה לפי נתוני הביצוע שלך</div>
-          </div>
-          <!-- state 4: guides -->
-          <div class="ps accent" data-i="4">
-            <span class="pl">הדרכות</span>
-            <span class="ph-title">ללמוד להתקדם — לא רק להתאמן</span>
-            <div class="gcard"><span>תזונה בסיסית למתאמן</span><span class="st">שלב 1/4</span></div>
-            <div class="gcard"><span>איך לבנות הרגלים</span><span class="st">חדש</span></div>
-            <div class="gcard"><span>התאוששות ושינה</span><span class="st">חדש</span></div>
-            <button class="pbtn" data-goto="#community">התחל הדרכה</button>
-          </div>
+          <!-- מסכים אמיתיים מהאפליקציה -->
+          <div class="ps media on" data-i="0"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-programs.jpg"><source src="media/app-programs.mp4" type="video/mp4"></video></div>
+          <div class="ps media" data-i="1"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
+          <div class="ps media" data-i="2"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
+          <div class="ps media accent" data-i="3"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
         </div></div>
       </div>
     </div>
@@ -753,75 +722,32 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   <!-- MOBILE: full-screen scroll-snap panels — real phone, one screen each -->
   <div class="appx-mobile msnap">
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>ממשיכה איתך גם אחרי שהאימון נגמר</h3></div>
+      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps on">
-          <span class="pl">קומבאט קואץ׳</span>
-          <span class="ph-title">שלום סהר 👋<br>מוכן להתחיל?</span>
-          <div class="pvideo"><div class="play"></div><span class="lbl">וידאו הדגמה · החלף</span></div>
-          <div class="pchip">האפליקציה מלווה אותך בין האימונים</div>
-          <button class="pbtn" type="button">התחל תוכנית</button>
-        </div>
+        <div class="ps media on"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-programs.jpg"><source src="media/app-programs.mp4" type="video/mp4"></video></div>
       </div></div>
-      <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
+      <button type="button" class="btn btn-sm axbtn" data-mnext>איך זה עובד?</button>
     </div>
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">02</span></div><h3>אימון ברור, מוכן לביצוע</h3></div>
+      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">02</span></div><h3>שאלון קצר — והאפליקציה מבינה את הרמה, המטרות והציוד שלך</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps on">
-          <span class="pl">האימון של היום</span>
-          <span class="ph-title">אימון כוח ושליטה</span>
-          <div class="pchip row"><span>שכיבות סמיכה</span><span>4×10</span></div>
-          <div class="pchip row"><span>מתח</span><span>4×6</span></div>
-          <div class="pchip row"><span>סקוואט</span><span>3×12</span></div>
-          <div class="pchip row"><span>מנוחה בין סטים</span><span><span class="ltr">60</span> שנ'</span></div>
-          <button class="pbtn" type="button">סיימתי סט</button>
-        </div>
+        <div class="ps media on"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
       </div></div>
+      <button type="button" class="btn btn-sm axbtn" data-mnext>בנה לי תוכנית</button>
     </div>
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">03</span></div><h3>אתה מדווח — המערכת לומדת</h3></div>
+      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">03</span></div><h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps on">
-          <span class="pl">סוף סט · דיווח</span>
-          <span class="ph-title">כמה חזרות ביצעת?</span>
-          <div class="stepper"><button type="button" aria-label="הפחת" data-step="-1">−</button><b class="reps ltr">10</b><button type="button" aria-label="הוסף" data-step="1">+</button></div>
-          <span class="pl" style="margin-top:.3rem">כמה קשה זה היה?</span>
-          <div class="rpe">
-            <button type="button" aria-pressed="false">קל</button>
-            <button type="button" aria-pressed="false">בינוני</button>
-            <button type="button" aria-pressed="false">קשה</button>
-          </div>
-          <button class="pbtn" type="button" data-save>שמור סט</button>
-          <span class="psaved">✓ הנתונים נשמרו. התוכנית תתעדכן לפי הביצועים שלך.</span>
-        </div>
+        <div class="ps media on"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
       </div></div>
+      <button type="button" class="btn btn-sm axbtn" data-mnext>גלה לי עוד</button>
     </div>
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">04</span></div><h3>התוכנית מתעדכנת לפי הביצועים</h3></div>
+      <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps on">
-          <span class="pl">התקדמות</span>
-          <span class="ph-title">ביצעת את כל הסטים 💪</span>
-          <div class="pbar"><i style="width:100%"></i></div>
-          <div class="pchip">התוכנית עודכנה אוטומטית</div>
-          <div class="pchip row"><span>באימון הבא</span><span>+ דרגת קושי</span></div>
-          <div class="pchip">נבנה לפי נתוני הביצוע שלך</div>
-        </div>
+        <div class="ps media accent on"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
       </div></div>
-    </div>
-    <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">05</span></div><h3>לא רק אימונים — גם הדרכות</h3></div>
-      <div class="phone"><div class="phone-screen">
-        <div class="ps accent on">
-          <span class="pl">הדרכות</span>
-          <span class="ph-title">ללמוד להתקדם — לא רק להתאמן</span>
-          <div class="gcard"><span>תזונה בסיסית למתאמן</span><span class="st">שלב 1/4</span></div>
-          <div class="gcard"><span>איך לבנות הרגלים</span><span class="st">חדש</span></div>
-          <div class="gcard"><span>התאוששות ושינה</span><span class="st">חדש</span></div>
-          <button class="pbtn" type="button" data-goto="#community">התחל הדרכה</button>
-        </div>
-      </div></div>
+      <button type="button" class="btn btn-sm axbtn" data-goto="#community">להמשך המסע ↓</button>
     </div>
   </div>
 </section>
@@ -846,19 +772,15 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 
 <!-- ===================== SCENE 4 — COMMUNITY (scroll-driven slides) ===================== -->
 <section id="community" class="comm">
-  <div class="wrap">
-    <span class="comm-loc reveal">📍 מפגש שבועי · <b>מרכז הצעירים בבאר יעקב</b></span>
-    <h2 class="reveal">לא רק מתאמנים יחד — מתפתחים יחד.</h2>
-    <p class="lead reveal">אחרי שבונים גוף ומשמעת, לומדים גם לבנות חשיבה, הרגלים וכלים לעולם החדש. גלול — נושא אחד בכל פעם.</p>
-  </div>
-
-  <!-- DESKTOP: scroll-driven, נושא אחד + שקופית מההרצאה -->
+  <!-- DESKTOP: scroll-driven — הכותרת הכללית מוזגה לשקופית הראשונה -->
   <div class="commx-desktop">
     <div class="commx-pin" id="commxPin">
       <div class="commx-inner">
         <div class="commx-text">
-          <div class="cx on" data-i="0"><div class="cxtrack">התפתחות אישית</div>
-            <h3>מהי הצלחה</h3><p>להגדיר הצלחה משלך — לא של אחרים.</p></div>
+          <div class="cx on" data-i="0"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
+            <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
+            <p>אחת לשבוע ניפגש ונפתח גם את הראש. נלמד על:</p>
+            <p class="cxfirst"><span class="ltr">01</span> · מהי הצלחה — להגדיר הצלחה משלך, לא של אחרים.</p></div>
           <div class="cx" data-i="1"><div class="cxtrack">התפתחות אישית</div>
             <h3>הנאה מול אושר</h3><p>למה כיף רגעי הוא לא אושר — ואיך בונים את השני.</p></div>
           <div class="cx" data-i="2"><div class="cxtrack">התפתחות אישית</div>
@@ -897,7 +819,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
   <div class="commx-mobile msnap">
     <div class="mpanel mpanel-comm">
       <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">מהי הצלחה</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>מהי הצלחה</h3><p>להגדיר הצלחה משלך — לא של אחרים.</p></div>
+      <div class="mpanel-commcopy"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div><h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3><p>אחת לשבוע ניפגש ונפתח גם את הראש. נלמד על:</p><p class="cxfirst"><span class="ltr">01</span> · מהי הצלחה — להגדיר הצלחה משלך, לא של אחרים.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel mpanel-comm">
@@ -1061,7 +983,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 (function(){
   var nav=document.getElementById('nav'),sticky=document.getElementById('stickyCta');
   addEventListener('scroll',function(){
-    nav.classList.toggle('scrolled',scrollY>20);
+    nav.classList.toggle('scrolled',scrollY>innerHeight*0.6);
     sticky.classList.toggle('show',scrollY>innerHeight*0.9);
   },{passive:true});
 
@@ -1132,7 +1054,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
     .from('.hero-title',{y:32,opacity:0,duration:.8},'-=.2')
     .from('.hero-sub',{y:22,opacity:0,duration:.6},'-=.45')
     .from('.hero-cta',{y:16,opacity:0,duration:.5,stagger:.1},'-=.35')
-    .from('.hero-tags .tag',{y:14,opacity:0,duration:.4,stagger:.08},'-=.25')
+    .from('.hero-duo',{y:14,opacity:0,duration:.4},'-=.25')
     .from('.hero-proof',{opacity:0,duration:.5},'-=.2');
   gsap.to('.hero-bg .ph-media',{yPercent:12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
@@ -1150,7 +1072,9 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
     set(0);
     return ScrollTrigger.create({
       trigger:pinSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
-      onUpdate:function(self){ set(Math.min(N-1,Math.floor(self.progress*N))); }
+      onUpdate:function(self){ set(Math.min(N-1,Math.floor(self.progress*N))); },
+      snap:{snapTo:function(v){var i2=Math.max(0,Math.min(N-1,Math.round(v*N-0.5)));return (i2+0.5)/N;},
+            duration:{min:.2,max:.5},ease:'power2.out',delay:.08}
     });
   }
   function pauseVideos(root){ if(root)root.querySelectorAll('video').forEach(function(v){ v.pause&&v.pause(); }); }
@@ -1179,6 +1103,7 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
       axTx.forEach(function(t,j){t.classList.toggle('on',j===i)});
       psScr.forEach(function(s,j){s.classList.toggle('on',j===i)});
       apDots.forEach(function(d,j){d.classList.toggle('on',j===i)});
+      playOnly(psScr,i);
     }
     setApp(0);
     gsap.from('.appx-phone-wrap',{autoAlpha:0,scale:.9,duration:.6,ease:'power2.out',
@@ -1192,11 +1117,12 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
       }
     });
     function goToState(i){ i=Math.max(0,Math.min(Napp-1,i)); scrollToY(stApp.start + (i+0.5)/Napp*(stApp.end-stApp.start)); }
-    document.querySelectorAll('.appx-phone-wrap [data-next]').forEach(function(b){
+    document.querySelectorAll('.appx-desktop [data-next]').forEach(function(b){
       b.addEventListener('click',function(){ goToState(+b.dataset.next); });
     });
-    document.querySelectorAll('.appx-phone-wrap [data-goto]').forEach(function(b){
-      b.addEventListener('click',function(){ var t=document.querySelector(b.dataset.goto); if(t)scrollToY(t.offsetTop); });
+    document.querySelectorAll('.appx-desktop [data-goto]').forEach(function(b){
+      b.addEventListener('click',function(){ var t=document.querySelector(b.dataset.goto);
+        if(t)scrollToY(t.getBoundingClientRect().top+scrollY); });
     });
 
     // ===== SCENE 4: community — one topic at a time, each with a slide =====
@@ -1223,19 +1149,34 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
       try{
         wrap.classList.add('pin-active');
         setPanel(0);
-        return ScrollTrigger.create({
+        var st=ScrollTrigger.create({
           trigger:msnapSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
           onUpdate:function(self){
             var raw=self.progress*N, i=Math.min(N-1,Math.floor(raw));
             setPanel(i);
             if(onProgress) onProgress(i, Math.min(1,raw-i), panels[i], raw, N);
-          }
+          },
+          /* התיישבות רכה אחרי עזיבת האצבע — תמיד על מרכז מסך (הטלפון לעולם לא נשאר "הפוך") */
+          snap:{snapTo:function(v){var i2=Math.max(0,Math.min(N-1,Math.round(v*N-0.5)));return (i2+0.5)/N;},
+                duration:{min:.2,max:.5},ease:'power2.out',delay:.08}
         });
+        /* כפתורי "המשך" בתוך פאנלים — מקדמים למסך הבא בגלילה חלקה */
+        panels.forEach(function(p,idx){
+          p.querySelectorAll('[data-mnext]').forEach(function(b){b.addEventListener('click',function(){
+            var ni=Math.min(N-1,idx+1); scrollToY(st.start+((ni+0.5)/N)*(st.end-st.start));
+          });});
+          p.querySelectorAll('[data-goto]').forEach(function(b){b.addEventListener('click',function(){
+            var t=document.querySelector(b.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY);
+          });});
+        });
+        return st;
       }catch(e3){ wrap.classList.remove('pin-active'); return null; }
     }
 
     // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
-    if(document.querySelector('.trainx-mobile .mpanel')) pinMobileScene('.trainx-mobile',400);
+    var trMobMedia=gsap.utils.toArray('.trainx-mobile .mpanel-media');
+    if(document.querySelector('.trainx-mobile .mpanel'))
+      pinMobileScene('.trainx-mobile',400,function(i){ playOnly(trMobMedia,i); });
 
     // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
     // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
@@ -1250,7 +1191,9 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
       }
       return rot;
     }
+    var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
     pinMobileScene('.appx-mobile',480,function(i,local,panel,raw,N){
+      playOnly(appMobScreens,i);
       if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
       if(!mPhones.length) return;
       var rot=spinRot(raw,N) + (local-0.5)*14; // + נטייה קלה בזמן קריאה לתחושת תלת-ממד
@@ -1268,6 +1211,12 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
     onEnter:function(){document.body.classList.remove('ai-mode');}});
   ScrollTrigger.create({trigger:'#community',start:'top bottom',
     onLeaveBack:function(){document.body.classList.remove('ai-mode');}});
+
+  // ה-CTA הצף מתחבא בסצנות שהכיתוב שלהן יושב למטה — לא מסתיר תוכן
+  ScrollTrigger.create({trigger:'#train',start:'top 55%',end:'bottom 45%',
+    toggleClass:{targets:'body',className:'cta-hide'}});
+  ScrollTrigger.create({trigger:'#community',start:'top 55%',end:'bottom 45%',
+    toggleClass:{targets:'body',className:'cta-hide'}});
 
   document.querySelectorAll('.stepper').forEach(function(s){
     var v=s.querySelector('.reps');
