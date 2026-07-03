@@ -6,3 +6,5 @@ serve.js
 dist/
 node_modules/
 tests/shots/
+tests/flow/
+tests/ux/
