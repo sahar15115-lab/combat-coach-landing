@@ -537,6 +537,9 @@ body.cta-hide .scroll-cue{opacity:1}
   /* scroll-snap-type הוסר בכוונה — גרם לתחושת "היאחזות"/תקיעה באצבע. פאנלים נשארים full-screen חלקים. */
   /* תיקון חיתוך כותרת: ריווח עליון מפני ה-nav הקבוע — אם התוכן גבוה מהמסך, הוא זורם מטה במקום להיחתך למעלה */
   .hero{padding-top:6rem}
+  /* סצנות ה-pin צמודות זו-לזו: אפס padding של section שיצר "אזור מת" בגלילה בין הסצנות */
+  #train,#app{padding-block:0}
+  #community{padding-top:0}
   .msnap{display:block}
   .mpanel{position:relative;height:100svh;min-height:520px;scroll-snap-align:start;overflow:hidden}
   /* "מוחלף במקום" גם במובייל — כמו בדסקטופ. מופעל רק ע"י JS אחרי שה-pin נרשם בהצלחה (.pin-active);
@@ -1207,7 +1210,7 @@ body.cta-hide .scroll-cue{opacity:1}
     // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
     var trMobMedia=gsap.utils.toArray('.trainx-mobile .mpanel-media');
     if(document.querySelector('.trainx-mobile .mpanel'))
-      pinMobileScene('.trainx-mobile',400,function(i){ playOnly(trMobMedia,i); });
+      pinMobileScene('.trainx-mobile',320,function(i){ playOnly(trMobMedia,i); });
 
     // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
     // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
@@ -1223,7 +1226,7 @@ body.cta-hide .scroll-cue{opacity:1}
       return rot;
     }
     var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
-    pinMobileScene('.appx-mobile',600,function(i,local,panel,raw,N){
+    pinMobileScene('.appx-mobile',460,function(i,local,panel,raw,N){
       playOnly(appMobScreens,i);
       if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
       if(!mPhones.length) return;
