@@ -1,0 +1,47 @@
+# Ledger — צינור לידים: דף נחיתה ↔ Tally ↔ CRM (רעיונות 1+2 של סהר)
+
+> Source of truth לפרויקט חוצה-מערכות. קרא לפני כל צעד, עדכן אחרי כל commit/פעולה.
+> מנוהל ע"י עוזר המתכנת (coding-assistant protocol). התחלה: 2026-07-03.
+
+## מפת המערכת (מאומת מהקוד — לא ניחוש)
+
+| רכיב | מיקום | תפקיד |
+|---|---|---|
+| דף נחיתה | `Desktop\דף נחיתה` → Vercel `combat-coach-landing` (GitHub auto-deploy) | שיווק. יש בו שאלון פנימי ב-#check (יוחלף ב-Tally) |
+| שאלון אמיתי | **Tally `44pM9o`** — "שאלון אפיון מהיר - Sahar Fitness", 20 עמודים | האינטייק. שדה גיל (גיל) כבר קיים; **אין** שדה זמינות/סלוטים |
+| Webhook | `Projects\combat-coach-app\supabase\functions\jotform-webhook` (מטפל גם ב-Tally, `parsed.provider`) | Tally→ליד+אינטייק ב-Supabase. גיל נקלט בשורה ~462. יש e2e: `seeds/e2e_synthetic_tally_test.mjs` (21 בדיקות) |
+| AI תוכניות | Edge Function `generate-draft-program` | אינטייק→טיוטת תוכנית (structured_draft, draft_cost_usd) |
+| CRM | `Projects\combat-coach-admin` → Vercel `combat-coach-admin` ("סופר אדמין") | `/leads` (RPC `sa_leads_overview`, `sa_lead_detail`, `sa_update_lead`), `/analytics` משפך. Next.js+shadcn RTL |
+| הודעות | מיגרציות 064/065: `scheduled_messages` + templates + **DB triggers** | INSERT אינטייק → `intake_thanks` (ללקוח, מיידי) + צ'ק-אינים 1d/7d/28d. Phase 0=שליחה ידנית מ-Retool; Phase 1 מתוכנן=WhatsApp Cloud API. `draft_ready_coach` לסהר קיים כתבנית |
+| Make | org 8002144 (eu1), team 1916584 | **Free plan: מקס' 2 סצנות פעילות (1 תפוסה — Metricool 6131671), 1000 ops/חודש.** חיבורים: Airtable+Metricool בלבד. **אין WhatsApp/Gmail** |
+
+## אילוצים והחלטות
+- לסהר **אין רקע בתכנות** — אני מבצע הכל; ממנו רק קליקים של OAuth/הדבקות שאני מנחה במדויק.
+- **אין** Tally API key שמור, **אין** supabase CLI מותקן (יש `supabase/config.toml`, project_id=combat-coach-app). Deploy ידרוש `npx supabase login` (קליק דפדפן של סהר) או access token.
+- **לא בונים מסלול הודעות מקביל** — מכבדים את מערכת ה-scheduled_messages הקיימת (יש בה ביטולים/תנאים). ה-auto-reply ללקוח = כבר קיים (Phase 0 ידני). מה שנוסיף: פינג מיידי לסהר.
+- Tally תומך בכמה webhooks לטופס → מוסיפים webhook שני ל-Make **בלי לגעת בצינור החי**.
+- מיתוג: התוכנית=קומבאט אתלט, האפליקציה=קומבאט קואץ'.
+- קטינים 14-17: חובה checkbox הסכמת הורה ב-Tally.
+- סלוטים של סהר: ראשון 19:30 · שלישי 19:30 · שישי 12:00 · שני+רביעי 10:00-12:00. גיל 14-17 רואים רק ערבים+שישי (בי"ס בבקרים); 18+ רואים הכל.
+
+## תוכנית + סטטוס
+
+| שלב | מה | סטטוס |
+|---|---|---|
+| **A** | דף הנחיתה: CTA→Tally popup עם `source=landing`; #check מוחלף ב-embed של Tally; הסרת קוד השאלון הפנימי; verify+flow suites | ☐ |
+| **B** | Make: סצנה חדשה (slot 2/2) — webhook trigger → Gmail לסהר "ליד חדש". סהר: OAuth Gmail + הדבקת URL ב-Tally Integrations | ☐ |
+| **C** | Tally: שדה "אילו סלוטים" + לוגיקת גיל + הסכמת הורה + hidden `source`. דרך: API key של סהר (Settings→API) או co-drive בדפדפן | ☐ |
+| **D** | Backend: parsing סלוטים ב-webhook + עמודה/JSONB באינטייק + מיגרציה · Admin: תצוגת סלוט×גיל ב-/analytics · **security-auditor לפני deploy** · e2e ירוק לפני+אחרי | ☐ |
+
+## שיבוץ סקילים
+- **coach-humanizer**: ניסוח מייל ההתראה לסהר + (בהמשך) תבניות WhatsApp. נכנס ב-B.
+- **security-auditor**: סקירת שינוי ה-webhook (קלט ציבורי!) לפני deploy. נכנס ב-D.
+- **combat-coach-design**: ווידג'ט סלוט×גיל בדשבורד (master-detail, סטטוס=צבע+אייקון+טקסט). נכנס ב-D.
+- **Playwright suites** (verify/flow בריפו הנחיתה): אחרי A.
+
+## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
+1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
+2. הדבקת webhook URL ב-Tally Integrations — שלב B.
+3. Tally API key (Settings→API keys→Create) או עריכה משותפת בדפדפן — שלב C.
+4. `npx supabase login` (קליק דפדפן) — שלב D.
+5. עתידי (לא חוסם): הקמת WhatsApp Business Cloud API מול מטא ל-Phase 1.

@@ -516,6 +516,11 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 .axbtn{margin-top:var(--s3);align-self:flex-start}
 .mpanel-app .axbtn{align-self:center;margin-top:0}
 .mpanel-media video{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+/* Tally: ה-iframe נטען רק עם JS; בלי JS מוצג קישור ישיר לטופס */
+html.no-js iframe[data-tally-src]{display:none}
+html.js .tally-fallback{display:none}
+.tally-fallback{text-align:center;margin-top:var(--s2)}
+
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
 /* חץ "המשך לגלול" — מופיע בדיוק כשה-CTA מוסתר, שלא ילכו לאיבוד */
@@ -615,7 +620,7 @@ body.cta-hide .scroll-cue{opacity:1}
         <a href="#app" class="nav-link">האפליקציה</a>
         <a href="#community" class="nav-link">הקהילה</a>
       </div>
-      <a href="#check" class="btn btn-sm">בדיקת התאמה</a>
+      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn btn-sm js-tally">בדיקת התאמה</a>
     </div>
   </div>
 </nav>
@@ -628,7 +633,7 @@ body.cta-hide .scroll-cue{opacity:1}
     <div class="ph-media"></div>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
-  <a href="#check" class="btn btn-sm hero-topcta">בדיקת התאמה</a>
+  <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn btn-sm hero-topcta js-tally">בדיקת התאמה</a>
   <div class="wrap hero-center">
     <h1 class="hero-title">קומבאט אתלט</h1>
     <span class="eyebrow hero-eyebrow">תוכנית הליווי היחידה מסוגה בארץ שמשלבת</span>
@@ -876,7 +881,7 @@ body.cta-hide .scroll-cue{opacity:1}
     </div>
   </div>
 
-  <div class="wrap"><div class="comm-cta reveal"><a href="#check" class="btn">אני רוצה להצטרף למחזור הקרוב</a></div></div>
+  <div class="wrap"><div class="comm-cta reveal"><a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn js-tally">אני רוצה להצטרף למחזור הקרוב</a></div></div>
 </section>
 
 <!-- ===================== FIT ===================== -->
@@ -911,68 +916,11 @@ body.cta-hide .scroll-cue{opacity:1}
         <p class="muted">כמה שאלות קצרות, ואני חוזר אליך לבדוק יחד אם התהליך מתאים לך. בלי התחייבות.</p>
       </div>
 
-      <form id="quiz" novalidate>
-        <div class="qprogress" aria-hidden="true"><i id="qbar"></i></div>
-
-        <div class="qstep on" data-step="1">
-          <h3>מה המטרה העיקרית שלך?</h3>
-          <p class="qsub">בחר את מה שהכי מדבר אליך</p>
-          <div class="qopts" data-name="goal" data-auto>
-            <button type="button" class="qopt">כוח וכושר כללי</button>
-            <button type="button" class="qopt">אמנויות לחימה / אגרוף תאילנדי</button>
-            <button type="button" class="qopt">קאליסטניקס ושליטה בגוף</button>
-            <button type="button" class="qopt">ביטחון עצמי ומשמעת</button>
-          </div>
-        </div>
-
-        <div class="qstep" data-step="2">
-          <h3>מה רמת הניסיון שלך באימונים?</h3>
-          <p class="qsub">אין תשובה נכונה — רק שנדע מאיפה מתחילים</p>
-          <div class="qopts" data-name="level" data-auto>
-            <button type="button" class="qopt">מתחיל/ה לגמרי</button>
-            <button type="button" class="qopt">קצת רקע</button>
-            <button type="button" class="qopt">מתאמן/ת באופן קבוע</button>
-            <button type="button" class="qopt">מתקדם/ת</button>
-          </div>
-        </div>
-
-        <div class="qstep" data-step="3">
-          <h3>מה היית רוצה לשפר בתקופה הקרובה?</h3>
-          <p class="qsub">במשפט אחד — כדי שנבין איך לעזור</p>
-          <div class="qfield">
-            <textarea name="improve" rows="3" placeholder="למשל: להתחזק, להרגיש יותר בטוח, להיכנס לשגרה קבועה..."></textarea>
-          </div>
-          <div class="qnav">
-            <button type="button" class="qback">חזור</button>
-            <button type="button" class="btn qnext">המשך</button>
-          </div>
-        </div>
-
-        <div class="qstep" data-step="4">
-          <h3>לאן נחזור אליך?</h3>
-          <p class="qsub">רק הפרטים, ואני מתאם איתך בדיקת התאמה</p>
-          <div class="qfield">
-            <label for="qname">שם מלא</label>
-            <input id="qname" name="name" type="text" autocomplete="name" required placeholder="השם שלך">
-            <div class="q2">
-              <div><label for="qphone">טלפון</label>
-                <input id="qphone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="050-0000000"></div>
-              <div><label for="qage">גיל</label>
-                <input id="qage" name="age" type="number" inputmode="numeric" min="10" max="99" placeholder="גיל"></div>
-            </div>
-          </div>
-          <div class="qnav">
-            <button type="button" class="qback">חזור</button>
-            <button type="submit" class="btn">שלח בדיקת התאמה</button>
-          </div>
-        </div>
-      </form>
-
-      <div class="check-success" id="checkSuccess" role="status" aria-live="polite">
-        <div class="ic">✓</div>
-        <h3>הפרטים התקבלו</h3>
-        <p class="muted">נחזור אליך עם מידע על המחזור הקרוב, ונבדוק יחד אם התהליך מתאים לך.</p>
-      </div>
+      <!-- שאלון Tally (44pM9o) — מקור-אמת אחד. השאלון מזין ישירות את הצינור: ליד → אינטייק → תוכנית AI → CRM. -->
+      <iframe data-tally-src="https://tally.so/embed/44pM9o?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=landing"
+        loading="lazy" width="100%" height="560" frameborder="0" marginheight="0" marginwidth="0"
+        title="שאלון אפיון מהיר — קומבאט אתלט"></iframe>
+      <p class="tally-fallback"><a class="btn" href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener">מלא את השאלון ↗</a></p>
     </div>
   </div>
 </section>
@@ -1010,27 +958,15 @@ body.cta-hide .scroll-cue{opacity:1}
     nav.classList.toggle('scrolled',scrollY>innerHeight*0.6);
   },{passive:true});
 
-  /* ---------- QUIZ ---------- */
-  var quiz=document.getElementById('quiz'),steps=[].slice.call(quiz.querySelectorAll('.qstep')),
-      bar=document.getElementById('qbar'),success=document.getElementById('checkSuccess'),cur=0;
-  function show(i){cur=i;steps.forEach(function(s,j){s.classList.toggle('on',j===i)});bar.style.width=((i+1)/steps.length*100)+'%';}
-  quiz.querySelectorAll('.qopts[data-auto]').forEach(function(g){
-    g.querySelectorAll('.qopt').forEach(function(b){b.addEventListener('click',function(){
-      g.querySelectorAll('.qopt').forEach(function(x){x.classList.remove('sel')});
-      b.classList.add('sel'); g.dataset.value=b.textContent;
-      setTimeout(function(){show(Math.min(cur+1,steps.length-1))},180);
-    });});
-  });
-  quiz.querySelectorAll('.qnext').forEach(function(b){b.addEventListener('click',function(){show(Math.min(cur+1,steps.length-1))});});
-  quiz.querySelectorAll('.qback').forEach(function(b){b.addEventListener('click',function(){show(Math.max(cur-1,0))});});
-  quiz.addEventListener('submit',function(e){
-    e.preventDefault();
-    var name=quiz.name.value.trim(),phone=quiz.phone.value.trim();
-    if(!name){quiz.name.focus();return;} if(!phone){quiz.phone.focus();return;}
-    // TODO: כאן שולחים ל-CRM / Make / WhatsApp (fetch ל-Webhook) לפני הצגת ההצלחה.
-    // הנתונים הזמינים: goal, level, improve, name, phone, age.
-    quiz.style.display='none';document.querySelector('.qprogress').style.display='none';
-    success.classList.add('show');
+  /* ---------- TALLY (שאלון) ---------- */
+  // כפתורי .js-tally פותחים את השאלון בפופאפ; אם ספריית Tally לא נטענה — הקישור מנווט לטופס (fallback).
+  document.querySelectorAll('.js-tally').forEach(function(b){
+    b.addEventListener('click',function(e){
+      if(window.Tally){
+        e.preventDefault();
+        window.Tally.openPopup('44pM9o',{layout:'modal',width:420,hiddenFields:{source:'landing'}});
+      }
+    });
   });
 
   // ROBUST REVEAL: content must appear even if scroll-JS never runs (mobile in-app viewers / iOS quirks).
@@ -1271,5 +1207,7 @@ body.cta-hide .scroll-cue{opacity:1}
 </script>
 <!-- Vercel Speed Insights (LCP/CLS/INP) — פעיל רק כשמארחים ב-Vercel; defer, לא מזיק במקומות אחרים -->
 <script defer src="/_vercel/speed-insights/script.js"></script>
+<!-- Tally embed: מפעיל את ה-iframe (data-tally-src) ואת הפופאפים. אם חסום — הקישורים הישירים עובדים. -->
+<script async src="https://tally.so/widgets/embed.js"></script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({viewport:{width:390,height:844}})).newPage();
+const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,120)));
+await p.goto('http://localhost:8137',{waitUntil:'load'}); await p.waitForTimeout(2000);
+console.log('iframe tally:', await p.locator('#check iframe[data-tally-src]').count());
+console.log('js-tally buttons:', await p.locator('.js-tally').count());
+console.log('old quiz gone:', await p.locator('#quiz').count()===0);
+console.log('tally lib loaded:', await p.evaluate(()=>!!window.Tally));
+console.log('js errors:', errs.length?errs:'NONE');
+await b.close();
