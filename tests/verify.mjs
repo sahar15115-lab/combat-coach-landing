@@ -32,6 +32,10 @@ const browser = await chromium.launch();
   check('desktop: top CTA present, sticky gone', await page.evaluate(() =>
     !!document.querySelector('.hero-topcta') && !document.querySelector('.sticky-cta')));
   check('desktop: coach label above photo', (await page.textContent('.coach-label')).includes('סהר שמש'));
+  check('desktop: inactive app stages ignore clicks', await page.evaluate(() =>
+    [...document.querySelectorAll('.appx-stage .ax:not(.on)')].every(a => getComputedStyle(a).pointerEvents === 'none')));
+  check('desktop: scroll-cue is gold tag', await page.evaluate(() =>
+    getComputedStyle(document.querySelector('.scroll-cue')).borderRadius === '999px'));
   check('desktop: no console errors', errors.length === 0);
   await page.screenshot({ path: 'tests/shots/desktop-hero.png' });
   await ctx.close();

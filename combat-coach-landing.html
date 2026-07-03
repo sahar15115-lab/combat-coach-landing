@@ -244,8 +244,9 @@ html.js .reveal.in{opacity:1;transform:none}
 .appx-pin{position:relative;height:100svh;overflow:hidden}
 .appx-stage{position:absolute;top:0;bottom:0;left:var(--pad);right:auto;width:min(34%,380px)} /* צר יותר — הטלפון הוגדל ל-330px */
 .appx-stage .ax{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
-  opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s}
-.appx-stage .ax.on{opacity:1}
+  opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;
+  pointer-events:none} /* שלב שקוף לא בולע לחיצות — רק הפעיל */
+.appx-stage .ax.on{opacity:1;pointer-events:auto}
 .appx-stage .ax:nth-child(1).on{transform:translate(0,0)}
 .appx-stage .ax:nth-child(2).on{transform:translate(24px,-16px)}
 .appx-stage .ax:nth-child(3).on{transform:translate(-18px,12px)}
@@ -518,11 +519,14 @@ html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{displ
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
 /* חץ "המשך לגלול" — מופיע בדיוק כשה-CTA מוסתר, שלא ילכו לאיבוד */
-.scroll-cue{position:fixed;bottom:.8rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
-  color:rgba(255,255,255,.55);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:.05rem;pointer-events:none;opacity:0;transition:opacity .4s}
-.scroll-cue span{font-size:1rem;animation:cuebob 1.8s ease-in-out infinite}
-@keyframes cuebob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.scroll-cue{position:fixed;bottom:1rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
+  display:inline-flex;align-items:center;gap:.4rem;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:linear-gradient(160deg,rgba(201,168,76,.16),rgba(201,168,76,.06));
+  border:1px solid rgba(201,168,76,.5);border-radius:999px;padding:.4rem .95rem;
+  color:var(--brand-2);font-size:.78rem;font-weight:800;letter-spacing:.05em;
+  box-shadow:0 8px 24px -12px rgba(201,168,76,.5),var(--surface-hi);backdrop-filter:blur(4px)}
+.scroll-cue span{animation:cuebob 1.6s ease-in-out infinite}
+@keyframes cuebob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 body.cta-hide .scroll-cue{opacity:1}
 /* טלפון גדול יותר בסצנת האפליקציה */
 .appx-desktop .phone{width:330px}
@@ -538,8 +542,8 @@ body.cta-hide .scroll-cue{opacity:1}
   /* "מוחלף במקום" גם במובייל — כמו בדסקטופ. מופעל רק ע"י JS אחרי שה-pin נרשם בהצלחה (.pin-active);
      בלי JS / אם ה-pin נכשל, הפאנלים נשארים ערוכים בזרימה רגילה למעלה — fallback בטוח, תמיד גלוי. */
   .msnap.pin-active{position:relative;height:100svh;overflow:hidden}
-  .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .6s ease}
-  .msnap.pin-active .mpanel.on{opacity:1}
+  .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+  .msnap.pin-active .mpanel.on{opacity:1;pointer-events:auto}
   /* כל החלפה = כניסת טקסט מחודשת (דינמי, לא "תקוע") */
   .msnap.pin-active .mpanel .mpanel-copy,.msnap.pin-active .mpanel .mpanel-appcopy,.msnap.pin-active .mpanel .mpanel-commcopy{
     opacity:0;transform:translateY(22px);transition:opacity .5s ease .12s,transform .55s cubic-bezier(.2,.7,.2,1) .12s}
@@ -650,7 +654,7 @@ body.cta-hide .scroll-cue{opacity:1}
   <div class="trainx-desktop">
     <div class="trainx-pin" id="trainxPin">
       <div class="trainx-media">
-        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg" style="object-position:58% 50%"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="1"><video muted loop playsinline preload="metadata" poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="2"><video muted loop playsinline preload="metadata" poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
         <div class="tv" data-i="3"><video muted loop playsinline preload="metadata" poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
@@ -675,7 +679,7 @@ body.cta-hide .scroll-cue{opacity:1}
   <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
   <div class="trainx-mobile msnap">
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg" style="object-position:58% 50%"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
