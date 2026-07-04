@@ -48,7 +48,7 @@ const browser = await chromium.launch();
   await page.goto(URL, { waitUntil: 'load' }); await page.waitForTimeout(1800);
   check('mobile: 3 pinned scenes', await page.evaluate(() => document.querySelectorAll('.msnap.pin-active').length === 3));
   check('mobile: hero title below nav area', await page.evaluate(() => document.querySelector('.hero-title').getBoundingClientRect().top > 80));
-  check('mobile: 4 journey buttons', await page.locator('.appx-mobile .axbtn').count() === 4);
+  check('mobile: 4 journey buttons', await page.locator('.appx-mobile .phone-cta').count() === 4);
   check('mobile: scroll-cue exists', await page.locator('.scroll-cue').count() === 1);
   await page.screenshot({ path: 'tests/shots/mobile-hero.png' });
   await ctx.close();

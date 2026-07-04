@@ -44,6 +44,13 @@
 - **combat-coach-design**: ווידג'ט סלוט×גיל בדשבורד (master-detail, סטטוס=צבע+אייקון+טקסט). נכנס ב-D.
 - **Playwright suites** (verify/flow בריפו הנחיתה): אחרי A.
 
+## סבב UX (2026-07-04) — כפתור-בתוך-אפליקציה + CTA כפול + טופס קצר
+
+- **Q1 (כפתור כפול):** אושר — הוסתר "המשך" הצף בסצנת האפליקציה (`body.app-scene .scroll-cue{display:none}`, ScrollTrigger ל-#app). באימון/קהילה הוא נשאר (אין שם כפתור פנימי).
+- **כפתור בתוך הטלפון (Update A):** 4 כפתורי המסע במובייל עברו מ-`.axbtn` מתחת לטלפון ל-`.phone-cta` *בתוך* `.phone-screen` (אזור אגודל, זהב מטאלי, מסלול AI כחול לפאנל 4). scrim על `.mpanel-app .phone-screen::after` מכסה את ה-UI המצויר. **לקח:** scrim כ-`::before` של הכפתור נצבע מעל הרקע שלו (stacking) — הועבר ל-::after של המסך. הטלפון הוגדל (מובייל 62→68svh, דסקטופ 330→355px). אומת ויזואלית (screenshot).
+- **CTA כפול (Update B):** design-scanner אישר — 2 מסלולים שונים = לא dilution (266% חל רק על 2 CTA לאותה מטרה). ראשי **"בניית תוכנית חינם"** (זהב מלא) → Tally 44pM9o; משני **"השארת פרטים"** (ghost) → **טופס קצר חדש `VLyPrl`** (שם/טלפון/גיל/סלוטים/הסכמת הורה, 6 עמודים, PUBLISHED, מייל התראה מופעל). js-tally קורא `data-tally-form`. nav+comm-cta עודכנו.
+- אומת: 21/21 verify + anti-skip בשני הכיוונים + screenshots (כפתור-בטלפון נראה native, היררכיית CTA ברורה). 0 שגיאות.
+
 ## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
 1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
 2. הדבקת webhook URL ב-Tally Integrations — שלב B.

@@ -186,7 +186,12 @@ html.js .reveal.in{opacity:1;transform:none}
 /* המשפט הלבן = כותרת-משנה מתחת לשם המותג */
 .hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:var(--s2)}
 /* כפתור בדיקת התאמה — למעלה, מופרד לגמרי מכפתור הגילוי */
-.hero-topcta{position:absolute;top:calc(1rem + env(safe-area-inset-top,0px));inset-inline-end:1rem;z-index:3}
+/* פס עליון — 2 מסלולים: ראשי (זהב מלא, בולט) + משני (ghost, מודגש פחות אבל מזמין) */
+.hero-topcta{position:absolute;top:calc(1rem + env(safe-area-inset-top,0px));inset-inline-end:1rem;z-index:3;
+  display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 2rem)}
+.cta-secondary{opacity:.92;font-weight:700}
+.cta-secondary:hover{opacity:1;border-color:var(--brand);color:var(--brand)}
+@media(max-width:420px){.cta-primary,.cta-secondary{font-size:.82rem;padding:.5rem 1rem}}
 /* תמונת המאמן עם כיתוב מעליה */
 .hero-photowrap{display:flex;flex-direction:column;gap:.55rem;align-items:center;width:min(42%,360px);margin:0}
 .coach-label{color:var(--brand-2);font-weight:800;font-size:.95rem;letter-spacing:.04em}
@@ -538,8 +543,24 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
 .scroll-cue:active{transform:translateX(-50%) scale(.95)}
 @media(prefers-reduced-motion:reduce){.scroll-cue span{animation:none}}
 /* טלפון גדול יותר בסצנת האפליקציה */
-.appx-desktop .phone{width:330px}
-.mpanel-app .phone{height:min(62svh,540px)!important}
+.appx-desktop .phone{width:355px}
+.mpanel-app .phone{height:min(68svh,580px)!important}
+/* כפתור "בתוך" האפליקציה — יושב על מסך הטלפון (אזור האגודל), נראה כמו כפתור-אפליקציה טבעי.
+   scrim עדין מאחוריו מבטיח שהוא קריא מעל כל מסך ולא מתנגש עם כפתור מצויר בסקרינשוט. */
+.phone-cta{position:absolute;inset-inline:6%;bottom:6.5%;z-index:6;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;min-height:46px;
+  padding:.78rem 1rem;border:0;border-radius:13px;cursor:pointer;font:800 .98rem 'Heebo';color:#0A0A0A;
+  background:linear-gradient(160deg,#F3E1A6,#C9A84C 55%,#B58E36);
+  box-shadow:0 8px 24px -6px rgba(201,168,76,.8),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .12s,filter .2s}
+/* scrim על תחתית מסך הטלפון (לא על הכפתור) — מכסה את ה-UI המצויר בסקרינשוט, הכפתור נשאר זהב וברור מעליו */
+.mpanel-app .phone-screen::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;z-index:3;pointer-events:none;
+  background:linear-gradient(to top,rgba(6,6,6,.97) 30%,rgba(6,6,6,.55) 62%,transparent)}
+.phone-cta:hover{filter:brightness(1.05)} .phone-cta:active{transform:scale(.97)}
+.phone-cta.accent{background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;
+  box-shadow:0 6px 20px -6px rgba(90,169,230,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+/* בסצנת האפליקציה יש כבר כפתור פנימי — מסתירים את ה"המשך" הצף שלא יהיה כפול */
+body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
 
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
@@ -624,7 +645,7 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
         <a href="#app" class="nav-link">האפליקציה</a>
         <a href="#community" class="nav-link">הקהילה</a>
       </div>
-      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn btn-sm js-tally">בדיקת התאמה</a>
+      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally">בניית תוכנית חינם</a>
     </div>
   </div>
 </nav>
@@ -637,7 +658,10 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
     <div class="ph-media"></div>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
-  <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn btn-sm hero-topcta js-tally">בדיקת התאמה</a>
+  <div class="hero-topcta">
+    <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">בניית תוכנית חינם</a>
+    <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">השארת פרטים</a>
+  </div>
   <div class="wrap hero-center">
     <h1 class="hero-title">קומבאט אתלט</h1>
     <span class="eyebrow hero-eyebrow">תוכנית הליווי היחידה מסוגה בארץ שמשלבת</span>
@@ -758,29 +782,29 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
       <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media on"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
+        <button type="button" class="phone-cta" data-mnext>איך זה עובד?</button>
       </div></div>
-      <button type="button" class="btn btn-sm axbtn" data-mnext>איך זה עובד?</button>
     </div>
     <div class="mpanel mpanel-app">
       <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">02</span></div><h3>שאלון קצר — והאפליקציה מבינה את הרמה, המטרות והציוד שלך</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media on"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
+        <button type="button" class="phone-cta" data-mnext>בנה לי תוכנית</button>
       </div></div>
-      <button type="button" class="btn btn-sm axbtn" data-mnext>בנה לי תוכנית</button>
     </div>
     <div class="mpanel mpanel-app">
       <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">03</span></div><h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media on"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
+        <button type="button" class="phone-cta" data-mnext>גלה לי עוד</button>
       </div></div>
-      <button type="button" class="btn btn-sm axbtn" data-mnext>גלה לי עוד</button>
     </div>
     <div class="mpanel mpanel-app">
       <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media accent on"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
+        <button type="button" class="phone-cta accent" data-goto="#community">להמשך המסע ↓</button>
       </div></div>
-      <button type="button" class="btn btn-sm axbtn" data-goto="#community">להמשך המסע ↓</button>
     </div>
   </div>
 </section>
@@ -885,7 +909,7 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
     </div>
   </div>
 
-  <div class="wrap"><div class="comm-cta reveal"><a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" class="btn js-tally">אני רוצה להצטרף למחזור הקרוב</a></div></div>
+  <div class="wrap"><div class="comm-cta reveal"><a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn js-tally">אני רוצה להצטרף למחזור הקרוב</a></div></div>
 </section>
 
 <!-- ===================== FIT ===================== -->
@@ -968,7 +992,7 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
     b.addEventListener('click',function(e){
       if(window.Tally){
         e.preventDefault();
-        window.Tally.openPopup('44pM9o',{layout:'modal',width:420,hiddenFields:{source:'landing'}});
+        window.Tally.openPopup(b.dataset.tallyForm||'44pM9o',{layout:'modal',width:420,hiddenFields:{source:'landing'}});
       }
     });
   });
@@ -1208,6 +1232,9 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
     ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',
       toggleClass:{targets:'body',className:'cta-hide'}});
   });
+  // סצנת האפליקציה — סימון ייעודי כדי להסתיר את כפתור "המשך" הצף (יש כבר כפתור בתוך הטלפון)
+  ScrollTrigger.create({trigger:'#app',start:'top 55%',end:'bottom 45%',
+    toggleClass:{targets:'body',className:'app-scene'}});
 
   document.querySelectorAll('.stepper').forEach(function(s){
     var v=s.querySelector('.reps');
