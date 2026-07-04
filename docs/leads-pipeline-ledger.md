@@ -28,10 +28,15 @@
 
 | שלב | מה | סטטוס |
 |---|---|---|
-| **A** | דף הנחיתה: CTA→Tally popup עם `source=landing`; #check מוחלף ב-embed של Tally; הסרת קוד השאלון הפנימי; verify+flow suites | ☐ |
-| **B** | Make: סצנה חדשה (slot 2/2) — webhook trigger → Gmail לסהר "ליד חדש". סהר: OAuth Gmail + הדבקת URL ב-Tally Integrations | ☐ |
-| **C** | Tally: שדה "אילו סלוטים" + לוגיקת גיל + הסכמת הורה + hidden `source`. דרך: API key של סהר (Settings→API) או co-drive בדפדפן | ☐ |
-| **D** | Backend: parsing סלוטים ב-webhook + עמודה/JSONB באינטייק + מיגרציה · Admin: תצוגת סלוט×גיל ב-/analytics · **security-auditor לפני deploy** · e2e ירוק לפני+אחרי | ☐ |
+| **A** | דף הנחיתה → Tally: embed ב-#check + 3 CTA popup עם `source=landing`; השאלון הפנימי הוסר; fallback no-JS | ✅ deployed. 21/21 verify + tally-check (iframe/3 buttons/lib/no-errors) |
+| **B** | התראה על ליד: **התראות מייל מובנות של Tally** → sahar15115@gmail.com (אושר מפורשות), נושא "ליד חדש 🥊". חוסך את סצנת Make האחרונה. תשובה ללקוח = מנגנון scheduled_messages הקיים (intake_thanks) | ✅ מאומת ב-API. סהר לבדוק: מילוי-בדיקה → מייל מגיע |
+| **C** | Tally (דרך API key): נוסף עמוד "אילו ימים/שעות" (5 סלוטים) + checkbox הסכמת הורה + הערת בי"ס. גיל-guardrail **רך** (תוויות "מתאים ל-18+" + הערה), לא conditional-logic קשיח (schema מתועד חלקית, סיכון לטופס חי). גיבוי מלא לפני: `tally-backups/form-44pM9o-*` | ✅ 105 בלוקים, PUBLISHED, טופס ציבורי 200 |
+| **D** | אגרגציה סלוט×גיל: **`scripts/slot-report.mjs`** קורא ישירות מ-Tally API (בלי לגעת בצינור החי!). מפתח מ-env. | ✅ עובד (ריק כי דאטת-בדיקה ישנה) |
+
+**החלטות מפתח:**
+- Step D בוצע בדרך **בטוחה** (דוח מ-Tally) במקום מיגרציית Supabase + שינוי webhook — כי זה צינור חי עם e2e. הצינור **לא נגעתי בו**: הוספתי רק שדות לטופס (webhook parse-by-label מתעלם משדות לא-מוכרים). מיגרציה/ווידג'ט-דשבורד = אופציונלי, דורש `supabase login` של סהר.
+- מפתח Tally: שימוש ב-env בלבד, לא בקוד. `tally-backups/` ב-gitignore. **מומלץ שסהר יחדש את המפתח בסיום.**
+- גיל-filter קשיח ב-Tally = 30 שניות ב-UI של Tally אם ירצה, או ניסיון API זהיר בהמשך.
 
 ## שיבוץ סקילים
 - **coach-humanizer**: ניסוח מייל ההתראה לסהר + (בהמשך) תבניות WhatsApp. נכנס ב-B.
