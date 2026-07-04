@@ -59,6 +59,15 @@
 - **B4 — "המשך" לא ממורכז:** באג RTL — `inset-inline-start:50%`+translateX הזיז הצידה. תוקן ל-`left:50%`. מרכז X=195=מרכז מסך.
 - אומת: 21/21 verify + screenshots. **לקח:** בסצנות pinned מוערמות, אסור blanket pointer-events — רק `.on`.
 
+## סבב עיצוב-נאב + קצב (2026-07-04 לילה) — התייעצות design-scanner + combat-coach-design
+
+- **בעיה:** נאב קבוע (2 CTA) דרס את ראש מוקאפ הטלפון בסצנת האפליקציה, בעיקר במסכים נמוכים / in-app browsers (svh לא יציב). המשתמש צילם ב-WhatsApp Business browser.
+- **design-scanner:** ① נאב דק תמידי מול ② נאב מסתתר-בגלילה. **combat-coach-design פסק ①** — לדף נחיתה (מטרה=המרה) ה-CTA הוא המלך, חייב להישאר; ② מתאים לאפליקציה/מגזין.
+- **יושם ①:** נאב קומפקטי (padding-block .85→.45rem, לוגו 1.22→1.08rem, nav CTAs padding מוקטן/גובה 38px). טלפון 68→**58svh** (min 510). `.mpanel-app` padding-top=`calc(3.5rem + env(safe-area-inset-top))` — הטלפון ממורכז *מתחת* לנאב. אומת ב-viewport נמוך (390×700): worst overlap = **-22px (רווח, לא כיסוי)** בכל 4 הפאנלים.
+- **קצב הואט שוב:** app endPct 460→560 + dwell 520→700; community endPct 760→820 + dwell 720→850. anti-skip עדיין תקין בשני הכיוונים.
+- אומת: 21/21 verify + screenshot (טלפון נקי מתחת לנאב). **לקח:** תוכן מסך-מלא מתחת ל-nav קבוע — חובה padding-top=nav+safe-area ו-svh, לא vh.
+- ⚠️ תזכורת לסהר: לבדוק ב-Safari/Chrome אמיתי, לא ב-WhatsApp browser (svh מעוות שם).
+
 ## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
 1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
 2. הדבקת webhook URL ב-Tally Integrations — שלב B.

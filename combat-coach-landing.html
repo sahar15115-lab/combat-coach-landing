@@ -138,8 +138,11 @@ body.ai-mode .nav .btn,body.ai-mode .sticky-cta .btn{
 /* הפס העליון נעלם בפתיחה (מסך ראשון נקי) ומופיע בעדינות רק אחרי גלילה. בלי JS — תמיד גלוי. */
 html.js .nav{transform:translateY(-110%);opacity:0}
 html.js .nav.scrolled{transform:none;opacity:1}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:.85rem}
-.logo{font-weight:900;font-size:1.22rem;letter-spacing:-.02em;color:var(--fg);text-decoration:none}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:.45rem;gap:.5rem}
+.logo{font-weight:900;font-size:1.08rem;letter-spacing:-.02em;color:var(--fg);text-decoration:none;flex:0 0 auto}
+/* נאב קומפקטי — 2 ה-CTA נשארים אבל דקים, שלא יאכלו גובה מהתוכן */
+.nav .cta-primary,.nav .cta-secondary{padding:.42rem .85rem;font-size:.8rem;min-height:38px}
+.nav .cta-secondary{padding-inline:.7rem}
 .logo span{color:var(--brand)}
 .nav-cta-wrap{display:flex;align-items:center;gap:var(--s3)}
 .nav-links{display:flex;gap:1.3rem}
@@ -544,7 +547,7 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
 @media(prefers-reduced-motion:reduce){.scroll-cue span{animation:none}}
 /* טלפון גדול יותר בסצנת האפליקציה */
 .appx-desktop .phone{width:355px}
-.mpanel-app .phone{height:min(68svh,580px)!important}
+.mpanel-app .phone{height:min(58svh,510px)!important}
 /* כפתור "בתוך" האפליקציה — יושב על מסך הטלפון (אזור האגודל), נראה כמו כפתור-אפליקציה טבעי.
    scrim עדין מאחוריו מבטיח שהוא קריא מעל כל מסך ולא מתנגש עם כפתור מצויר בסקרינשוט. */
 .phone-cta{position:absolute;inset-inline:6%;bottom:6.5%;z-index:6;
@@ -606,7 +609,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   .mpanel-copy h3{color:#fff;margin:.35rem 0 .5rem;font-size:2.2rem;text-shadow:0 2px 22px rgba(0,0,0,.55)}
   .mpanel-copy p{color:rgba(255,255,255,.92);font-size:1.05rem;max-width:30ch;text-shadow:0 1px 12px rgba(0,0,0,.6)}
   /* app phone panel */
-  .mpanel-app{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.3rem;padding:9svh 1.3rem 5svh;text-align:center}
+  .mpanel-app{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+    padding:calc(3.5rem + env(safe-area-inset-top,0px)) 1.3rem 4svh;text-align:center}
   .mpanel-appcopy .sx-n{color:var(--brand);font-weight:900;font-size:1rem;letter-spacing:.1em}
   .mpanel-appcopy.accent .sx-n{color:var(--accent)}
   .mpanel-appcopy h3{font-size:1.4rem;max-width:20ch;margin:.3rem auto 0;line-height:1.25}
@@ -1202,18 +1206,18 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       return rot;
     }
     var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
-    pinMobileScene('.appx-mobile',460,function(i,local,panel,raw,N){
+    pinMobileScene('.appx-mobile',560,function(i,local,panel,raw,N){
       playOnly(appMobScreens,i);
       if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
       if(!mPhones.length) return;
       var rot=spinRot(raw,N) + (local-0.5)*14; // + נטייה קלה בזמן קריאה לתחושת תלת-ממד
       gsap.to(mPhones,{rotationY:rot,duration:.35,ease:'power2.out',overwrite:'auto',
         transformPerspective:900,transformOrigin:'50% 50%'});
-    });
+    }, 700); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
 
-    pinMobileScene('.commx-mobile',760,function(i){
+    pinMobileScene('.commx-mobile',820,function(i){
       document.body.classList.toggle('ai-mode', i>=5);
-    }, 720); // dwell ארוך יותר — 8 שקופיות לא ירוצו מהר
+    }, 850); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
 
     // כפתור "המשך" — מקדם מסך אחד בסצנה הפעילה (הגלילה ממשיכה לעבוד לצידו).
     var cue=document.getElementById('scrollCue');
