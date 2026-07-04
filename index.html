@@ -523,16 +523,20 @@ html.js .tally-fallback{display:none}
 
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
-/* חץ "המשך לגלול" — מופיע בדיוק כשה-CTA מוסתר, שלא ילכו לאיבוד */
-.scroll-cue{position:fixed;bottom:1rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
-  display:inline-flex;align-items:center;gap:.4rem;pointer-events:none;opacity:0;transition:opacity .4s;
-  background:linear-gradient(160deg,rgba(201,168,76,.16),rgba(201,168,76,.06));
-  border:1px solid rgba(201,168,76,.5);border-radius:999px;padding:.4rem .95rem;
-  color:var(--brand-2);font-size:.78rem;font-weight:800;letter-spacing:.05em;
-  box-shadow:0 8px 24px -12px rgba(201,168,76,.5),var(--surface-hi);backdrop-filter:blur(4px)}
+/* כפתור "המשך" — מופיע כשה-CTA מוסתר (בתוך הסצנות). לחיצה=קידום מסך אחד; הגלילה ממשיכה לעבוד לצידו. */
+.scroll-cue{position:fixed;bottom:1.1rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
+  display:inline-flex;align-items:center;gap:.45rem;pointer-events:none;opacity:0;
+  transition:opacity .4s,background .2s,border-color .2s,transform .12s;cursor:pointer;font-family:inherit;
+  background:linear-gradient(160deg,rgba(201,168,76,.2),rgba(201,168,76,.07));
+  border:1px solid rgba(201,168,76,.55);border-radius:999px;padding:.55rem 1.25rem;
+  color:var(--brand-2);font-size:.86rem;font-weight:800;letter-spacing:.03em;
+  box-shadow:0 10px 28px -12px rgba(201,168,76,.6),var(--surface-hi);backdrop-filter:blur(5px)}
 .scroll-cue span{animation:cuebob 1.6s ease-in-out infinite}
 @keyframes cuebob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-body.cta-hide .scroll-cue{opacity:1}
+body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
+.scroll-cue:hover{background:linear-gradient(160deg,rgba(201,168,76,.32),rgba(201,168,76,.13));border-color:var(--brand)}
+.scroll-cue:active{transform:translateX(-50%) scale(.95)}
+@media(prefers-reduced-motion:reduce){.scroll-cue span{animation:none}}
 /* טלפון גדול יותר בסצנת האפליקציה */
 .appx-desktop .phone{width:330px}
 .mpanel-app .phone{height:min(62svh,540px)!important}
@@ -625,7 +629,7 @@ body.cta-hide .scroll-cue{opacity:1}
   </div>
 </nav>
 
-<div class="scroll-cue" aria-hidden="true">גלול להמשך<span>↓</span></div>
+<button type="button" class="scroll-cue" id="scrollCue" aria-label="המשך למסך הבא">המשך<span>↓</span></button>
 
 <!-- ===================== SCENE 1 — HERO ===================== -->
 <header class="hero">
@@ -1106,30 +1110,37 @@ body.cta-hide .scroll-cue{opacity:1}
   } else {
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
+    var activeMScene=null; // הסצנה הפעילה כרגע — עבור כפתור "המשך"
     function pinMobileScene(msnapSel, endPct, onProgress){
       var wrap=document.querySelector(msnapSel);
       if(!wrap) return null;
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
-      var cur=-1;
-      function setPanel(i){
-        if(i===cur)return; cur=i;
-        panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
+      // ---- anti-skip: מסך מתחלף מקסימום פעם ב-MIN מ"ש, ותמיד צעד-אחד (בשני הכיוונים) ----
+      var disp=-1, target=0, lastChange=-1e9, raf=null, MIN=520;
+      var ref={N:N, st:null, disp:0};
+      function apply(i){ if(i===disp)return; disp=i; ref.disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
+      function stepLoop(now){
+        raf=null;
+        if(disp!==target && now-lastChange>=MIN){ apply(disp + (target>disp?1:-1)); lastChange=now; }
+        if(disp!==target) raf=requestAnimationFrame(stepLoop);
       }
+      function want(t){ target=t; if(raf==null) raf=requestAnimationFrame(stepLoop); }
       try{
         wrap.classList.add('pin-active');
-        setPanel(0);
+        apply(0); lastChange=performance.now();
         var st=ScrollTrigger.create({
           trigger:msnapSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
           onUpdate:function(self){
-            var raw=self.progress*N, i=Math.min(N-1,Math.floor(raw));
-            setPanel(i);
-            if(onProgress) onProgress(i, Math.min(1,raw-i), panels[i], raw, N);
+            var raw=self.progress*N, t=Math.min(N-1,Math.floor(raw));
+            want(t); activeMScene=ref;
+            if(onProgress) onProgress(disp, Math.min(1,raw-Math.floor(raw)), panels[disp], raw, N);
           },
           /* התיישבות רכה אחרי עזיבת האצבע — תמיד על מרכז מסך (הטלפון לעולם לא נשאר "הפוך") */
           snap:{snapTo:function(v){var i2=Math.max(0,Math.min(N-1,Math.round(v*N-0.5)));return (i2+0.5)/N;},
                 duration:{min:.2,max:.5},ease:'power2.out',delay:.08}
         });
+        ref.st=st;
         /* כפתורי "המשך" בתוך פאנלים — מקדמים למסך הבא בגלילה חלקה */
         panels.forEach(function(p,idx){
           p.querySelectorAll('[data-mnext]').forEach(function(b){b.addEventListener('click',function(){
@@ -1173,6 +1184,16 @@ body.cta-hide .scroll-cue{opacity:1}
 
     pinMobileScene('.commx-mobile',560,function(i){
       document.body.classList.toggle('ai-mode', i>=5);
+    });
+
+    // כפתור "המשך" — מקדם מסך אחד בסצנה הפעילה (הגלילה ממשיכה לעבוד לצידו).
+    var cue=document.getElementById('scrollCue');
+    if(cue) cue.addEventListener('click',function(){
+      var s=activeMScene;
+      if(!s||!s.st){ scrollToY(scrollY+innerHeight*0.92); return; }
+      var next=s.disp+1;
+      if(next<s.N){ scrollToY(s.st.start+((next+0.5)/s.N)*(s.st.end-s.st.start)); }
+      else { scrollToY(s.st.end+innerHeight*0.6); } // מסך אחרון → יציאה מהסצנה
     });
   }
 
