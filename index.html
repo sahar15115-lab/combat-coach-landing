@@ -529,7 +529,7 @@ html.js .tally-fallback{display:none}
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
 /* כפתור "המשך" — מופיע כשה-CTA מוסתר (בתוך הסצנות). לחיצה=קידום מסך אחד; הגלילה ממשיכה לעבוד לצידו. */
-.scroll-cue{position:fixed;bottom:1.1rem;inset-inline-start:50%;transform:translateX(-50%);z-index:44;
+.scroll-cue{position:fixed;bottom:1.1rem;left:50%;transform:translateX(-50%);z-index:44;
   display:inline-flex;align-items:center;gap:.45rem;pointer-events:none;opacity:0;
   transition:opacity .4s,background .2s,border-color .2s,transform .12s;cursor:pointer;font-family:inherit;
   background:linear-gradient(160deg,rgba(201,168,76,.2),rgba(201,168,76,.07));
@@ -556,6 +556,10 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
 /* scrim על תחתית מסך הטלפון (לא על הכפתור) — מכסה את ה-UI המצויר בסקרינשוט, הכפתור נשאר זהב וברור מעליו */
 .mpanel-app .phone-screen::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;z-index:3;pointer-events:none;
   background:linear-gradient(to top,rgba(6,6,6,.97) 30%,rgba(6,6,6,.55) 62%,transparent)}
+/* המדיה של האפליקציה דקורטיבית — שלא תתפוס את הלחיצה במקום הכפתור */
+.mpanel-app .ps.media,.mpanel-app .ps.media *{pointer-events:none}
+/* בגלילה הפאנלים מוערמים (inset:0) — רק כפתור הפאנל הפעיל לחיץ, אחרת הפאנל האחרון תופס הכל */
+.msnap.pin-active .mpanel-app.on .phone-cta{pointer-events:auto}
 .phone-cta:hover{filter:brightness(1.05)} .phone-cta:active{transform:scale(.97)}
 .phone-cta.accent{background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;
   box-shadow:0 6px 20px -6px rgba(90,169,230,.7),inset 0 1px 0 rgba(255,255,255,.35)}
@@ -645,7 +649,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         <a href="#app" class="nav-link">האפליקציה</a>
         <a href="#community" class="nav-link">הקהילה</a>
       </div>
-      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally">בניית תוכנית חינם</a>
+      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">בניית תוכנית חינם</a>
+      <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">השארת פרטים</a>
     </div>
   </div>
 </nav>
@@ -1135,13 +1140,13 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
     var activeMScene=null; // הסצנה הפעילה כרגע — עבור כפתור "המשך"
-    function pinMobileScene(msnapSel, endPct, onProgress){
+    function pinMobileScene(msnapSel, endPct, onProgress, minDwell){
       var wrap=document.querySelector(msnapSel);
       if(!wrap) return null;
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
       // ---- anti-skip: מסך מתחלף מקסימום פעם ב-MIN מ"ש, ותמיד צעד-אחד (בשני הכיוונים) ----
-      var disp=-1, target=0, lastChange=-1e9, raf=null, MIN=520;
+      var disp=-1, target=0, lastChange=-1e9, raf=null, MIN=minDwell||520;
       var ref={N:N, st:null, disp:0};
       function apply(i){ if(i===disp)return; disp=i; ref.disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
       function stepLoop(now){
@@ -1206,9 +1211,9 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         transformPerspective:900,transformOrigin:'50% 50%'});
     });
 
-    pinMobileScene('.commx-mobile',560,function(i){
+    pinMobileScene('.commx-mobile',760,function(i){
       document.body.classList.toggle('ai-mode', i>=5);
-    });
+    }, 720); // dwell ארוך יותר — 8 שקופיות לא ירוצו מהר
 
     // כפתור "המשך" — מקדם מסך אחד בסצנה הפעילה (הגלילה ממשיכה לעבוד לצידו).
     var cue=document.getElementById('scrollCue');

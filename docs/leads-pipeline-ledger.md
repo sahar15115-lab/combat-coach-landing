@@ -51,6 +51,14 @@
 - **CTA כפול (Update B):** design-scanner אישר — 2 מסלולים שונים = לא dilution (266% חל רק על 2 CTA לאותה מטרה). ראשי **"בניית תוכנית חינם"** (זהב מלא) → Tally 44pM9o; משני **"השארת פרטים"** (ghost) → **טופס קצר חדש `VLyPrl`** (שם/טלפון/גיל/סלוטים/הסכמת הורה, 6 עמודים, PUBLISHED, מייל התראה מופעל). js-tally קורא `data-tally-form`. nav+comm-cta עודכנו.
 - אומת: 21/21 verify + anti-skip בשני הכיוונים + screenshots (כפתור-בטלפון נראה native, היררכיית CTA ברורה). 0 שגיאות.
 
+## סבב תיקוני-באגים (2026-07-04) — 4 באגים, שורש מאובחן לכל אחד
+
+- **B1 — כפתורי טלפון לא מקדמו:** שורש כפול — (א) `.psfull` תפס לחיצות (media→pointer-events:none), (ב) **הפאנלים מוערמים inset:0 בגלילה ו-blanket `.phone-cta{pointer-events:auto}` הפעיל את כל 4 הכפתורים — האחרון (panel 4) תפס הכל.** תיקון: `.msnap.pin-active .mpanel-app.on .phone-cta{pointer-events:auto}` (רק הפעיל). אומת: 3/3 כפתורים מקדמים 0→1→2→3.
+- **B2 — קהילה מהירה:** `pinMobileScene` קיבל param רביעי `minDwell`; קהילה: endPct 560→760 + dwell 720ms. אורך גלילה 5.6→7.6 מסך.
+- **B3 — כפתורים נעלמים בגלילה:** נוסף CTA משני (`השארת פרטים`, ghost) גם ל-nav → שני המסלולים לכל אורך הדף. אומת: nav overflow=0 (לא צפוף).
+- **B4 — "המשך" לא ממורכז:** באג RTL — `inset-inline-start:50%`+translateX הזיז הצידה. תוקן ל-`left:50%`. מרכז X=195=מרכז מסך.
+- אומת: 21/21 verify + screenshots. **לקח:** בסצנות pinned מוערמות, אסור blanket pointer-events — רק `.on`.
+
 ## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
 1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
 2. הדבקת webhook URL ב-Tally Integrations — שלב B.
