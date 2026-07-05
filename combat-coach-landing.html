@@ -1143,43 +1143,59 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   } else {
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
-    var activeMScene=null; // הסצנה הפעילה כרגע — עבור כפתור "המשך"
-    // ===== מובייל: קרוסלת-כפתור. אין "חטיפת-גלילה" בכלל — השקופיות מתחלפות אך ורק בלחיצה
-    //       על כפתור ("המשך" הצף / הכפתור בתוך הטלפון). כל סצנה = מסך אחד (100svh, אותו CSS
-    //       של .pin-active), רק השקופית הפעילה גלויה. גלילה רגילה מזיזה בין הסצנות — native,
-    //       חלק, אפס בעיות-מומנטום. ה-endPct/minDwell נשמרים בחתימה לתאימות-קריאה אך אינם בשימוש. =====
+    var activeMScene=null;   // האזור שמוצג כרגע
+    var scrollLocked=false;  // כשדולק — האזור נועל את המסך עד שעוברים את כל שקופיותיו
+    // ===== מובייל: מצגת נעולה. כל אזור = מסך אחד (100svh, אותו CSS של .pin-active).
+    //       מעבר בין שקופיות אך ורק בכפתור (המשך הצף / הכפתור בתוך הטלפון). כשאזור ממלא
+    //       את המסך הוא נועל את הגלילה — אי אפשר לדלג הלאה עד שעברת את כל שקופיותיו;
+    //       בשקופית האחרונה הנעילה משתחררת וממשיכים לאזור הבא. אין "חטיפת-גלילה" ואין
+    //       scroll-snap (שניהם גרמו לבאגים) — רק נעילה נקייה + כפתור. הדסקטופ לא מושפע. =====
+    // נעילת-גלילה: חוסמת את מחוות הגלילה (touchmove/wheel) כשנעול. מעבר קדימה רק בכפתור.
+    function blockScroll(e){ if(scrollLocked) e.preventDefault(); }
+    window.addEventListener('touchmove', blockScroll, {passive:false});
+    window.addEventListener('wheel',     blockScroll, {passive:false});
     var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#community','.commx-mobile':'#check'};
+    function goSection(sel){ scrollLocked=false; var t=sel&&document.querySelector(sel); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
     function pinMobileScene(msnapSel, endPct, onProgress){
       var wrap=document.querySelector(msnapSel);
       if(!wrap) return null;
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
-      var ref={N:N, disp:0, wrap:wrap};
+      var ref={N:N, disp:0, wrap:wrap, completed:(N<=1), engaged:false};
       function show(i){
         i=Math.max(0,Math.min(N-1,i));
         ref.disp=i;
         panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
-        if(onProgress) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות על השקופית
+        if(i>=N-1){ ref.completed=true; scrollLocked=false; }   // שקופית אחרונה → משחררים את הנעילה
+        if(onProgress) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות
       }
       ref.show=show;
       ref.advance=function(){
         if(ref.disp<N-1){ show(ref.disp+1); }
-        else { var t=document.querySelector(NEXT_SECTION[msnapSel]||''); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
+        else { goSection(NEXT_SECTION[msnapSel]); }
       };
       ref.back=function(){ if(ref.disp>0) show(ref.disp-1); };
+      // נעילת האזור כשהוא ממלא את המסך (וטרם עברנו את כל שקופיותיו)
+      function engage(){
+        activeMScene=ref;
+        if(ref.engaged || ref.completed) return;
+        ref.engaged=true;
+        window.scrollTo({top:wrap.getBoundingClientRect().top+scrollY, behavior:'auto'}); // יישור מיידי + עצירת מומנטום
+        if(ref.disp<N-1) scrollLocked=true;
+      }
       try{
-        wrap.classList.add('pin-active');   // פריסת "שקופית-אחת-גלויה" (אותו CSS) — בלי שום ScrollTrigger/pin
+        wrap.classList.add('pin-active');
         show(0);
         panels.forEach(function(p){
           p.querySelectorAll('[data-mnext]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); ref.advance(); }); });
-          p.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ var t=document.querySelector(b.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY); }); });
+          p.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ ref.completed=true; goSection(b.dataset.goto); }); });
         });
-        // הסצנה ה"פעילה" = זו שנמצאת במסך, כדי שכפתור "המשך" המשותף יקדם אותה
         if('IntersectionObserver' in window){
-          new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>=0.5) activeMScene=ref; }); }, {threshold:[0.5]}).observe(wrap);
-        }
-        if(!activeMScene) activeMScene=ref;
-      }catch(e3){ wrap.classList.remove('pin-active'); return null; }
+          new IntersectionObserver(function(es){ es.forEach(function(e){
+            if(e.isIntersecting && e.intersectionRatio>=0.6) engage();
+          }); }, {threshold:[0.6]}).observe(wrap);
+        } else if(!activeMScene){ activeMScene=ref; }
+      }catch(e3){ wrap.classList.remove('pin-active'); scrollLocked=false; return null; }
       return ref;
     }
 
