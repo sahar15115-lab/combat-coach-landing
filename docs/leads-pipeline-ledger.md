@@ -94,7 +94,9 @@
 
 **סקירת אבטחה (webhook = קלט ציבורי):** נטו ניטרלי-עד-חיובי. בדיקת ה-secret רצה לפני הענף החדש (אין bypass); מסלול lead-only **מקטין** חשיפת denial-of-wallet (אין intake→אין draft בתשלום); הכנסות דרך supabase-js (parameterized, אין SQL-injection); notes נשמר כטקסט ו-React מסנן ב-CRM. **ממצא קיים (לא חדש):** ה-WEBHOOK_SECRET מקודד קשיח בקובץ e2e בגיט — מומלץ להעביר ל-env ולרוטט.
 
-**נשאר לחיבור מלא (קליקים של סהר — ראה למטה):** deploy הפונקציה · הגדרת webhook ב-Tally לשני הטפסים (URL+secret) · הרצת ה-e2e החדש לאימות. ⚠️ לוודא שה-formId ש-Tally שולח ב-webhook באמת = `VLyPrl` (אם שונה — לעדכן env `QUICK_LEAD_FORM_IDS`).
+**✅ DEPLOYED (2026-07-05):** `npx supabase functions deploy jotform-webhook --project-ref ggdvffdefluqingxqfjo --no-verify-jwt` (access token מ-.env.scripts, לא נחשף). אומת liveness: no-secret→401 `{"error":"Unauthorized"}`, GET→405 — המחרוזות המדויקות של הקוד = הקוד החדש חי בפרודקשן.
+
+**נשאר לחיבור מלא (קליקים של סהר):** הגדרת webhook ב-Tally לשני הטפסים → URL: `https://ggdvffdefluqingxqfjo.supabase.co/functions/v1/jotform-webhook?secret=<JOTFORM_WEBHOOK_SECRET>` · מילוי-בדיקה בכל טופס · אימות ב-CRM (קצר=ליד `source=tally-quick` בלי תוכנית; ארוך=ליד+תוכנית). ⚠️ אם Tally שולח formId שונה מ-`VLyPrl` ב-webhook → לעדכן env `QUICK_LEAD_FORM_IDS`. אין Tally API key מקומי (יושב ב-MCP) → החיבור ידני ב-UI. אם Tally webhooks דורש Pro → חלופה: Make (אבל free=2 סצנות, 1 תפוסה). **המלצת אבטחה לסיום:** לרוטט את ה-secret (מקודד בגיט) — אני יכול לעשות דרך `supabase secrets set` + עדכון ה-URL ב-Tally.
 
 ## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
 1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
