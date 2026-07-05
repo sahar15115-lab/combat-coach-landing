@@ -1149,7 +1149,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       if(!wrap) return null;
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
-      // ---- anti-skip: מסך מתחלף מקסימום פעם ב-MIN מ"ש, ותמיד צעד-אחד (בשני הכיוונים) ----
+      // ---- נפה-אחת=שקופית-אחת: התצוגה עוקבת אחרי האצבע בזמן גלילה; ברגע שמרימים אצבע —
+      //      נועלים מיידית על השקופית הנוכחית ובולמים מומנטום, כך שהוא לא "מעופף" קדימה. ----
       var disp=-1, target=0, lastChange=-1e9, raf=null, MIN=minDwell||520;
       var ref={N:N, st:null, disp:0};
       function apply(i){ if(i===disp)return; disp=i; ref.disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
@@ -1159,6 +1160,15 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         if(disp!==target) raf=requestAnimationFrame(stepLoop);
       }
       function want(t){ target=t; if(raf==null) raf=requestAnimationFrame(stepLoop); }
+      // בלימת-מומנטום: ברגע שמרימים אצבע, מצמידים מיידית (behavior:auto עוקף scroll-behavior:smooth)
+      // את הגלילה למרכז השקופית שאליה האצבע הגיעה — המומנטום נבלם ולא מגלגל שקופיות נוספות.
+      function lockToSlide(){
+        if(!ref.st) return;
+        if(disp!==target) apply(target);        // התצוגה משלימה למיקום שאליו גללת
+        var y=ref.st.start + ((disp+0.5)/N)*(ref.st.end-ref.st.start);
+        window.scrollTo({top:y, behavior:'auto'});
+      }
+      window.addEventListener('touchend', function(){ if(activeMScene===ref) requestAnimationFrame(lockToSlide); }, {passive:true});
       try{
         wrap.classList.add('pin-active');
         apply(0); lastChange=performance.now();
@@ -1168,10 +1178,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
             var raw=self.progress*N, t=Math.min(N-1,Math.floor(raw));
             want(t); activeMScene=ref;
             if(onProgress) onProgress(disp, Math.min(1,raw-Math.floor(raw)), panels[disp], raw, N);
-          },
-          /* התיישבות רכה אחרי עזיבת האצבע — תמיד על מרכז מסך (הטלפון לעולם לא נשאר "הפוך") */
-          snap:{snapTo:function(v){var i2=Math.max(0,Math.min(N-1,Math.round(v*N-0.5)));return (i2+0.5)/N;},
-                duration:{min:.2,max:.5},ease:'power2.out',delay:.08}
+          }
+          /* אין snap של GSAP — ההצמדה נעשית מיידית ב-lockToSlide בעת הרמת-אצבע (מקור-נעילה יחיד) */
         });
         ref.st=st;
         /* כפתורי "המשך" בתוך פאנלים — מקדמים למסך הבא בגלילה חלקה */
