@@ -608,6 +608,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   .mpanel-copy .txn{color:var(--brand);font-weight:900;font-size:1rem;letter-spacing:.08em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
   .mpanel-copy h3{color:#fff;margin:.35rem 0 .5rem;font-size:2.2rem;text-shadow:0 2px 22px rgba(0,0,0,.55)}
   .mpanel-copy p{color:rgba(255,255,255,.92);font-size:1.05rem;max-width:30ch;text-shadow:0 1px 12px rgba(0,0,0,.6)}
+  /* כותרת-הסצנה בשקופית 1 (חימום) — מוקפצת למרכז-עליון ומוגדלת מעט (בקשת סהר) */
+  .trainx-mobile .mpanel .txscene-hero{position:absolute;top:30svh;inset-inline:1.4rem;z-index:2;margin:0;text-align:center;font-size:1.32rem;line-height:1.4}
   /* app phone panel */
   .mpanel-app{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
     padding:calc(3.5rem + env(safe-area-inset-top,0px)) 1.3rem 4svh;text-align:center}
@@ -635,7 +637,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   /* swipe hint on first panel of each scene */
   .mswipe{position:absolute;z-index:3;bottom:5svh;inset-inline-start:50%;transform:translateX(-50%);
     color:rgba(255,255,255,.6);font-size:.8rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:.2rem;animation:mbob 1.8s ease-in-out infinite}
-  .mpanel-comm .mswipe,.mpanel-app .mswipe{color:var(--muted)}
+  .mswipe{display:none}  /* מוסתר — הניווט כפתור-בלבד, אין יותר "החלק למעלה" */
   @keyframes mbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 }
 </style>
@@ -707,7 +709,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       <div class="trainx-scrim" aria-hidden="true"></div>
       <div class="trainx-text">
         <div class="tx on" data-i="0">
-          <div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div>
+          <div class="txscene">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
           <div class="txn"><span class="ltr">01</span> · חימום</div>
           <h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
         <div class="tx" data-i="1"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div>
@@ -726,7 +728,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     <div class="mpanel">
       <div class="mpanel-media"><video muted loop playsinline preload="metadata" poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txscene">האימון הפרונטלי · שעה אחת. ארבעה עולמות.</div><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
+      <div class="txscene txscene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
+      <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel">
@@ -768,7 +771,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         <div class="ax" data-i="3"><div class="sx-n accent"><span class="ltr">04</span></div>
           <h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3>
           <p>תזונה, הרגלים, יסודות מואי תאי ועוד — הכל בתוך האפליקציה.</p>
-          <button type="button" class="btn btn-sm axbtn" data-goto="#community">להמשך המסע ↓</button></div>
+          <button type="button" class="btn btn-sm axbtn" data-goto="#community" style="background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;border-color:transparent">להמשך המסע ↓</button></div>
       </div>
 
       <div class="appx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
@@ -779,7 +782,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
           <div class="ps media on" data-i="0"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
           <div class="ps media" data-i="1"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
           <div class="ps media" data-i="2"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
-          <div class="ps media accent" data-i="3"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
+          <div class="ps media accent" data-i="3"><img class="psfull" src="media/app-guides.jpg" alt="הדרכות באפליקציה"></div>
         </div></div>
       </div>
     </div>
@@ -811,7 +814,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     <div class="mpanel mpanel-app">
       <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps media accent on"><video class="psfull" muted loop playsinline preload="metadata" poster="media/app-guides.jpg"><source src="media/app-guides.mp4" type="video/mp4"></video></div>
+        <div class="ps media accent on"><img class="psfull" src="media/app-guides.jpg" alt="הדרכות באפליקציה"></div>
         <button type="button" class="phone-cta accent" data-goto="#community">להמשך המסע ↓</button>
       </div></div>
     </div>
@@ -845,16 +848,12 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         <div class="commx-text">
           <div class="cx on" data-i="0"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
             <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
-            <p>אחת לשבוע ניפגש ונפתח גם את הראש. נלמד על:</p>
-            <p class="cxfirst"><span class="ltr">01</span> · מהי הצלחה — להגדיר הצלחה משלך, לא של אחרים.</p></div>
+            <p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p>
+            <p class="cxfirst"><span class="ltr">01</span> · ההבדל בין הצלחה חיצונית להצלחה פנימית.</p></div>
           <div class="cx" data-i="1"><div class="cxtrack">התפתחות אישית</div>
-            <h3>הנאה מול אושר</h3><p>למה כיף רגעי הוא לא אושר — ואיך בונים את השני.</p></div>
+            <h3>הנאה מול אושר</h3><p>לפעמים הדרך אל האושר לא מהנה, וההנאות מרחיקות אותנו מהאושר.</p></div>
           <div class="cx" data-i="2"><div class="cxtrack">התפתחות אישית</div>
             <h3>הקולות בראש</h3><p>לזהות את הקולות הפנימיים וללמוד לנהל אותם.</p></div>
-          <div class="cx" data-i="3"><div class="cxtrack">התפתחות אישית</div>
-            <h3>בניית הרגלים</h3><p>איך הרגלים קטנים בונים שינוי גדול.</p></div>
-          <div class="cx" data-i="4"><div class="cxtrack">התפתחות אישית</div>
-            <h3>עבודת המידות</h3><p>לעבוד על התכונות שמעצבות מי שאתה.</p></div>
           <div class="cx ai" data-i="5"><div class="cxtrack">בינה מלאכותית</div>
             <h3><span class="ltr">Claude Code</span></h3><p>לכתוב קוד ולבנות דברים אמיתיים בעזרת AI.</p></div>
           <div class="cx ai" data-i="6"><div class="cxtrack">בינה מלאכותית</div>
@@ -868,8 +867,6 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
           <div class="cslide on" data-i="0"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">מהי הצלחה</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
           <div class="cslide" data-i="1"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הנאה מול אושר</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
           <div class="cslide" data-i="2"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הקולות בראש</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-          <div class="cslide" data-i="3"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">בניית הרגלים</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-          <div class="cslide" data-i="4"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">עבודת המידות</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
           <div class="cslide ai" data-i="5"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">Claude Code</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
           <div class="cslide ai" data-i="6"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">סוכני AI</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
           <div class="cslide ai" data-i="7"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">פרויקט אישי</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
@@ -877,7 +874,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       </div>
       <div class="commx-scrim" aria-hidden="true"></div>
       <div class="commx-temp" aria-hidden="true"></div>
-      <div class="commx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="commx-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
 
@@ -885,24 +882,16 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   <div class="commx-mobile msnap">
     <div class="mpanel mpanel-comm">
       <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">מהי הצלחה</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div><h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3><p>אחת לשבוע ניפגש ונפתח גם את הראש. נלמד על:</p><p class="cxfirst"><span class="ltr">01</span> · מהי הצלחה — להגדיר הצלחה משלך, לא של אחרים.</p></div>
+      <div class="mpanel-commcopy"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div><h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3><p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p><p class="cxfirst"><span class="ltr">01</span> · ההבדל בין הצלחה חיצונית להצלחה פנימית.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel mpanel-comm">
       <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הנאה מול אושר</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>הנאה מול אושר</h3><p>למה כיף רגעי הוא לא אושר — ואיך בונים את השני.</p></div>
+      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>הנאה מול אושר</h3><p>לפעמים הדרך אל האושר לא מהנה, וההנאות מרחיקות אותנו מהאושר.</p></div>
     </div>
     <div class="mpanel mpanel-comm">
       <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הקולות בראש</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
       <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>הקולות בראש</h3><p>לזהות את הקולות הפנימיים וללמוד לנהל אותם.</p></div>
-    </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">בניית הרגלים</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>בניית הרגלים</h3><p>איך הרגלים קטנים בונים שינוי גדול.</p></div>
-    </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">עבודת המידות</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>עבודת המידות</h3><p>לעבוד על התכונות שמעצבות מי שאתה.</p></div>
     </div>
     <div class="mpanel mpanel-comm">
       <div class="mpanel-slide"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">Claude Code</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
@@ -1138,8 +1127,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         coDots=gsap.utils.toArray('.commx-dots i');
     if(coCx.length){ var commxPinEl=document.querySelector('.commx-pin');
       pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i);
-        if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=5);
-        document.body.classList.toggle('ai-mode',i>=5); }); }
+        if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=3);
+        document.body.classList.toggle('ai-mode',i>=3); }); }
   } else {
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
@@ -1228,7 +1217,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     }, 800); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
 
     pinMobileScene('.commx-mobile',1240,function(i){
-      document.body.classList.toggle('ai-mode', i>=5);
+      document.body.classList.toggle('ai-mode', i>=3);
     }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
 
     // כפתור "המשך" הצף — מקדם שקופית אחת בסצנה שבמסך; בשקופית האחרונה ממשיך לסקשן הבא.
