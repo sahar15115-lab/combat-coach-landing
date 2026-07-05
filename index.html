@@ -532,18 +532,18 @@ html.js .tally-fallback{display:none}
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
 /* כפתור "המשך" — מופיע כשה-CTA מוסתר (בתוך הסצנות). לחיצה=קידום מסך אחד; הגלילה ממשיכה לעבוד לצידו. */
-.scroll-cue{position:fixed;bottom:1.1rem;left:50%;transform:translateX(-50%);z-index:44;
-  display:inline-flex;align-items:center;gap:.45rem;pointer-events:none;opacity:0;
-  transition:opacity .4s,background .2s,border-color .2s,transform .12s;cursor:pointer;font-family:inherit;
-  background:linear-gradient(160deg,rgba(201,168,76,.2),rgba(201,168,76,.07));
-  border:1px solid rgba(201,168,76,.55);border-radius:999px;padding:.55rem 1.25rem;
-  color:var(--brand-2);font-size:.86rem;font-weight:800;letter-spacing:.03em;
-  box-shadow:0 10px 28px -12px rgba(201,168,76,.6),var(--surface-hi);backdrop-filter:blur(5px)}
+.scroll-cue{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:44;
+  display:inline-flex;align-items:center;gap:.5rem;pointer-events:none;opacity:0;
+  transition:opacity .4s,filter .2s,transform .12s;cursor:pointer;font-family:inherit;
+  background:linear-gradient(160deg,#F6E4A9,#C9A84C 55%,#B0862E);
+  border:0;border-radius:999px;padding:.95rem 2.1rem;
+  color:#0A0A0A;font-size:1.06rem;font-weight:800;letter-spacing:.02em;
+  box-shadow:0 16px 36px -8px rgba(201,168,76,.95),inset 0 1px 0 rgba(255,255,255,.5)}
 .scroll-cue span{animation:cuebob 1.6s ease-in-out infinite}
 @keyframes cuebob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
-.scroll-cue:hover{background:linear-gradient(160deg,rgba(201,168,76,.32),rgba(201,168,76,.13));border-color:var(--brand)}
-.scroll-cue:active{transform:translateX(-50%) scale(.95)}
+.scroll-cue:hover{filter:brightness(1.06)}
+.scroll-cue:active{transform:translateX(-50%) scale(.96)}
 @media(prefers-reduced-motion:reduce){.scroll-cue span{animation:none}}
 /* טלפון גדול יותר בסצנת האפליקציה */
 .appx-desktop .phone{width:355px}
@@ -1144,55 +1144,43 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
     var activeMScene=null; // הסצנה הפעילה כרגע — עבור כפתור "המשך"
-    function pinMobileScene(msnapSel, endPct, onProgress, minDwell){
+    // ===== מובייל: קרוסלת-כפתור. אין "חטיפת-גלילה" בכלל — השקופיות מתחלפות אך ורק בלחיצה
+    //       על כפתור ("המשך" הצף / הכפתור בתוך הטלפון). כל סצנה = מסך אחד (100svh, אותו CSS
+    //       של .pin-active), רק השקופית הפעילה גלויה. גלילה רגילה מזיזה בין הסצנות — native,
+    //       חלק, אפס בעיות-מומנטום. ה-endPct/minDwell נשמרים בחתימה לתאימות-קריאה אך אינם בשימוש. =====
+    var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#community','.commx-mobile':'#check'};
+    function pinMobileScene(msnapSel, endPct, onProgress){
       var wrap=document.querySelector(msnapSel);
       if(!wrap) return null;
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
-      // ---- נפה-אחת=שקופית-אחת: התצוגה עוקבת אחרי האצבע בזמן גלילה; ברגע שמרימים אצבע —
-      //      נועלים מיידית על השקופית הנוכחית ובולמים מומנטום, כך שהוא לא "מעופף" קדימה. ----
-      var disp=-1, target=0, lastChange=-1e9, raf=null, MIN=minDwell||520;
-      var ref={N:N, st:null, disp:0};
-      function apply(i){ if(i===disp)return; disp=i; ref.disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
-      function stepLoop(now){
-        raf=null;
-        if(disp!==target && now-lastChange>=MIN){ apply(disp + (target>disp?1:-1)); lastChange=now; }
-        if(disp!==target) raf=requestAnimationFrame(stepLoop);
+      var ref={N:N, disp:0, wrap:wrap};
+      function show(i){
+        i=Math.max(0,Math.min(N-1,i));
+        ref.disp=i;
+        panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
+        if(onProgress) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות על השקופית
       }
-      function want(t){ target=t; if(raf==null) raf=requestAnimationFrame(stepLoop); }
-      // בלימת-מומנטום: ברגע שמרימים אצבע, מצמידים מיידית (behavior:auto עוקף scroll-behavior:smooth)
-      // את הגלילה למרכז השקופית שאליה האצבע הגיעה — המומנטום נבלם ולא מגלגל שקופיות נוספות.
-      function lockToSlide(){
-        if(!ref.st) return;
-        if(disp!==target) apply(target);        // התצוגה משלימה למיקום שאליו גללת
-        var y=ref.st.start + ((disp+0.5)/N)*(ref.st.end-ref.st.start);
-        window.scrollTo({top:y, behavior:'auto'});
-      }
-      window.addEventListener('touchend', function(){ if(activeMScene===ref) requestAnimationFrame(lockToSlide); }, {passive:true});
+      ref.show=show;
+      ref.advance=function(){
+        if(ref.disp<N-1){ show(ref.disp+1); }
+        else { var t=document.querySelector(NEXT_SECTION[msnapSel]||''); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
+      };
+      ref.back=function(){ if(ref.disp>0) show(ref.disp-1); };
       try{
-        wrap.classList.add('pin-active');
-        apply(0); lastChange=performance.now();
-        var st=ScrollTrigger.create({
-          trigger:msnapSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
-          onUpdate:function(self){
-            var raw=self.progress*N, t=Math.min(N-1,Math.floor(raw));
-            want(t); activeMScene=ref;
-            if(onProgress) onProgress(disp, Math.min(1,raw-Math.floor(raw)), panels[disp], raw, N);
-          }
-          /* אין snap של GSAP — ההצמדה נעשית מיידית ב-lockToSlide בעת הרמת-אצבע (מקור-נעילה יחיד) */
+        wrap.classList.add('pin-active');   // פריסת "שקופית-אחת-גלויה" (אותו CSS) — בלי שום ScrollTrigger/pin
+        show(0);
+        panels.forEach(function(p){
+          p.querySelectorAll('[data-mnext]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); ref.advance(); }); });
+          p.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ var t=document.querySelector(b.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY); }); });
         });
-        ref.st=st;
-        /* כפתורי "המשך" בתוך פאנלים — מקדמים למסך הבא בגלילה חלקה */
-        panels.forEach(function(p,idx){
-          p.querySelectorAll('[data-mnext]').forEach(function(b){b.addEventListener('click',function(){
-            var ni=Math.min(N-1,idx+1); scrollToY(st.start+((ni+0.5)/N)*(st.end-st.start));
-          });});
-          p.querySelectorAll('[data-goto]').forEach(function(b){b.addEventListener('click',function(){
-            var t=document.querySelector(b.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY);
-          });});
-        });
-        return st;
+        // הסצנה ה"פעילה" = זו שנמצאת במסך, כדי שכפתור "המשך" המשותף יקדם אותה
+        if('IntersectionObserver' in window){
+          new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>=0.5) activeMScene=ref; }); }, {threshold:[0.5]}).observe(wrap);
+        }
+        if(!activeMScene) activeMScene=ref;
       }catch(e3){ wrap.classList.remove('pin-active'); return null; }
+      return ref;
     }
 
     // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
@@ -1227,14 +1215,11 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       document.body.classList.toggle('ai-mode', i>=5);
     }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
 
-    // כפתור "המשך" — מקדם מסך אחד בסצנה הפעילה (הגלילה ממשיכה לעבוד לצידו).
+    // כפתור "המשך" הצף — מקדם שקופית אחת בסצנה שבמסך; בשקופית האחרונה ממשיך לסקשן הבא.
     var cue=document.getElementById('scrollCue');
     if(cue) cue.addEventListener('click',function(){
-      var s=activeMScene;
-      if(!s||!s.st){ scrollToY(scrollY+innerHeight*0.92); return; }
-      var next=s.disp+1;
-      if(next<s.N){ scrollToY(s.st.start+((next+0.5)/s.N)*(s.st.end-s.st.start)); }
-      else { scrollToY(s.st.end+innerHeight*0.6); } // מסך אחרון → יציאה מהסצנה
+      if(activeMScene && activeMScene.advance){ activeMScene.advance(); }
+      else { scrollToY(scrollY+innerHeight*0.92); }
     });
   }
 
