@@ -76,6 +76,26 @@
 - **תוקן:** קופי סקשן #check התאים לטופס הקצר ("בדיקת התאמה · כמה שאלות קצרות") אבל מטמיע את המלא (18ש') → עודכן ל"בונים לך תוכנית אימון אישית" + לינק inline ל-VLyPrl.
 - ⚠️ **דגל ל-Step 5:** `jotform-webhook` מנתח שדות **לפי label** (`findByLabel(/^גיל$/)` וכו'). סהר שינה מבנה/labels + הוסיף מין — **חובה לוודא שה-parsing עדיין תופס** לפני שמחברים ל-CRM, אחרת ה-AI יבנה תוכנית על נתונים חסרים.
 
+## שלב E (2026-07-05) — חיבור הטופס הקצר ל-CRM + תיקון parsing של הטופס שסהר בנה מחדש
+
+**קוד: `combat-coach-app` branch `feat/lead-pipeline-wiring` (commit 29e2fe8). טרם deploy — דורש `npx supabase login` של סהר.**
+
+**מה גיליתי (audit מלא של 18 השאלות מול ה-webhook):**
+- ✅ נקלטים תקין: שם, גיל, משקל, טלפון, מיקום, ותק, תדירות→שעות, ציוד, משקולות(מותנה), מתח(+רמה), שכיבות, שינה, רגישות-מפרקים.
+- ❌ **GOAL לא נקלט** — סהר שינה את שאלת המטרה ל"מה המטרה האישית שלך בכושר?" (single-choice, 5 אופציות חדשות). ה-regex הישן (`/מה אתה רוצה להשיג/`) + המפה הישנה לא תפסו → `training_goal` + `goal_summary` יצאו NULL. זה **הקלט הכי חשוב לבניית תוכנית** → ה-AI היה בונה על מטרה ריקה. **תוקן.**
+- ❌ **מין לא נקלט** — שאלת "מה המין שלך?" חדשה, ה-webhook היה `sex: null`. **תוקן** (זכר/נקבה/אחר → male/female/other).
+- גובה/trains/split — שאלות שנעלמו בבנייה מחדש → NULL (nullable, לא קורס).
+
+**מה שיניתי בקוד (backward-compatible — הטפסים הישנים עדיין נתמכים):**
+1. **טופס קצר VLyPrl → LEAD ONLY.** זיהוי לפי formId (env `QUICK_LEAD_FORM_IDS`, ברירת מחדל `VLyPrl`) או hint `form_type=lead_only`. יוצר ליד ב-CRM (`source='tally-quick'`, `status='new'`) ו**עוצר — לא כותב intake** → ה-trigger של בניית התוכנית (mig 060/089) **לא נדלק, אין עלות Claude**. גיל/זמינות/הסכמת-הורה נשמרים ב-`lead.notes`. Idempotent לפי (טלפון, source).
+2. **טופס ארוך:** הרחבת ה-regex של המטרה, מיפוי 5 האופציות החדשות לערכים שהמנוע מכיר (strength_aesthetics/weight_loss_general/general_improvement/body_control_calisthenics/athletics), מילוי goal_summary מהבחירה, וקליטת מין.
+
+**אימות:** 17/17 בדיקות לוגיקה טהורה מקומית (regex/מיפוי מול המחרוזות המדויקות של הטפסים החיים). בדיקת e2e חדשה `seeds/e2e_lead_pipeline_wiring.mjs` מוכנה להרצה אחרי deploy (טופס-קצר=עלות 0; טופס-ארוך מאחורי `RUN_LONGFORM=1`).
+
+**סקירת אבטחה (webhook = קלט ציבורי):** נטו ניטרלי-עד-חיובי. בדיקת ה-secret רצה לפני הענף החדש (אין bypass); מסלול lead-only **מקטין** חשיפת denial-of-wallet (אין intake→אין draft בתשלום); הכנסות דרך supabase-js (parameterized, אין SQL-injection); notes נשמר כטקסט ו-React מסנן ב-CRM. **ממצא קיים (לא חדש):** ה-WEBHOOK_SECRET מקודד קשיח בקובץ e2e בגיט — מומלץ להעביר ל-env ולרוטט.
+
+**נשאר לחיבור מלא (קליקים של סהר — ראה למטה):** deploy הפונקציה · הגדרת webhook ב-Tally לשני הטפסים (URL+secret) · הרצת ה-e2e החדש לאימות. ⚠️ לוודא שה-formId ש-Tally שולח ב-webhook באמת = `VLyPrl` (אם שונה — לעדכן env `QUICK_LEAD_FORM_IDS`).
+
 ## מה נשאר מסהר (אבקש בזמן הנכון, מרוכז)
 1. OAuth Gmail ב-Make (קליק אחד) — שלב B.
 2. הדבקת webhook URL ב-Tally Integrations — שלב B.
