@@ -1190,7 +1190,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
     var trMobMedia=gsap.utils.toArray('.trainx-mobile .mpanel-media');
     if(document.querySelector('.trainx-mobile .mpanel'))
-      pinMobileScene('.trainx-mobile',320,function(i){ playOnly(trMobMedia,i); });
+      pinMobileScene('.trainx-mobile',520,function(i){ playOnly(trMobMedia,i); }, 700);
 
     // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
     // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
@@ -1206,18 +1206,18 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       return rot;
     }
     var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
-    pinMobileScene('.appx-mobile',560,function(i,local,panel,raw,N){
+    pinMobileScene('.appx-mobile',900,function(i,local,panel,raw,N){
       playOnly(appMobScreens,i);
       if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
       if(!mPhones.length) return;
       var rot=spinRot(raw,N) + (local-0.5)*14; // + נטייה קלה בזמן קריאה לתחושת תלת-ממד
       gsap.to(mPhones,{rotationY:rot,duration:.35,ease:'power2.out',overwrite:'auto',
         transformPerspective:900,transformOrigin:'50% 50%'});
-    }, 700); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
+    }, 800); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
 
-    pinMobileScene('.commx-mobile',820,function(i){
+    pinMobileScene('.commx-mobile',1240,function(i){
       document.body.classList.toggle('ai-mode', i>=5);
-    }, 850); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
+    }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
 
     // כפתור "המשך" — מקדם מסך אחד בסצנה הפעילה (הגלילה ממשיכה לעבוד לצידו).
     var cue=document.getElementById('scrollCue');
