@@ -868,10 +868,10 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   <div class="trainx-desktop">
     <div class="trainx-pin" id="trainxPin">
       <div class="trainx-media">
-        <div class="tv on" data-i="0"><video muted loop playsinline preload="metadata" data-poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="1"><video muted loop playsinline preload="metadata" data-poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="2"><video muted loop playsinline preload="metadata" data-poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="3"><video muted loop playsinline preload="metadata" data-poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+        <div class="tv on" data-i="0"><video muted loop playsinline preload="none" data-poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="1"><video muted loop playsinline preload="none" data-poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="2"><video muted loop playsinline preload="none" data-poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="3"><video muted loop playsinline preload="none" data-poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       </div>
       <div class="trainx-scrim" aria-hidden="true"></div>
       <div class="trainx-text">
@@ -893,24 +893,24 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
   <div class="trainx-mobile msnap">
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" data-poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-warmup.jpg"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="txscene txscene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" data-poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-calisthenics.jpg"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלכם.</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" data-poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-athletics.jpg"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="metadata" data-poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-muaythai.jpg"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
     </div>
@@ -1340,23 +1340,30 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   // ---- reusable pinned scene: crossfade groups by index as you scroll ----
   function pinScene(pinSel, groups, dots, endPct, onState){
     var N=groups[0].length, cur=-1;
-    function set(i){
+    function set(i,silent){
       if(i===cur)return; cur=i;
       groups.forEach(function(g){ g.forEach(function(el,j){ el.classList.toggle('on',j===i); }); });
       if(dots)dots.forEach(function(d,j){ d.classList.toggle('on',j===i); });
-      if(onState)onState(i);
+      if(onState&&!silent)onState(i);
     }
-    set(0);
+    set(0,true); /* R-22: אתחול שקט — בלי להצית וידאו של סצנה שעוד לא הגיעו אליה */
     return ScrollTrigger.create({
       trigger:pinSel,start:'top top',end:'+='+endPct+'%',pin:true,invalidateOnRefresh:true,
+      // R-22: כשהסצנה נכנסת למסך — מציתים מחדש את המצב הנוכחי כדי שהווידאו שלה יתחיל
+      // (באתחול הרחוק playOnly מדלג על ניגון, בכוונה)
+      onToggle:function(self){ if(self.isActive){ var c=Math.max(0,cur); cur=-1; set(c); } },
       onUpdate:function(self){ set(Math.min(N-1,Math.floor(self.progress*N))); },
       snap:{snapTo:function(v){var i2=Math.max(0,Math.min(N-1,Math.round(v*N-0.5)));return (i2+0.5)/N;},
             duration:{min:.2,max:.5},ease:'power2.out',delay:.08}
     });
   }
   function pauseVideos(root){ if(root)root.querySelectorAll('video').forEach(function(v){ v.pause&&v.pause(); }); }
+  // R-22: במצב חיסכון-בנתונים לא מנגנים וידאו בכלל — הפוסטר נשאר (הוידאו preload="none",
+  // אז בלי play() שום בייט של וידאו לא יורד). האתחול של הסצנות "שקט" (לא מנגן) —
+  // הניגון מוצת רק כשהסצנה באמת נכנסת למסך (onToggle בדסקטופ / engage במובייל).
+  var saveData=!!(navigator.connection&&navigator.connection.saveData);
   function playOnly(list,i){ list.forEach(function(el,j){ var v=el.querySelector('video'); if(!v)return;
-    if(j===i){ var p=v.play&&v.play(); if(p&&p.catch)p.catch(function(){}); } else v.pause&&v.pause(); }); }
+    if(j===i){ if(saveData) return; var p=v.play&&v.play(); if(p&&p.catch)p.catch(function(){}); } else v.pause&&v.pause(); }); }
 
   if(innerWidth>900){
     // ===== SCENE 2: training — 4 video stages, one at a time =====
@@ -1437,12 +1444,12 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
       var N=panels.length; if(!N) return null;
       var ref={N:N, disp:0, wrap:wrap, completed:(N<=1), engaged:false};
-      function show(i){
+      function show(i,silent){
         i=Math.max(0,Math.min(N-1,i));
         ref.disp=i;
         panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
         if(i>=N-1){ ref.completed=true; scrollLocked=false; }   // שקופית אחרונה → משחררים את הנעילה
-        if(onProgress) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות
+        if(onProgress&&!silent) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות
       }
       ref.show=show;
       ref.advance=function(){
@@ -1453,6 +1460,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       // נעילת האזור כשהוא ממלא את המסך (וטרם עברנו את כל שקופיותיו)
       function engage(){
         activeMScene=ref;
+        show(ref.disp); // R-22: הסצנה הגיעה למסך — מציתים עכשיו את הווידאו של הפאנל הנוכחי
         if(ref.engaged || ref.completed) return;
         ref.engaged=true;
         window.scrollTo({top:wrap.getBoundingClientRect().top+scrollY, behavior:'auto'}); // יישור מיידי + עצירת מומנטום
@@ -1460,7 +1468,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       }
       try{
         wrap.classList.add('pin-active');
-        show(0);
+        show(0,true); /* R-22: אתחול שקט — הווידאו מוצת רק ב-engage (כניסה אמיתית למסך) */
         panels.forEach(function(p){
           p.querySelectorAll('[data-mnext]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); ref.advance(); }); });
           p.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ ref.completed=true; goSection(b.dataset.goto); }); });
