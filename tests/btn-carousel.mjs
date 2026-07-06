@@ -47,11 +47,19 @@ await clickCue(); await clickCue(); A('app → slide 3 (last)', await onIdx('.ap
 await clickCue(); await page.waitForTimeout(900); // continue → #community
 A('after app completed → #community reached', await inView('#community'));
 
-// community: tap through to slide 5 → ai-mode gold→blue
-A('community starts on slide 0', await onIdx('.commx-mobile')===0);
-for(let i=0;i<5;i++) await clickCue();
-A('community reached slide 5', await onIdx('.commx-mobile')===5);
-A('ai-mode ON at slide 5 (gold→blue)', await page.evaluate(()=>document.body.classList.contains('ai-mode')));
+// community: intro + 4 interactive kit slides; ai-mode at the AI slide (index 4)
+A('community starts on slide 0 (intro)', await onIdx('.commx-mobile')===0);
+A('saboteurs: 10 cards built', await page.evaluate(()=>document.querySelectorAll('#sabGrid .scard').length)===10);
+A('AI accordion: 5 items built', await page.evaluate(()=>document.querySelectorAll('#acc .acc__item').length)===5);
+A('Claude Code robot rendered', await page.evaluate(()=>!!document.querySelector('#ccbot svg')));
+await clickCue(); A('community slide 1 (success)', await onIdx('.commx-mobile')===1);
+await page.evaluate(()=>{var b=document.querySelector('.succ .vote'); if(b)b.click();}); await page.waitForTimeout(200);
+A('success: vote → revealed (flip)', await page.evaluate(()=>document.querySelector('.succ').classList.contains('revealed')));
+await clickCue(); await clickCue(); A('community slide 3 (saboteurs)', await onIdx('.commx-mobile')===3);
+await page.evaluate(()=>{var c=document.querySelector('#sabGrid .scard'); if(c)c.click();}); await page.waitForTimeout(200);
+A('saboteurs: card flips on tap', await page.evaluate(()=>document.querySelector('#sabGrid .scard').classList.contains('flipped')));
+await clickCue(); A('community slide 4 (AI, last)', await onIdx('.commx-mobile')===4);
+A('ai-mode ON at AI slide (gold→blue)', await page.evaluate(()=>document.body.classList.contains('ai-mode')));
 
 A('no console errors', errs.length===0); if(errs.length) console.log('  errs:',errs.slice(0,4));
 console.log(`\n${ok} passed, ${bad} failed`);

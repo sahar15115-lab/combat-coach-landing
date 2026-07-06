@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://combat-coach-landing.vercel.app/media/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <!-- GSAP + ScrollTrigger מוטמעים בקובץ (self-contained) — עובד גם בלי אינטרנט / CDN חסום -->
 <script>
@@ -640,6 +640,170 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   .mswipe{display:none}  /* מוסתר — הניווט כפתור-בלבד, אין יותר "החלק למעלה" */
   @keyframes mbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 }
+
+/* ============ קהילה: שקופיות אינטראקטיביות (kit) ============ */
+/* מיכל הפאנל — ממורכז אופקית, גלילה פנימית אם השקופית גבוהה ממסך (overscroll-contain
+   מונע דליפה לעמוד; הנעילה נשארת — הכפתור מקדם בין השקופיות). */
+@media(max-width:900px){
+  .msnap.pin-active .mpanel-kit{display:block;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:calc(3.4rem + env(safe-area-inset-top,0px)) .7rem 5svh}
+}
+.comm-intro{max-width:460px;margin:0 auto;text-align:center;padding:0 1rem}
+.comm-intro__track{font-weight:900;font-size:.9rem;letter-spacing:.04em;color:var(--brand);margin-bottom:1rem}
+.comm-intro h3{font-size:2rem;color:#fff;margin:0 0 .6rem;line-height:1.15}
+.comm-intro p{color:rgba(255,255,255,.9);font-size:1.05rem;line-height:1.6;margin:0 0 .5rem}
+.comm-intro__hint{color:var(--brand-2);font-weight:800;font-size:.95rem;margin-top:1.3rem}
+
+/* ---- DROP-IN kit slides (ממודר; class/id ייחודיים) ---- */
+  .succ{ --s-brand:var(--brand,#C9A84C); --s-brand2:var(--brand-2,#E4C978); --s-fg:var(--fg,#F4F4F4);
+    --s-soft:var(--fg-soft,#C7C7C7); --s-muted:var(--muted,#8C8C8C); --s-line:var(--line,rgba(255,255,255,.09));
+    --s-panel:var(--surface,#141414); --s-ease:cubic-bezier(.22,.61,.36,1);
+    box-sizing:border-box;direction:rtl;color:var(--s-fg);font-family:Heebo,system-ui,sans-serif;
+    max-width:480px;margin:0 auto;border-radius:20px;overflow:hidden;
+    background:#0A0A0A;background-image:radial-gradient(700px 380px at 82% -10%,rgba(201,168,76,.14),transparent 60%);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .succ *{box-sizing:border-box;}
+  .succ__in{padding:24px 20px 26px;}
+  .succ__hero{width:100%;height:200px;object-fit:cover;object-position:center 22%;border-radius:14px;border:1px solid rgba(201,168,76,.35);display:block;margin-bottom:18px;}
+  .succ__q{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:25px;text-align:center;letter-spacing:-.01em;color:var(--s-brand2);margin-bottom:15px;min-height:33px;}
+  .succ__q .intl{display:none;} .succ.revealed .succ__q .ext{display:none;} .succ.revealed .succ__q .intl{display:inline;}
+  .succ__cols{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px;}
+  .pcard{perspective:1300px;}
+  .pinner{position:relative;transform-style:preserve-3d;transition:transform .8s var(--s-ease);min-height:236px;}
+  .succ.revealed .pinner{transform:rotateY(180deg);}
+  .pface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:14px;padding:13px 12px;background:var(--s-panel);border:1px solid var(--s-line);}
+  .pface.back{transform:rotateY(180deg);}
+  .pcard.hi .pface.front{border-color:rgba(201,168,76,.55);box-shadow:0 0 0 1px rgba(201,168,76,.25),0 12px 30px -14px rgba(201,168,76,.5);}
+  .pface h4{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:16px;text-align:center;color:var(--s-brand2);margin-bottom:9px;}
+  .pface .succ__tag{display:block;text-align:center;font-size:11px;font-weight:600;color:var(--s-muted);margin-bottom:9px;letter-spacing:.03em;}
+  .pface li{list-style:none;display:flex;gap:7px;align-items:flex-start;font-size:12.5px;line-height:1.45;margin-bottom:6px;color:var(--s-soft);}
+  .pface li .d{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.5em;background:var(--s-brand);}
+  .pface.back li .d{background:var(--warn,#D8654F);}
+  .succ__votes{display:grid;grid-template-columns:1fr 1fr;gap:11px;transition:opacity .4s,max-height .5s;overflow:hidden;max-height:60px;}
+  .succ.revealed .succ__votes{opacity:0;max-height:0;pointer-events:none;margin:0;}
+  .vote{min-height:48px;border-radius:999px;border:none;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;
+    background:linear-gradient(180deg,var(--s-brand2),var(--s-brand));color:#0A0A0A;box-shadow:0 10px 26px -10px rgba(201,168,76,.6);transition:transform .15s;}
+  .vote:hover{transform:translateY(-1px);}
+  .succ__line{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s var(--s-ease),opacity .5s .15s;
+    text-align:center;color:var(--s-soft);font-size:15px;line-height:1.6;}
+  .succ.revealed .succ__line{max-height:160px;opacity:1;margin-top:4px;}
+  .succ__re{display:none;margin:14px auto 0;background:transparent;border:1px solid var(--s-line);color:var(--s-muted);
+    border-radius:999px;min-height:40px;padding:0 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+  .succ.revealed .succ__re{display:block;}
+  @media(prefers-reduced-motion:reduce){.succ *{transition:none!important;}}
+
+  .dopa{ --d-brand:var(--brand,#C9A84C); --d-brand2:var(--brand-2,#E4C978); --d-fg:var(--fg,#F4F4F4);
+    --d-soft:var(--fg-soft,#C7C7C7); --d-muted:var(--muted,#8C8C8C); --d-line:var(--line,rgba(255,255,255,.09));
+    --d-panel:var(--surface,#141414); --d-ease:cubic-bezier(.22,.61,.36,1);
+    box-sizing:border-box;direction:rtl;color:var(--d-fg);font-family:Heebo,system-ui,sans-serif;
+    max-width:460px;margin:0 auto;border-radius:20px;overflow:hidden;
+    background:#0A0A0A;background-image:radial-gradient(660px 340px at 50% -14%,rgba(201,168,76,.13),transparent 62%);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .dopa *{box-sizing:border-box;}
+  .dopa__in{padding:24px 18px 26px;}
+  .dopa__eyebrow{text-align:center;color:var(--d-brand2);font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:22px;letter-spacing:-.01em;margin:0 0 16px;}
+  .dopa__anchor{background:var(--d-panel);border:1px solid var(--d-line);border-radius:14px;padding:13px 14px;margin-bottom:18px;}
+  .dopa__anchor .def{font-family:'Frank Ruhl Libre',serif;color:var(--d-soft);font-size:14.5px;line-height:1.55;margin:0;}
+  .dopa__ex{margin-top:9px;}
+  .dopa__ex summary{list-style:none;cursor:pointer;color:var(--d-muted);font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
+  .dopa__ex summary::-webkit-details-marker{display:none;}
+  .dopa__ex summary .chev{transition:transform .25s;}
+  .dopa__ex[open] summary .chev{transform:rotate(90deg);}
+  .dopa__ex .ex-body{color:var(--d-soft);font-size:13.5px;line-height:1.55;margin:8px 0 0;font-family:'Frank Ruhl Libre',serif;}
+  .dopa__pill{position:relative;display:grid;grid-template-columns:1fr 1fr;max-width:280px;margin:0 auto 18px;
+    background:var(--d-panel);border:1px solid var(--d-line);border-radius:999px;padding:4px;}
+  .dopa__knob{position:absolute;top:4px;bottom:4px;right:4px;width:calc(50% - 4px);border-radius:999px;
+    background:linear-gradient(180deg,var(--d-brand2),var(--d-brand));transition:transform .35s var(--d-ease);z-index:0;}
+  .dopa__opt{position:relative;z-index:1;text-align:center;min-height:40px;line-height:40px;font-weight:800;font-size:15px;
+    cursor:pointer;transition:color .2s;user-select:none;}
+  .opt-then{color:#0A0A0A;} .opt-now{color:var(--d-muted);}
+  .dopa__scene{position:relative;}
+  .dopa__img{position:relative;height:150px;border-radius:14px;overflow:hidden;border:1px solid rgba(201,168,76,.3);margin-bottom:12px;}
+  .dopa__img .lyr{position:absolute;inset:0;background-size:cover;background-position:center;transition:opacity .45s ease;}
+  .img-now{opacity:0;}
+  .dopa__txt{position:relative;min-height:156px;}
+  .dopa__txt .lyr{position:absolute;inset:0;font-family:'Frank Ruhl Libre',serif;font-size:15.5px;line-height:1.55;color:var(--d-fg);transition:opacity .45s ease;text-align:center;}
+  .txt-now{opacity:0;}
+  .dopa__punch{opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .45s ease;transition-delay:0s;
+    text-align:center;font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:20px;color:var(--d-brand2);margin-top:14px;min-height:28px;}
+  .dopa__r{position:absolute;opacity:0;pointer-events:none;width:0;height:0;}
+  #dopa-now:checked ~ .dopa__pill .dopa__knob{transform:translateX(-100%);}
+  #dopa-now:checked ~ .dopa__pill .opt-then{color:var(--d-muted);}
+  #dopa-now:checked ~ .dopa__pill .opt-now{color:#0A0A0A;}
+  #dopa-now:checked ~ .dopa__scene .img-then{opacity:0;}
+  #dopa-now:checked ~ .dopa__scene .img-now{opacity:1;}
+  #dopa-now:checked ~ .dopa__scene .txt-then{opacity:0;}
+  #dopa-now:checked ~ .dopa__scene .txt-now{opacity:1;}
+  #dopa-now:checked ~ .dopa__scene .dopa__punch{opacity:1;transform:none;transition-delay:.28s;}
+  .dopa__r:focus-visible ~ .dopa__pill{outline:2px solid var(--d-brand2);outline-offset:3px;border-radius:999px;}
+  @media(prefers-reduced-motion:reduce){.dopa *{transition:none!important;}}
+
+  .sab{ --s-brand:var(--brand,#C9A84C); --s-brand2:var(--brand-2,#E4C978); --s-fg:var(--fg,#F4F4F4);
+    --s-soft:var(--fg-soft,#C7C7C7); --s-muted:var(--muted,#8C8C8C); --s-line:var(--line,rgba(255,255,255,.09));
+    --s-panel:var(--surface,#141414); --s-cream:#F2EBD7; --s-ease:cubic-bezier(.22,.61,.36,1);
+    box-sizing:border-box;direction:rtl;color:var(--s-fg);font-family:Heebo,system-ui,sans-serif;
+    max-width:480px;margin:0 auto;border-radius:20px;overflow:hidden;
+    background:#0A0A0A;background-image:radial-gradient(680px 360px at 82% -12%,rgba(201,168,76,.13),transparent 60%);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .sab *{box-sizing:border-box;}
+  .sab__in{padding:26px 18px 24px;}
+  .sab__title{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:34px;text-align:center;color:var(--s-brand2);letter-spacing:-.01em;margin:0 0 10px;}
+  .sab__sub{text-align:center;color:var(--s-soft);font-size:14px;line-height:1.6;max-width:34ch;margin:0 auto 20px;}
+  .sab__grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .scard{perspective:1300px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .scard__in{position:relative;transform-style:preserve-3d;transition:transform .65s var(--s-ease);min-height:236px;}
+  .scard.flipped .scard__in{transform:rotateY(180deg);}
+  .sface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:16px;padding:10px 10px 12px;display:flex;flex-direction:column;
+    background:var(--s-panel);border:1px solid var(--s-line);}
+  .sface.front{align-items:center;}
+  .scard:hover .sface.front{border-color:rgba(201,168,76,.5);}
+  .pic{width:100%;height:150px;border-radius:12px;overflow:hidden;background:var(--s-cream);
+    border:1px solid rgba(201,168,76,.25);margin-bottom:9px;}
+  .pic img{width:100%;height:100%;object-fit:contain;display:block;}
+  .sface.front h4{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:20px;color:var(--s-brand2);margin:2px 0 0;text-align:center;}
+  .flip{margin-top:auto;padding-top:6px;display:flex;align-items:center;gap:5px;color:var(--s-muted);font-size:11px;}
+  .flip svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7;}
+  .sface.back{transform:rotateY(180deg);background:#171310;border-color:rgba(216,101,79,.28);padding:14px 13px;}
+  .sface.back h4{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:17px;color:var(--s-brand2);margin:0 0 8px;}
+  .sface.back .voice{color:var(--s-fg);font-size:12.5px;line-height:1.45;margin:0 0 9px;}
+  .sface.back .does{color:var(--s-soft);font-size:12px;line-height:1.45;margin:0 0 8px;}
+  .sface.back .makes{color:#E39A8B;font-size:12px;line-height:1.45;padding-top:8px;border-top:1px solid rgba(216,101,79,.2);margin:0;}
+  @media(prefers-reduced-motion:reduce){.sab *{transition:none!important;}}
+
+  .ait{ --b:#5AA9E6; --b2:#8FC5F2; --coral:#D97757; --a-fg:#F4F4F4; --a-soft:#C7C7C7; --a-muted:#8C8C8C;
+    --a-line:rgba(255,255,255,.09); --a-panel:#141414; --a-ease:cubic-bezier(.22,.61,.36,1);
+    box-sizing:border-box;direction:rtl;color:var(--a-fg);font-family:Heebo,system-ui,sans-serif;
+    max-width:460px;margin:0 auto;border-radius:20px;overflow:hidden;
+    background:#0A0A0A;background-image:radial-gradient(680px 360px at 50% -14%,rgba(90,169,230,.15),transparent 62%);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  .ait *{box-sizing:border-box;}
+  .ait__in{padding:24px 18px 24px;}
+  .ait__kick{text-align:center;color:var(--b);font-size:12px;font-weight:700;letter-spacing:.14em;margin:0 0 8px;}
+  .ait__title{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:31px;text-align:center;color:var(--b2);letter-spacing:-.01em;margin:0 0 4px;}
+  .ait__sub{text-align:center;color:var(--a-muted);font-size:13px;margin:0 0 18px;}
+  .ccbot{display:flex;flex-direction:column;align-items:center;gap:12px;margin:8px 0 22px;}
+  .ccbot__art svg{display:block;width:172px;height:auto;filter:drop-shadow(0 10px 24px rgba(0,0,0,.55));}
+  .ccbot__cap{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:23px;color:#F0EAE4;letter-spacing:.01em;}
+  .acc{display:flex;flex-direction:column;gap:9px;}
+  .acc__item{background:var(--a-panel);border:1px solid var(--a-line);border-radius:12px;overflow:hidden;transition:border-color .2s;}
+  .acc__item.open{border-color:rgba(90,169,230,.5);}
+  .acc__head{width:100%;display:flex;align-items:center;gap:11px;background:none;border:none;cursor:pointer;
+    padding:13px 13px;font-family:inherit;color:var(--a-fg);text-align:start;}
+  .acc__n{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;color:#06263f;background:linear-gradient(180deg,var(--b2),var(--b));}
+  .acc__t{flex:1;font-size:15.5px;font-weight:700;}
+  .acc__ic{flex-shrink:0;color:var(--b);font-size:22px;line-height:1;transition:transform .35s var(--a-ease);font-weight:400;}
+  .acc__item.open .acc__ic{transform:rotate(45deg);}
+  .acc__panel{max-height:0;overflow:hidden;transition:max-height .4s var(--a-ease);}
+  .acc__item.open .acc__panel{max-height:320px;}
+  .acc__inner{padding:2px 15px 15px 46px;}
+  .acc__inner ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .acc__inner li{position:relative;padding-inline-start:16px;font-size:13.5px;line-height:1.5;color:var(--a-soft);}
+  .acc__inner li::before{content:'';position:absolute;inset-inline-start:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--b);}
+  .acc__inner li b{color:var(--a-fg);font-weight:700;}
+  @media(prefers-reduced-motion:reduce){.ait *{transition:none!important;}}
 </style>
 </head>
 <body>
@@ -880,30 +1044,89 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
 
   <!-- MOBILE: full-screen scroll-snap panels — slide + caption, one topic each -->
   <div class="commx-mobile msnap">
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">מהי הצלחה</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div><h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3><p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p><p class="cxfirst"><span class="ltr">01</span> · ההבדל בין הצלחה חיצונית להצלחה פנימית.</p></div>
-      <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
+    <!-- 0 · פתיח קהילה -->
+    <div class="mpanel mpanel-kit">
+      <div class="comm-intro">
+        <div class="comm-intro__track">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
+        <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
+        <p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p>
+        <p class="comm-intro__hint">טעימה מההרצאות — נסו לגעת בכרטיסים</p>
+      </div>
     </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הנאה מול אושר</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>הנאה מול אושר</h3><p>לפעמים הדרך אל האושר לא מהנה, וההנאות מרחיקות אותנו מהאושר.</p></div>
+    <!-- 1 · הצלחה (זהב) -->
+    <div class="mpanel mpanel-kit">
+      <section class="succ" aria-label="מי מצליח יותר">
+        <div class="succ__in">
+          <img class="succ__hero" src="media/kit-1.jpg" alt="שני שחקני כדורסל">
+          <div class="succ__q"><span class="ext">מי מצליח יותר?</span><span class="intl">האם הוא עדיין מצליח יותר?</span></div>
+          <div class="succ__cols">
+            <div class="pcard hi"><div class="pinner">
+              <div class="pface front"><h4>שחקן א׳</h4>
+                <li><span class="d"></span>NBA — הליגה הגדולה בעולם</li><li><span class="d"></span>200 אלף ₪ בחודש</li><li><span class="d"></span>הכי טוב בקבוצה שלו</li><li><span class="d"></span>נשוי + 2</li></div>
+              <div class="pface back"><h4>שחקן א׳</h4><span class="succ__tag">מאחורי הקלעים</span>
+                <li><span class="d"></span>מתוסכל — שדרוג של 50% בחוזה תקוע כבר שנה וחצי</li><li><span class="d"></span>במשבר זוגי קשה</li><li><span class="d"></span>מרוחק מהילדים — כל הזמן באימונים</li><li><span class="d"></span>למרות החוזה השמן — מהמר ובחובות</li></div>
+            </div></div>
+            <div class="pcard"><div class="pinner">
+              <div class="pface front"><h4>שחקן ב׳</h4>
+                <li><span class="d"></span>ליגה לאומית — ישראל</li><li><span class="d"></span>12 אלף ₪ ברוטו</li><li><span class="d"></span>שחקן ממוצע לגמרי</li><li><span class="d"></span>נשוי + 2</li></div>
+              <div class="pface back"><h4>שחקן ב׳</h4><span class="succ__tag">מאחורי הקלעים</span>
+                <li><span class="d"></span>מרוצה — העלו לו את המשכורת ב-10% החודש</li><li><span class="d"></span>עלה ליגה השנה</li><li><span class="d"></span>חסך והתנהל נכון — קנה בית</li><li><span class="d"></span>הקצב הרגוע — משחק עם הילדים כל שבוע</li></div>
+            </div></div>
+          </div>
+          <div class="succ__votes"><button class="vote" data-p="a">שחקן א׳</button><button class="vote" data-p="b">שחקן ב׳</button></div>
+          <p class="succ__line">אנחנו נוטים להגדיר הצלחה דרך נתונים חיצוניים. התבוננות קטנה יכולה לעזור לנו לגלות שלא בהכרח.</p>
+          <button class="succ__re" type="button">↺ בחן שוב</button>
+        </div>
+      </section>
     </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">התפתחות אישית</div><div class="stitle">הקולות בראש</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy"><div class="cxtrack">התפתחות אישית</div><h3>הקולות בראש</h3><p>לזהות את הקולות הפנימיים וללמוד לנהל אותם.</p></div>
+    <!-- 2 · דופמין (זהב) -->
+    <div class="mpanel mpanel-kit">
+      <section class="dopa" aria-label="אותו דופמין, עולם אחר">
+        <div class="dopa__in">
+          <p class="dopa__eyebrow">אותו דופמין. עולם אחר.</p>
+          <div class="dopa__anchor">
+            <p class="def">הדופמין הוא הורמון התגמול, בכל פעם שאני חושב על משהו שהמוח מזהה כחיוני אז הוא מפריש דופמין שמעורר בי חשק ודוחף אותי להשיג אותו.</p>
+            <details class="dopa__ex"><summary><span class="chev">›</span> דוגמה</summary>
+              <p class="ex-body">ניקח לדוגמה אמא שרוצה שהבן שלה יסדר את החדר, כדי שהוא יבצע את המשימה אז היא נותנת לו צ'ופר חצי שעה ערב סרט, ככה הדופמין פועל בגוף כדי שנבצע משימות חיוניות הוא מתגמל אותנו בהרגשה טובה לפי המעשה כדי שנבצע אותו.</p></details>
+          </div>
+          <input class="dopa__r" type="radio" name="dopaEra" id="dopa-then" checked>
+          <input class="dopa__r" type="radio" name="dopaEra" id="dopa-now">
+          <div class="dopa__pill"><span class="dopa__knob"></span>
+            <label class="dopa__opt opt-then" for="dopa-then">פעם</label>
+            <label class="dopa__opt opt-now" for="dopa-now">היום</label></div>
+          <div class="dopa__scene">
+            <div class="dopa__img">
+              <div class="lyr img-then" style="background-image:url('media/kit-2.jpg')"></div>
+              <div class="lyr img-now" style="background-image:url('media/kit-3.jpg')"></div></div>
+            <div class="dopa__txt">
+              <p class="lyr txt-then">אם נחזור אחורה בזמן לתקופה שבה כדי להשיג ארוחה טובה היינו צריכים לחדד את החנית לתת נשיקה בראש לאמא ולקוות שנחזור עם ארוחה, המטרה של הדופמין הייתה לדחוף אותנו לפעול כדי שלא נגווע ברעב.</p>
+              <p class="lyr txt-now">אבל מאז המצב קצת השתנה ואנחנו יכולים להזמין וולט ובתקופה שלנו אנחנו מתמודדים עם אריות ונמרים מסוג שונה.</p></div>
+            <p class="dopa__punch">אריות ונמרים מסוג שונה.</p>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">Claude Code</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy ai"><div class="cxtrack">בינה מלאכותית</div><h3><span class="ltr">Claude Code</span></h3><p>לכתוב קוד ולבנות דברים אמיתיים בעזרת AI.</p></div>
+    <!-- 3 · חבלנים (זהב) -->
+    <div class="mpanel mpanel-kit">
+      <section class="sab" aria-label="חבלנים">
+        <div class="sab__in">
+          <h2 class="sab__title">חבלנים</h2>
+          <p class="sab__sub">דפוסי חשיבה שליליים שנוצרים אצלנו מילדות. אצל כל אחד מאיתנו מופיע לפחות חבלן ראשי וחבלן משני מהרשימה.</p>
+          <div class="sab__grid" id="sabGrid"></div>
+        </div>
+      </section>
     </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">סוכני AI</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy ai"><div class="cxtrack">בינה מלאכותית</div><h3>סוכני AI</h3><p>להבין ולבנות סוכנים שעושים עבודה בשבילך.</p></div>
-    </div>
-    <div class="mpanel mpanel-comm">
-      <div class="mpanel-slide"><div class="sph"><div class="stag">בינה מלאכותית</div><div class="stitle">פרויקט אישי</div><div class="snote">⚠️ שקופית מההרצאה</div></div></div>
-      <div class="mpanel-commcopy ai"><div class="cxtrack">בינה מלאכותית</div><h3>פרויקט אישי</h3><p>כל מתאמן בונה פרויקט משלו, צעד-צעד.</p></div>
+    <!-- 4 · פרויקט אישי (כחול · AI) -->
+    <div class="mpanel mpanel-kit">
+      <section class="ait" aria-label="לבנות פרויקט אישי עם AI">
+        <div class="ait__in">
+          <p class="ait__kick">מפגשי הקהילה · לבנות עם AI</p>
+          <h2 class="ait__title">פרויקט אישי</h2>
+          <p class="ait__sub">מ-0 למוצר, עם AI — טעימה מההדרכה</p>
+          <div class="ccbot"><div class="ccbot__art" id="ccbot"></div><div class="ccbot__cap">Claude Code</div></div>
+          <div class="acc" id="acc"></div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -1140,7 +1363,12 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     //       בשקופית האחרונה הנעילה משתחררת וממשיכים לאזור הבא. אין "חטיפת-גלילה" ואין
     //       scroll-snap (שניהם גרמו לבאגים) — רק נעילה נקייה + כפתור. הדסקטופ לא מושפע. =====
     // נעילת-גלילה: חוסמת את מחוות הגלילה (touchmove/wheel) כשנעול. מעבר קדימה רק בכפתור.
-    function blockScroll(e){ if(scrollLocked) e.preventDefault(); }
+    function blockScroll(e){
+      if(!scrollLocked) return;
+      // מאפשרים גלילה פנימית בשקופית אינטראקטיבית גבוהה (overscroll-behavior:contain מונע דליפה לעמוד)
+      if(e.target && e.target.closest && e.target.closest('.mpanel-kit')) return;
+      e.preventDefault();
+    }
     window.addEventListener('touchmove', blockScroll, {passive:false});
     window.addEventListener('wheel',     blockScroll, {passive:false});
     var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#community','.commx-mobile':'#check'};
@@ -1217,7 +1445,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     }, 800); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
 
     pinMobileScene('.commx-mobile',1240,function(i){
-      document.body.classList.toggle('ai-mode', i>=3);
+      document.body.classList.toggle('ai-mode', i>=4); // שקופית 4 = פרויקט אישי/AI (כחול)
     }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
 
     // כפתור "המשך" הצף — מקדם שקופית אחת בסצנה שבמסך; בשקופית האחרונה ממשיך לסקשן הבא.
@@ -1261,6 +1489,70 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
 })();
 </script>
 <!-- Vercel Speed Insights (LCP/CLS/INP) — פעיל רק כשמארחים ב-Vercel; defer, לא מזיק במקומות אחרים -->
+<!-- ===== JS של שקופיות הקהילה האינטראקטיביות (kit · ממודר, IIFE) ===== -->
+<script>
+(function(){
+  var succ=document.querySelector('.succ'); if(!succ) return;
+  succ.querySelectorAll('.vote').forEach(function(b){b.addEventListener('click',function(){succ.classList.add('revealed');});});
+  var re=succ.querySelector('.succ__re'); if(re) re.addEventListener('click',function(){succ.classList.remove('revealed');});
+})();
+(function(){
+  var g=document.getElementById('sabGrid'); if(!g) return;
+  var SAB=[
+    {n:"השופט", img:"media/kit-4.jpg", v:"הקול שמחפש מה לא בסדר בי, באחרים או במצב.", does:"גורם לי לשפוט את עצמי ואת האחרים בלי הפסקה.", makes:"יוצר ביקורת עצמית, כעס, אשמה והשוואות."},
+    {n:"המרצה", img:"media/kit-5.jpg", v:"גורם לי לרצות אחרים כדי לקבל אישור ואהבה.", does:"גורם לי לוותר על עצמי כדי שיאהבו אותי.", makes:"יוצר קושי להגיד לא, ריצוי ושחיקה."},
+    {n:"המשיג היתר", img:"media/kit-6.jpg", v:"הקול שאומר לי שאני שווה רק לפי ההצלחות והתוצאות שלי.", does:"גורם לי לרדוף אחרי הישגים כדי להרגיש שווה.", makes:"יוצר לחץ, פחד מכישלון וקושי ליהנות מהדרך."},
+    {n:"הקורבן", img:"media/kit-7.jpg", v:"הקול שגורם לי להרגיש שלא מבינים אותי ושהכול קורה לי.", does:"גורם לי להרגיש חסר אונים או לא מובן.", makes:"יוצר רחמים עצמיים, פסיביות ותקיעות."},
+    {n:"הדקדקן", img:"media/kit-8.jpg", v:"הקול שחייב שהכול יהיה מסודר, מדויק ומושלם.", does:"גורם לי להיתקע על סדר, דיוק ושלמות.", makes:"יוצר נוקשות, ביקורתיות וקושי לשחרר."},
+    {n:"הנמנע", img:"media/kit-9.jpg", v:"הקול שגורם לי לברוח ממה שקשה, לא נעים או מפחיד.", does:"גורם לי לדחות או לברוח ממה שלא נעים.", makes:"יוצר דחיינות, בעיות מצטברות ופחד להתמודד."},
+    {n:"השולט", img:"media/kit-10.jpg", v:"הקול שחייב שהכול יקרה בדרך שלי ובקצב שלי.", does:"גורם לי לנסות לשלוט באנשים ובמצבים.", makes:"יוצר מתח, כעס וקושי לסמוך על אחרים."},
+    {n:"הדרוך", img:"media/kit-11.jpg", v:"הקול שכל הזמן מחפש סכנות, בעיות ומה עלול להשתבש.", does:"גורם לי לחפש כל הזמן מה עלול להשתבש.", makes:"יוצר חרדה, עומס מחשבתי וקושי להירגע."},
+    {n:"הרציונלי מדי", img:"media/kit-12.jpg", v:"הקול שמנסה לפתור הכול דרך היגיון ומרחיק רגשות.", does:"גורם לי לנתח הכול במקום להרגיש.", makes:"יוצר ריחוק רגשי וקושי להתחבר לאחרים."},
+    {n:"חסר המנוחה", img:"media/kit-13.jpg", v:"הקול שתמיד מחפש את הדבר הבא ולא נותן לי להיות בשקט.", does:"גורם לי לחפש כל הזמן גירוי או שינוי.", makes:"יוצר חוסר סיפוק, פיזור וקושי להתמיד."}
+  ];
+  var ico='<span class="flip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg>הפוך</span>';
+  g.innerHTML=SAB.map(function(s){
+    return '<div class="scard" role="button" tabindex="0" aria-label="'+s.n+'"><div class="scard__in">'+
+        '<div class="sface front"><div class="pic"><img src="'+s.img+'" alt="" loading="lazy"></div><h4>'+s.n+'</h4>'+ico+'</div>'+
+        '<div class="sface back"><h4>'+s.n+'</h4><p class="voice">'+s.v+'</p><p class="does">'+s.does+'</p><p class="makes">'+s.makes+'</p></div>'+
+      '</div></div>';
+  }).join('');
+  g.querySelectorAll('.scard').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('flipped');});
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.classList.toggle('flipped');} });
+  });
+})();
+(function(){
+  var acc=document.getElementById('acc'); if(!acc) return;
+  var SIL=["..................","......######......","....##########....","...############...","..##############..","..##############..","..###oE####oE###..","..###EE####EE###..","..##############..","..##############..","..##############..","..##############..","..##############..","...############...","...############...","....##########....","...###......###...","...###......###...","................."];
+  var CL={L:"#E8A283",H:"#D3835F",X:"#BE603D",S:"#9E4E30",D:"#7E3D24",E:"#201B1A",o:"#F0E7E1"};
+  function _b(x,y){ if(y<0||y>=SIL.length||x<0) return false; var r=SIL[y]; if(x>=r.length) return false; var c=r[x]; return c==='#'||c==='E'||c==='o'; }
+  var P=10, RW=18*P, RH=SIL.length*P;
+  var s='<svg viewBox="0 0 '+RW+' '+RH+'" width="'+RW+'" height="'+RH+'" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code">';
+  for(var y=0;y<SIL.length;y++){var row=SIL[y];for(var x=0;x<row.length;x++){var ch=row[x];if(ch==='.')continue;var f;if(ch==='E')f=CL.E;else if(ch==='o')f=CL.o;else{if(!_b(x,y-1))f=CL.L;else if(!_b(x,y+1))f=CL.D;else if(!_b(x+1,y))f=CL.S;else if(!_b(x-1,y))f=CL.H;else f=CL.X;}s+='<rect x="'+(x*P)+'" y="'+(y*P)+'" width="'+P+'" height="'+P+'" fill="'+f+'"/>';}}
+  s+='</svg>';
+  var _el=document.getElementById('ccbot'); if(_el)_el.innerHTML=s;
+  var DATA=[
+    {t:"מתחילים · מה מתקינים", items:["<b>VS Code</b> — עורך הקוד, החלון שבו הכול קורה","<b>Node</b> — המנוע שמריץ את הקוד במחשב שלך","<b>Claude Code</b> — עוזר ה-AI שיושב בטרמינל ובונה איתך"]},
+    {t:"איך מדברים עם קלוד", items:["בשפה רגילה, לא בקוד — אם אתה יודע להסביר, אתה כבר יודע לבנות","<b>Plan Mode</b> — קלוד חושב ומראה תוכנית לפני שהוא פועל","אתה מוביל — שום שינוי לא קורה בלי אישור שלך"]},
+    {t:"מרעיון למוצר", items:["<b>אפיון</b> — נחפש בעיה, נחשוב על פתרון, ונבין למי הוא מיועד","<b>תוכנית עבודה</b> — מפרקים למשימות קטנות ומסודרות"]},
+    {t:"הכלים הגדולים · כשצריך", items:["<b>GitHub</b> — הבית של הקוד: גיבוי, גרסאות ושחזור","<b>Supabase</b> — מסד נתונים וחשבונות משתמשים (בענן)","<b>Vercel</b> — מעלה את המוצר לאוויר בלחיצה"]},
+    {t:"צוות הסוכנים · מתקדם", items:["לא קלוד אחד — צוות שלם, כל סוכן מומחה במשימה שלו","אפיון · תכנון · קוד · בדיקות — עובדים במקביל","אתה כבר לא מתכנת — אתה מנהל צוות שבונה בשבילך"]}
+  ];
+  acc.innerHTML=DATA.map(function(d,i){
+    return '<div class="acc__item"><button class="acc__head" aria-expanded="false"><span class="acc__n">'+(i+1)+'</span><span class="acc__t">'+d.t+'</span><span class="acc__ic">+</span></button>'+
+      '<div class="acc__panel"><div class="acc__inner"><ul>'+d.items.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div></div></div>';
+  }).join('');
+  var items=[].slice.call(acc.querySelectorAll('.acc__item'));
+  items.forEach(function(it){
+    it.querySelector('.acc__head').addEventListener('click',function(){
+      var isOpen=it.classList.contains('open');
+      items.forEach(function(o){ o.classList.remove('open'); o.querySelector('.acc__head').setAttribute('aria-expanded','false'); });
+      if(!isOpen){ it.classList.add('open'); this.setAttribute('aria-expanded','true'); }
+    });
+  });
+})();
+</script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
 <!-- Tally embed: מפעיל את ה-iframe (data-tally-src) ואת הפופאפים. אם חסום — הקישורים הישירים עובדים. -->
 <script async src="https://tally.so/widgets/embed.js"></script>
