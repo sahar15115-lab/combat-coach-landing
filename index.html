@@ -54,9 +54,9 @@
 
 <style>
 /* ============================================================
-   קומבאט קואץ׳ — Landing Page (4 scenes, product-led)
+   קומבאט אתלט — Landing Page (4 scenes, product-led)
    ⚠️ צבעים = PLACEHOLDER. המעצב מחליף ערכי :root בלבד.
-   ⚠️ שם המאמן: "סהר שמש". שם המותג: "קומבאט קואץ׳".
+   ⚠️ שם המאמן: "סהר שמש". שם המותג: "קומבאט אתלט".
    ⚠️ מדיה (תמונות/וידאו) = placeholders מסומנים "החלף".
    ============================================================ */
 :root{
@@ -566,8 +566,12 @@ body.cta-hide .scroll-cue{opacity:1;pointer-events:auto}
 .phone-cta:hover{filter:brightness(1.05)} .phone-cta:active{transform:scale(.97)}
 .phone-cta.accent{background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;
   box-shadow:0 6px 20px -6px rgba(90,169,230,.7),inset 0 1px 0 rgba(255,255,255,.35)}
-/* בסצנת האפליקציה יש כבר כפתור פנימי — מסתירים את ה"המשך" הצף שלא יהיה כפול */
-body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
+/* R-06 (סקירת עיניים-טריות): בעבר הכפתור הצף הוסתר לגמרי בסצנת האפליקציה כי כבר יש כפתור
+   בתוך הטלפון — אבל מי שלא שם לב לכפתור הפנימי היה נתקע ("מלכודת הטלפון"), בלי שום דרך
+   נראית-לעין להתקדם. עכשיו הוא נשאר גלוי (מוקטן/מוזז כדי לא להתנגש עם מוקאפ הטלפון) —
+   שתי דרכי-קידום זמינות תמיד. */
+body.app-scene .scroll-cue{bottom:.6rem;transform:translateX(-50%) scale(.86)}
+body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 
 /* ============ MOBILE: full-screen scroll-snap panels (pure CSS, no JS) ============ */
 @media(max-width:900px){
@@ -646,7 +650,11 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
    מונע דליפה לעמוד; הנעילה נשארת — הכפתור מקדם בין השקופיות). */
 @media(max-width:900px){
   .msnap.pin-active .mpanel-kit{display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;padding:calc(5.2rem + env(safe-area-inset-top,0px)) .7rem 4.5svh}
+    -webkit-overflow-scrolling:touch;padding-top:calc(5.2rem + env(safe-area-inset-top,0px));
+    padding-inline:.7rem;
+    /* שמורת-מרחב מתחת לתוכן: הכפתור הצף "המשך" קבוע-מסך ולא חלק מהזרימה — בלי המרווח הזה
+       הוא מתיישב על כפתורי ההצבעה/היפוך שבתחתית השקופיות (R-05). */
+    padding-bottom:calc(4.5svh + 92px + env(safe-area-inset-bottom,0px))}
 }
 /* עטיפת שקופית: margin-block:auto ממרכז אנכית כשקצר, ונפתח לגלילה כשגבוה מהמסך */
 .kit-wrap{margin-block:auto;width:100%}
@@ -835,8 +843,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
         <a href="#app" class="nav-link">האפליקציה</a>
         <a href="#community" class="nav-link">הקהילה</a>
       </div>
-      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">בניית תוכנית חינם</a>
-      <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">השארת פרטים</a>
+      <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">תוכנית חינם</a>
+      <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">דבר איתי</a>
     </div>
   </div>
 </nav>
@@ -850,8 +858,8 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-topcta">
-    <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">בניית תוכנית חינם</a>
-    <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">השארת פרטים</a>
+    <a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn btn-sm js-tally cta-primary">תוכנית חינם</a>
+    <a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn btn-sm btn-ghost js-tally cta-secondary">דבר איתי</a>
   </div>
   <div class="wrap hero-center">
     <h1 class="hero-title">קומבאט אתלט</h1>
@@ -859,7 +867,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     <p class="hero-sub hero-mix">קאליסטניקס · אגרוף תאילנדי · פיתוח יכולות אתלטיות</p>
     <div class="hero-duo">
       <div class="hero-duo-copy">
-        <p>מעבר לאימון — כל מתאמן מקבל מעטפת שתעזור לו להתפתח בצורה הטובה ביותר, גם מחוץ לאימון:</p>
+        <p>האימון הוא רק ההתחלה. אתה מקבל גם אפליקציה עם תוכנית אישית, מפגשי קהילה — ואותי, גם בין האימונים.</p>
         <p class="hero-mix sm">אפליקציה · מפגשי קהילה · תוכנית אימון אישית</p>
       </div>
       <figure class="hero-photowrap">
@@ -868,7 +876,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       </figure>
     </div>
     <div class="hero-cta-col">
-      <a href="#train" class="btn hero-cta hero-discover">לחץ כדי לגלות עוד פרטים</a>
+      <a href="#train" class="btn hero-cta hero-discover">בואו נראה איך זה עובד</a>
     </div>
     <p class="hero-proof"><b>סהר שמש</b> · מעל <span class="ltr">12</span> שנות ניסיון בלחימה, קאליסטניקס וליווי מתאמנים.</p>
   </div>
@@ -937,19 +945,19 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     <div class="appx-pin" id="appxPin">
       <div class="appx-stage">
         <div class="ax" data-i="0"><div class="sx-n"><span class="ltr">01</span></div>
-          <h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3>
+          <h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט אתלט</h3>
           <p>האפליקציה שפיתחתי במיוחד עבור המתאמנים שלי מלווה אותך גם בין האימונים.</p>
           <button type="button" class="btn btn-sm axbtn" data-next="1">איך זה עובד?</button></div>
         <div class="ax" data-i="1"><div class="sx-n"><span class="ltr">02</span></div>
           <h3>שאלון קצר — והאפליקציה מבינה אותך</h3>
           <p>מבינה מה הרמה, המטרות והציוד שעומד לרשותך — ומתאימה תוכנית במיוחד בשבילך.</p>
-          <button type="button" class="btn btn-sm axbtn" data-next="2">בנה לי תוכנית</button></div>
+          <button type="button" class="btn btn-sm axbtn" data-next="2">תראה לי עוד</button></div>
         <div class="ax" data-i="2"><div class="sx-n"><span class="ltr">03</span></div>
           <h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3>
           <p>אתה מדווח בסוף כל סט — והתוכנית מתאימה את עצמה לקצב שלך.</p>
           <button type="button" class="btn btn-sm axbtn" data-next="3">גלה לי עוד</button></div>
         <div class="ax" data-i="3"><div class="sx-n accent"><span class="ltr">04</span></div>
-          <h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3>
+          <h3>וגם: הדרכות תזונה, שינה והרגלים — כל מה שקורה בין האימונים</h3>
           <p>תזונה, הרגלים, יסודות מואי תאי ועוד — הכל בתוך האפליקציה.</p>
           <button type="button" class="btn btn-sm axbtn" data-goto="#community" style="background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;border-color:transparent">להמשך המסע ↓</button></div>
       </div>
@@ -959,7 +967,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       <div class="appx-phone-wrap">
         <div class="phone"><div class="phone-screen">
           <!-- מסכים אמיתיים מהאפליקציה -->
-          <div class="ps media on" data-i="0"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
+          <div class="ps media on" data-i="0"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט אתלט"></div>
           <div class="ps media" data-i="1"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
           <div class="ps media" data-i="2"><img class="psfull" src="media/app-building.jpg" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
           <div class="ps media accent" data-i="3"><img class="psfull" src="media/app-guides.jpg" alt="הדרכות באפליקציה"></div>
@@ -971,9 +979,9 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
   <!-- MOBILE: full-screen scroll-snap panels — real phone, one screen each -->
   <div class="appx-mobile msnap">
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט קואץ׳</h3></div>
+      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט אתלט</h3></div>
       <div class="phone"><div class="phone-screen">
-        <div class="ps media on"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט קואץ׳"></div>
+        <div class="ps media on"><img class="psfull" src="media/app-home.jpg" alt="מסך הבית של אפליקציית קומבאט אתלט"></div>
         <button type="button" class="phone-cta" data-mnext>איך זה עובד?</button>
       </div></div>
     </div>
@@ -981,7 +989,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">02</span></div><h3>שאלון קצר — והאפליקציה מבינה את הרמה, המטרות והציוד שלך</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media on"><img class="psfull" src="media/app-quiz.jpg" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
-        <button type="button" class="phone-cta" data-mnext>בנה לי תוכנית</button>
+        <button type="button" class="phone-cta" data-mnext>תראה לי עוד</button>
       </div></div>
     </div>
     <div class="mpanel mpanel-app">
@@ -992,7 +1000,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
       </div></div>
     </div>
     <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>ועוד הדרכות ופיצ'רים שיעזרו לכם להשתפר</h3></div>
+      <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>וגם: הדרכות תזונה, שינה והרגלים — כל מה שקורה בין האימונים</h3></div>
       <div class="phone"><div class="phone-screen">
         <div class="ps media accent on"><img class="psfull" src="media/app-guides.jpg" alt="הדרכות באפליקציה"></div>
         <button type="button" class="phone-cta accent" data-goto="#community">להמשך המסע ↓</button>
@@ -1169,7 +1177,7 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     </div>
   </div>
 
-  <div class="wrap"><div class="comm-cta reveal"><a href="https://tally.so/r/VLyPrl?source=landing" target="_blank" rel="noopener" data-tally-form="VLyPrl" class="btn js-tally">אני רוצה להצטרף למחזור הקרוב</a></div></div>
+  <div class="wrap"><div class="comm-cta reveal"><a href="https://tally.so/r/44pM9o?source=landing" target="_blank" rel="noopener" data-tally-form="44pM9o" class="btn js-tally">אני רוצה תוכנית אישית — בואו נתחיל</a></div></div>
 </section>
 
 <!-- ===================== FIT ===================== -->
@@ -1219,23 +1227,23 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
     <h2 class="reveal" style="text-align:center">שאלות נפוצות</h2>
     <div class="faq" style="margin-top:var(--s6)">
       <details class="reveal"><summary>צריך ניסיון קודם?</summary><p>לא. האימונים והתוכנית באפליקציה מותאמים לרמה שלך, ואני מלווה אותך צעד-צעד. כל אחד מתחיל מאיפה שהוא נמצא.</p></details>
-      <details class="reveal"><summary>לאיזה גילאים זה מתאים?</summary><p>התהליך בנוי לצעירים. [להתאמה — ציין טווח גילאים מדויק.] אם אתה לא בטוח שזה מתאים לך, שאל אותי בבדיקת ההתאמה.</p></details>
+      <details class="reveal"><summary>לאיזה גילאים זה מתאים?</summary><p>התהליך בנוי לצעירים. [להתאמה — ציין טווח גילאים מדויק.] אם אתה לא בטוח שזה מתאים לך, תשלח לי הודעה ונבדוק ביחד.</p></details>
       <details class="reveal"><summary>איפה מתקיימים האימונים?</summary><p>[פרטי מיקום האימון — להשלמה.] מפגש הקהילה מתקיים במרכז הצעירים בבאר יעקב.</p></details>
       <details class="reveal"><summary>מה כולל האימון השבועי?</summary><p>אימון קבוצה של כשעה: חימום, קאליסטניקס, אתלטיות ואגרוף תאילנדי — כוח, שליטה בגוף וביטחון.</p></details>
-      <details class="reveal"><summary>האפליקציה כלולה בתהליך?</summary><p>כן. גישה לאפליקציית קומבאט קואץ׳ היא חלק מהתהליך — תוכנית אישית, מעקב ביצועים והדרכות.</p></details>
+      <details class="reveal"><summary>האפליקציה כלולה בתהליך?</summary><p>כן. גישה לאפליקציית קומבאט אתלט היא חלק מהתהליך — תוכנית אישית, מעקב ביצועים והדרכות.</p></details>
       <details class="reveal"><summary>צריך ציוד בבית?</summary><p>לא בהכרח. התוכנית באפליקציה נבנית לפי הציוד שיש לך — גם אם זה רק משקל גוף.</p></details>
-      <details class="reveal"><summary>מה קורה אם אני מפספס אימון?</summary><p>לא נורא. האפליקציה ממשיכה ללוות אותך בין המפגשים, והמערכת מזהה חוסר עקביות ויכולה לעזור לך לחזור למסלול.</p></details>
-      <details class="reveal"><summary>כמה זמן נמשך התהליך?</summary><p>[משך/מבנה המחזור — להשלמה.] נדבר על זה יחד בבדיקת ההתאמה.</p></details>
-      <details class="reveal"><summary>איך נרשמים למחזור הקרוב?</summary><p>ממלאים בדיקת התאמה קצרה כאן בדף, ואני חוזר אליך עם כל הפרטים.</p></details>
+      <details class="reveal"><summary>מה קורה אם אני מפספס אימון?</summary><p>קורה. האפליקציה שמה לב כשנעלמת, ועוזרת לך לחזור — בלי נאומים.</p></details>
+      <details class="reveal"><summary>כמה זמן נמשך התהליך?</summary><p>[משך/מבנה המחזור — להשלמה.] נדבר על זה יחד כשתמלא את השאלון.</p></details>
+      <details class="reveal"><summary>איך נרשמים למחזור הקרוב?</summary><p>ממלאים את השאלון כאן בדף (הוא בונה לך תוכנית מותאמת אישית), ואני חוזר אליך עם כל הפרטים.</p></details>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div><span class="logo">קומבאט<span> קואץ׳</span></span></div>
-    <div>© <span class="ltr">2026</span> קומבאט קואץ׳ · סהר שמש · גוף · משמעת · חשיבה</div>
-    <div><a href="#check">בדיקת התאמה</a></div>
+    <div><span class="logo">קומבאט<span> אתלט</span></span></div>
+    <div>© <span class="ltr">2026</span> קומבאט אתלט · סהר שמש · גוף · משמעת · חשיבה</div>
+    <div><a href="#check">תוכנית חינם</a></div>
   </div>
 </footer>
 
