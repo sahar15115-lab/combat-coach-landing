@@ -171,6 +171,11 @@ html.js .reveal.in{opacity:1;transform:none}
   linear-gradient(200deg,#161616,#0A0A0A 70%)}
 .hero-bg .ph-tag{position:absolute;top:40%;inset-inline-start:6%;color:rgba(255,255,255,.14);
   font-weight:800;font-size:.8rem;letter-spacing:.1em;transform:rotate(-2deg)}
+/* R-28: וידאו רקע להירו — שקוף עד שהניגון מתחיל (לא משפיע על LCP), מעומעם כדי שהטקסט יישאר מלך */
+.hero-bg .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.4s ease}
+.hero-bg .hero-vid.on{opacity:.5}
+@media(prefers-reduced-motion:reduce){.hero-bg .hero-vid{display:none}}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:
   linear-gradient(to top,rgba(10,10,10,.96) 8%,rgba(10,10,10,.55) 45%,rgba(10,10,10,.25) 100%)}
 .hero .wrap{position:relative;z-index:2;width:100%}
@@ -855,6 +860,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 <header class="hero">
   <div class="hero-bg" aria-hidden="true">
     <div class="ph-media"></div>
+    <!-- R-28: וידאו רקע קולנועי — נטען רק אחרי שהדף מוכן (data-src), לא פוגע ב-LCP -->
+    <video class="hero-vid" muted loop playsinline preload="none" data-src="media/train-muaythai.mp4" poster="media/train-muaythai.jpg"></video>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-topcta">
@@ -1537,6 +1544,20 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 </script>
 <!-- Vercel Speed Insights (LCP/CLS/INP) — פעיל רק כשמארחים ב-Vercel; defer, לא מזיק במקומות אחרים -->
 <!-- ===== JS של שקופיות הקהילה האינטראקטיביות (kit · ממודר, IIFE) ===== -->
+<script>
+/* R-28: וידאו רקע להירו — מתחיל לרדת רק אחרי שכל הדף נטען (אפס פגיעה ב-LCP/TBT),
+   מדלג על reduced-motion ועל חיבור במצב חיסכון-דאטה. */
+(function(){
+  var v=document.querySelector('.hero-vid'); if(!v) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var conn=navigator.connection||{}; if(conn.saveData) return;
+  window.addEventListener('load',function(){
+    v.src=v.dataset.src;
+    var p=v.play(); if(p&&p.catch)p.catch(function(){});
+    v.addEventListener('playing',function(){v.classList.add('on');},{once:true});
+  });
+})();
+</script>
 <script>
 (function(){
   var succ=document.querySelector('.succ'); if(!succ) return;
