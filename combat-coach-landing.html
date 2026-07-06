@@ -645,14 +645,30 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
 /* מיכל הפאנל — ממורכז אופקית, גלילה פנימית אם השקופית גבוהה ממסך (overscroll-contain
    מונע דליפה לעמוד; הנעילה נשארת — הכפתור מקדם בין השקופיות). */
 @media(max-width:900px){
-  .msnap.pin-active .mpanel-kit{display:block;overflow-y:auto;overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;padding:calc(3.4rem + env(safe-area-inset-top,0px)) .7rem 5svh}
+  .msnap.pin-active .mpanel-kit{display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:calc(5.2rem + env(safe-area-inset-top,0px)) .7rem 4.5svh}
 }
+/* עטיפת שקופית: margin-block:auto ממרכז אנכית כשקצר, ונפתח לגלילה כשגבוה מהמסך */
+.kit-wrap{margin-block:auto;width:100%}
+/* תווית-נושא עקבית מעל כל שקופית — ממסגרת: "זו טעימה מנושא בהרצאה" */
+.kit-eyebrow{max-width:480px;margin:0 auto .6rem;text-align:center;font-weight:800;font-size:.85rem;
+  letter-spacing:.1em;color:var(--brand-2);text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.kit-eyebrow.blue{color:#8FC5F2}
 .comm-intro{max-width:460px;margin:0 auto;text-align:center;padding:0 1rem}
 .comm-intro__track{font-weight:900;font-size:.9rem;letter-spacing:.04em;color:var(--brand);margin-bottom:1rem}
 .comm-intro h3{font-size:2rem;color:#fff;margin:0 0 .6rem;line-height:1.15}
 .comm-intro p{color:rgba(255,255,255,.9);font-size:1.05rem;line-height:1.6;margin:0 0 .5rem}
 .comm-intro__hint{color:var(--brand-2);font-weight:800;font-size:.95rem;margin-top:1.3rem}
+/* תפריט נושאי ההרצאות — ממלא את הפתיח ונותן הקשר לשקופיות שאחריו */
+.comm-menu{max-width:340px;margin:1.4rem auto 0;text-align:start;background:rgba(20,20,20,.55);
+  border:1px solid var(--line);border-radius:16px;padding:1rem 1.1rem}
+.comm-menu__t{font-weight:900;font-size:.95rem;color:#fff;margin-bottom:.65rem;text-align:center}
+.comm-menu ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+.comm-menu li{display:flex;align-items:center;gap:.6rem;color:rgba(255,255,255,.92);font-size:.98rem;font-weight:600}
+.comm-menu li .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.comm-menu li.ai .dot{background:var(--accent)}
+.comm-menu__note{margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--line);
+  color:var(--muted);font-size:.85rem;text-align:center;line-height:1.5}
 
 /* ---- DROP-IN kit slides (ממודר; class/id ייחודיים) ---- */
   .succ{ --s-brand:var(--brand,#C9A84C); --s-brand2:var(--brand-2,#E4C978); --s-fg:var(--fg,#F4F4F4);
@@ -1044,17 +1060,31 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
 
   <!-- MOBILE: full-screen scroll-snap panels — slide + caption, one topic each -->
   <div class="commx-mobile msnap">
-    <!-- 0 · פתיח קהילה -->
+    <!-- 0 · פתיח קהילה + תפריט הנושאים -->
     <div class="mpanel mpanel-kit">
+      <div class="kit-wrap">
       <div class="comm-intro">
         <div class="comm-intro__track">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
         <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
         <p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p>
-        <p class="comm-intro__hint">טעימה מההרצאות — נסו לגעת בכרטיסים</p>
+        <div class="comm-menu">
+          <div class="comm-menu__t">על מה מדברים במפגשים?</div>
+          <ul>
+            <li><span class="dot"></span>הצלחה — חיצונית מול פנימית</li>
+            <li><span class="dot"></span>הנאה מול אושר</li>
+            <li><span class="dot"></span>הקולות שבפנים</li>
+            <li class="ai"><span class="dot"></span>בינה מלאכותית — לבנות פרויקט אישי</li>
+          </ul>
+          <div class="comm-menu__note">כל נושא הוא הרצאה שלמה — כאן מחכה לכם רק טעימה.</div>
+        </div>
+        <p class="comm-intro__hint">לחצו ״המשך״ — ונסו לגעת בכל דבר</p>
+      </div>
       </div>
     </div>
     <!-- 1 · הצלחה (זהב) -->
     <div class="mpanel mpanel-kit">
+      <div class="kit-wrap">
+      <div class="kit-eyebrow">טעימה מההרצאה · הצלחה</div>
       <section class="succ" aria-label="מי מצליח יותר">
         <div class="succ__in">
           <img class="succ__hero" src="media/kit-1.jpg" alt="שני שחקני כדורסל">
@@ -1078,9 +1108,12 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
           <button class="succ__re" type="button">↺ בחן שוב</button>
         </div>
       </section>
+      </div>
     </div>
     <!-- 2 · דופמין (זהב) -->
     <div class="mpanel mpanel-kit">
+      <div class="kit-wrap">
+      <div class="kit-eyebrow">טעימה מההרצאה · הנאה מול אושר</div>
       <section class="dopa" aria-label="אותו דופמין, עולם אחר">
         <div class="dopa__in">
           <p class="dopa__eyebrow">אותו דופמין. עולם אחר.</p>
@@ -1105,9 +1138,12 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
           </div>
         </div>
       </section>
+      </div>
     </div>
     <!-- 3 · חבלנים (זהב) -->
     <div class="mpanel mpanel-kit">
+      <div class="kit-wrap">
+      <div class="kit-eyebrow">טעימה מההרצאה · הקולות שבפנים</div>
       <section class="sab" aria-label="חבלנים">
         <div class="sab__in">
           <h2 class="sab__title">חבלנים</h2>
@@ -1115,18 +1151,21 @@ body.app-scene .scroll-cue{opacity:0!important;pointer-events:none!important}
           <div class="sab__grid" id="sabGrid"></div>
         </div>
       </section>
+      </div>
     </div>
     <!-- 4 · פרויקט אישי (כחול · AI) -->
     <div class="mpanel mpanel-kit">
+      <div class="kit-wrap">
+      <div class="kit-eyebrow blue">טעימה מההרצאה · לבנות עם AI</div>
       <section class="ait" aria-label="לבנות פרויקט אישי עם AI">
         <div class="ait__in">
-          <p class="ait__kick">מפגשי הקהילה · לבנות עם AI</p>
           <h2 class="ait__title">פרויקט אישי</h2>
           <p class="ait__sub">מ-0 למוצר, עם AI — טעימה מההדרכה</p>
           <div class="ccbot"><div class="ccbot__art" id="ccbot"></div><div class="ccbot__cap">Claude Code</div></div>
           <div class="acc" id="acc"></div>
         </div>
       </section>
+      </div>
     </div>
   </div>
 
