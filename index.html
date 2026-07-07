@@ -75,6 +75,10 @@ html::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;b
 .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
 .wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
 section{padding-block:var(--section-y)}
+/* באג-שורש שאותר בסקירה: הכלל הגלובלי לעיל דלף לתוך שקופיות ה-kit האינטראקטיביות
+   (succ/dopa/sab/ait הן גם <section>) והוסיף 72px רווח מיותר לפני/אחרי כל אחת —
+   זה כל הרווח שסהר ראה. השקופיות האלה מנהלות את הריווח הפנימי שלהן בעצמן. */
+.mpanel-kit section{padding-block:0}
 h1,h2,h3{line-height:1.1;font-weight:900;letter-spacing:-.02em}
 h2{font-size:var(--t-h2);margin-bottom:var(--s3)}
 h3{font-size:var(--t-h3);font-weight:800;letter-spacing:-.01em}
@@ -759,8 +763,18 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .sab__in{padding:26px 18px 24px;}
   .sab__title{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:34px;text-align:center;color:var(--s-brand2);letter-spacing:-.01em;margin:0 0 10px;}
   .sab__sub{text-align:center;color:var(--s-soft);font-size:14px;line-height:1.6;max-width:34ch;margin:0 auto 20px;}
-  .sab__grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-  .scard{perspective:1300px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  /* R (סקירת סהר): גלילה אופקית במקום רשת אנכית — כל 10 החבלנים בטווח מגע אחד, בלי
+     "לכפות" לגלול את כולם (המשך ממשיך תמיד). snap כל זוג-קלפים (5 "עמודים"), עם קצה
+     של הקלף הבא מציץ מהצד כרמז-לגלילה (לא מחווה נסתרת). */
+  .sab__grid{display:flex;gap:11px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;
+    padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none;}
+  .sab__grid::-webkit-scrollbar{display:none;}
+  .scard{perspective:1300px;cursor:pointer;-webkit-tap-highlight-color:transparent;flex:0 0 45%;scroll-snap-align:none;}
+  .scard:nth-child(odd){scroll-snap-align:start;}
+  .sab__dots{display:flex;justify-content:center;gap:7px;margin-top:14px}
+  .sab__dots i{width:6px;height:6px;border-radius:50%;background:var(--s-line);transition:background .2s,transform .2s}
+  .sab__dots i.on{background:var(--s-brand);transform:scale(1.35)}
   .scard__in{position:relative;transform-style:preserve-3d;transition:transform .65s var(--s-ease);min-height:236px;}
   .scard.flipped .scard__in{transform:rotateY(180deg);}
   .sface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
@@ -1143,8 +1157,9 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       <section class="sab" aria-label="חבלנים">
         <div class="sab__in">
           <h2 class="sab__title">חבלנים</h2>
-          <p class="sab__sub">דפוסי חשיבה שליליים שנוצרים אצלנו מילדות. אצל כל אחד מאיתנו מופיע לפחות חבלן ראשי וחבלן משני מהרשימה.</p>
+          <p class="sab__sub">דפוסי חשיבה שליליים שנוצרים אצלנו מילדות. אצל כל אחד מאיתנו מופיע לפחות חבלן ראשי וחבלן משני מהרשימה. גללו הצידה כדי לראות את כולם.</p>
           <div class="sab__grid" id="sabGrid"></div>
+          <div class="sab__dots" id="sabDots" aria-hidden="true"></div>
         </div>
       </section>
       </div>
@@ -1640,6 +1655,24 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     c.addEventListener('click',function(){c.classList.toggle('flipped');});
     c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.classList.toggle('flipped');} });
   });
+  // R (סקירת סהר): נקודות-עמוד לגלילה האופקית — עוקבות אחר הזוג הנראה כרגע (5 "עמודים"
+  // ל-10 קלפים), ולחיצה על נקודה קופצת לזוג המתאים. גלילה חופשית — לא חוסמת "המשך".
+  var pageCards=g.querySelectorAll('.scard:nth-child(odd)');
+  var dotsEl=document.getElementById('sabDots');
+  if(dotsEl && pageCards.length){
+    dotsEl.innerHTML=Array.from(pageCards).map(function(_,i){return '<i data-i="'+i+'"'+(i===0?' class="on"':'')+'></i>';}).join('');
+    var dots=dotsEl.querySelectorAll('i');
+    dots.forEach(function(d,i){ d.addEventListener('click',function(){ pageCards[i].scrollIntoView({inline:'start',block:'nearest',behavior:'smooth'}); }); });
+    if('IntersectionObserver' in window){
+      var sio=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.intersectionRatio>=0.6){
+          var i=Array.prototype.indexOf.call(pageCards,e.target);
+          dots.forEach(function(d,j){ d.classList.toggle('on',j===i); });
+        }});
+      },{root:g,threshold:0.6});
+      pageCards.forEach(function(c){ sio.observe(c); });
+    }
+  }
 })();
 (function(){
   var acc=document.getElementById('acc'); if(!acc) return;
