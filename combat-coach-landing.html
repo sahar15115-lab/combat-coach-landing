@@ -678,22 +678,21 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     background:#0A0A0A;background-image:radial-gradient(700px 380px at 82% -10%,rgba(201,168,76,.14),transparent 60%);
     box-shadow:0 24px 70px rgba(0,0,0,.6);}
   .succ *{box-sizing:border-box;}
-  .succ__in{padding:24px 20px 26px;}
-  .succ__hero{width:100%;height:200px;object-fit:cover;object-position:center 22%;border-radius:14px;border:1px solid rgba(201,168,76,.35);display:block;margin-bottom:18px;}
-  .succ__q{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:25px;text-align:center;letter-spacing:-.01em;color:var(--s-brand2);margin-bottom:15px;min-height:33px;}
+  .succ__in{padding:20px 20px 22px;}
+  .succ__hero{width:100%;height:200px;object-fit:cover;object-position:center 22%;border-radius:14px;border:1px solid rgba(201,168,76,.35);display:block;margin-bottom:12px;}
+  .succ__q{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:25px;text-align:center;letter-spacing:-.01em;color:var(--s-brand2);margin-bottom:10px;min-height:33px;}
   .succ__q .intl{display:none;} .succ.revealed .succ__q .ext{display:none;} .succ.revealed .succ__q .intl{display:inline;}
   .succ__cols{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px;}
   .pcard{perspective:1300px;}
-  /* R (סקירת סהר): הקופסה נקבעת לפי הצד האחורי (הארוך). כדי לקצר אותה בפועל
-     (ולא רק להזיז ריפוד) — קיצרנו את ניסוח 4 השורות האחוריות (227→188px
-     בפועל, מדוד) + הקטנו פונט/שורה שם. הקדמי (קצר ממילא) ממורכז אנכית כדי
-     שהשטח הפנוי יתחלק מעל ומתחת, לא ישב כגוש בתחתית. min-height מכוייל
-     למדד האמיתי אחרי הקיצור (188px) + מרווח-ביטחון קטן. */
-  .pinner{position:relative;transform-style:preserve-3d;transition:transform .8s var(--s-ease);min-height:194px;}
-  .succ.revealed .pinner{transform:rotateY(180deg);}
+  /* R (סקירת סהר — תיקון כיוון): הקופסה חייבת להיצמד לתוכן, בלי שטח מת. בכרטיס-היפוך
+     שני הצדדים חולקים קופסה אחת, אז גובהה נקבע פעם אחת. הפתרון: כברירת מחדל (מה שרואים)
+     הקופסה בגובה הצד הקדמי הצמוד (158px — מדוד), וברגע ההיפוך היא גדלה בדיוק לגובה
+     הצד האחורי (192px) עם אנימציה. כך אין ריק בתצוגה הרגילה, הכרטיס נמוך יותר,
+     וכלום לא נחתך בהיפוך. */
+  .pinner{position:relative;transform-style:preserve-3d;transition:transform .8s var(--s-ease),min-height .8s var(--s-ease);min-height:158px;}
+  .succ.revealed .pinner{transform:rotateY(180deg);min-height:192px;}
   .pface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
     border-radius:14px;padding:10px 12px;background:var(--s-panel);border:1px solid var(--s-line);}
-  .pface.front{display:flex;flex-direction:column;justify-content:center}
   .pface.back{transform:rotateY(180deg);}
   .pcard.hi .pface.front{border-color:rgba(201,168,76,.55);box-shadow:0 0 0 1px rgba(201,168,76,.25),0 12px 30px -14px rgba(201,168,76,.5);}
   .pface h4{font-family:'Frank Ruhl Libre',serif;font-weight:800;font-size:16px;text-align:center;color:var(--s-brand2);margin-bottom:6px;}
