@@ -19,7 +19,10 @@
 <meta name="twitter:image" content="https://combat-coach-landing.vercel.app/media/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- R-25: JetBrains Mono הוקטן ל-600 בלבד (המשקל היחיד שבשימוש, בכיתוב "Claude Code") -->
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<!-- R-25: preload לתמונת ההירו — היא ה-LCP; מאיץ את הציור הראשון -->
+<link rel="preload" as="image" href="media/hero-sahar.webp" fetchpriority="high">
 
 <!-- GSAP + ScrollTrigger מוטמעים בקובץ (self-contained) — עובד גם בלי אינטרנט / CDN חסום -->
 <!-- גלילה native (בכוונה — בלי smooth-scroll library) -->
@@ -102,6 +105,11 @@ body.ai-mode .logo span{color:var(--accent)}
 body.ai-mode .nav .btn,body.ai-mode .sticky-cta .btn{
   background:linear-gradient(160deg,#BFE0FA,#5AA9E6 55%,#3E85C4);color:#06121C;
   box-shadow:0 10px 26px -8px rgba(90,169,230,.6),var(--surface-hi)}
+
+/* R-26: קישור "דלג לתוכן" — נסתר עד פוקוס-מקלדת (Tab), אז קופץ למעלה וברור */
+.skip-link{position:fixed;top:-100px;inset-inline-start:1rem;z-index:100;background:var(--brand);
+  color:#0A0A0A;font-weight:800;padding:.7rem 1.3rem;border-radius:10px;text-decoration:none;transition:top .2s}
+.skip-link:focus{top:1rem}
 
 /* nav */
 .nav{position:fixed;inset-inline:0;top:0;z-index:50;backdrop-filter:blur(12px);
@@ -198,7 +206,7 @@ html.js .reveal.in{opacity:1;transform:none}
 /* ============ SCENE 2 — TRAINING ============ */
 .train{position:relative}
 .train-bg{position:absolute;inset:0;z-index:0}
-/* ⚠️ החלף ב-<video muted loop playsinline poster> דחוס. כרגע placeholder. */
+/* ⚠️ החלף ב-<video muted loop playsinline aria-hidden="true" poster> דחוס. כרגע placeholder. */
 .train-bg .ph-media{position:absolute;inset:0;background:
   linear-gradient(120deg,#12100B,#0A0A0A);opacity:.9}
 .train-bg .ph-lines{position:absolute;inset:0;opacity:.35;
@@ -269,7 +277,7 @@ html.js .reveal.in{opacity:1;transform:none}
 .pvideo{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/10;
   background:linear-gradient(150deg,#1c1c1c,#111);border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center}
-/* ⚠️ החלף ב-<video muted loop playsinline poster> קצר ודחוס */
+/* ⚠️ החלף ב-<video muted loop playsinline aria-hidden="true" poster> קצר ודחוס */
 .pvideo .play{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.9);display:flex;align-items:center;justify-content:center}
 .pvideo .play::after{content:"";border-inline-start:11px solid var(--brand-ink);border-block:7px solid transparent;margin-inline-start:2px}
 .pvideo .lbl{position:absolute;bottom:5px;inset-inline-start:7px;color:var(--muted);font-size:.6rem}
@@ -809,6 +817,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 </head>
 <body>
 
+<a href="#hero-main" class="skip-link">דלג לתוכן הראשי</a>
 <div class="progress" aria-hidden="true"></div>
 
 <nav class="nav" id="nav">
@@ -829,11 +838,11 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 <button type="button" class="scroll-cue" id="scrollCue" aria-label="המשך למסך הבא">המשך<span>↓</span></button>
 
 <!-- ===================== SCENE 1 — HERO ===================== -->
-<header class="hero">
+<header class="hero" id="hero-main" tabindex="-1">
   <div class="hero-bg" aria-hidden="true">
     <div class="ph-media"></div>
     <!-- R-28: וידאו רקע קולנועי — נטען רק אחרי שהדף מוכן (data-src), לא פוגע ב-LCP -->
-    <video class="hero-vid" muted loop playsinline preload="none" data-src="media/train-muaythai.mp4"></video>
+    <video class="hero-vid" muted loop playsinline aria-hidden="true" preload="none" data-src="media/train-muaythai.mp4"></video>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-topcta">
@@ -851,7 +860,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       </div>
       <figure class="hero-photowrap">
         <figcaption class="coach-label">מאמן ראשי · סהר שמש</figcaption>
-        <img class="hero-photo" src="media/hero-sahar.webp" alt="סהר שמש מאמן אגרוף תאילנדי באימון אישי" width="942" height="620">
+        <img class="hero-photo" src="media/hero-sahar.webp" alt="סהר שמש מאמן אגרוף תאילנדי באימון אישי" width="942" height="620" fetchpriority="high">
       </figure>
     </div>
     <div class="hero-cta-col">
@@ -868,10 +877,10 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   <div class="trainx-desktop">
     <div class="trainx-pin" id="trainxPin">
       <div class="trainx-media">
-        <div class="tv on" data-i="0"><video muted loop playsinline preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="1"><video muted loop playsinline preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="2"><video muted loop playsinline preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
-        <div class="tv" data-i="3"><video muted loop playsinline preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+        <div class="tv on" data-i="0"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="1"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="2"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+        <div class="tv" data-i="3"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       </div>
       <div class="trainx-scrim" aria-hidden="true"></div>
       <div class="trainx-text">
@@ -893,24 +902,24 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
   <div class="trainx-mobile msnap">
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="txscene txscene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
       <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלכם.</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
     </div>
     <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
       <div class="mpanel-scrim" aria-hidden="true"></div>
       <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
     </div>
@@ -1318,6 +1327,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       var t=document.querySelector(id); if(!t) return;
       e.preventDefault();
       scrollToY(t.getBoundingClientRect().top+scrollY+2);
+      // R-26: מעבירים פוקוס-מקלדת ליעד (חיוני ל-skip-link — אחרת ה-Tab הבא חוזר לראש הדף)
+      try{ t.focus({preventScroll:true}); }catch(e2){}
     });
   });
 
@@ -1436,6 +1447,14 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     }
     window.addEventListener('touchmove', blockScroll, {passive:false});
     window.addEventListener('wheel',     blockScroll, {passive:false});
+    // R-26: מקלדת — Space/PageDown/↓ שוות-ערך ללחיצה על "המשך" כשנעול (אחרת עוקפות את הנעילה
+    // בלי מקביל־מגע, ומשתמש-מקלדת שלא לוחץ Tab על הכפתור נתקע). PageUp/↑ = חזרה בשקופית.
+    window.addEventListener('keydown', function(e){
+      if(!scrollLocked || !activeMScene) return;
+      if(e.target && e.target.closest && e.target.closest('.mpanel-kit,input,textarea,[contenteditable]')) return;
+      if(e.key===' '||e.key==='PageDown'||e.key==='ArrowDown'){ e.preventDefault(); activeMScene.advance(); }
+      else if(e.key==='PageUp'||e.key==='ArrowUp'){ e.preventDefault(); if(activeMScene.back) activeMScene.back(); }
+    });
     var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#community','.commx-mobile':'#check'};
     function goSection(sel){ scrollLocked=false; var t=sel&&document.querySelector(sel); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
     function pinMobileScene(msnapSel, endPct, onProgress){
