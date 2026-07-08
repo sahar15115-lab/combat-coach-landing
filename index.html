@@ -892,6 +892,9 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 .commx-lead__t{color:var(--brand);font-weight:800;font-size:1rem;margin:.2rem 0 0}
 .commx-lead__note{color:rgba(255,255,255,.6);font-size:.9rem;margin:1rem 0 0}
 @media(max-width:380px){.wtabs{gap:8px}.wtab{padding:11px 8px}}
+/* R (QA): מטרת-מגע 44px בלי שינוי מראה — שכבת-לחיצה שקופה (::after) על הכפתורים/קישורים הזעירים */
+.nav .cta-primary,.nav .cta-secondary,.tst-lb-close,footer a{position:relative}
+.nav .cta-primary::after,.nav .cta-secondary::after,.tst-lb-close::after,footer a::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;min-width:44px;min-height:44px}
 </style>
 </head>
 <body>
