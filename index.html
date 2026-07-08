@@ -176,7 +176,7 @@ html.js .reveal.in{opacity:1;transform:none}
 /* hero חדש: ממורכז — כותרת מותג, שילוב דיסציפלינות, תמונה+מעטפת, כפתור גילוי רחב + CTA חצי */
 .hero-center{text-align:center;display:flex;flex-direction:column;align-items:center}
 /* המשפט הלבן = כותרת-משנה מתחת לשם המותג */
-.hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:var(--s2)}
+.hero-eyebrow{font-size:clamp(1.05rem,2.6vw,1.5rem);letter-spacing:.02em;text-transform:none;color:var(--fg);font-weight:800;margin-bottom:.25rem}
 /* כפתור בדיקת התאמה — למעלה, מופרד לגמרי מכפתור הגילוי */
 /* פס עליון — 2 מסלולים: ראשי (זהב מלא, בולט) + משני (ghost, מודגש פחות אבל מזמין) */
 .hero-topcta{position:absolute;top:calc(1rem + env(safe-area-inset-top,0px));inset-inline-end:1rem;z-index:3;
@@ -185,7 +185,7 @@ html.js .reveal.in{opacity:1;transform:none}
 .cta-secondary:hover{opacity:1;border-color:var(--brand);color:var(--brand)}
 @media(max-width:420px){.cta-primary,.cta-secondary{font-size:.82rem;padding:.5rem 1rem}}
 /* תמונת המאמן עם כיתוב מעליה */
-.hero-photowrap{display:flex;flex-direction:column;gap:.55rem;align-items:center;width:min(42%,360px);margin:0}
+.hero-photowrap{display:flex;flex-direction:column;gap:.55rem;align-items:center;width:min(52%,440px);margin:0}
 .coach-label{color:var(--brand-2);font-weight:800;font-size:.95rem;letter-spacing:.04em}
 .hero-mix{color:var(--brand-2);font-weight:800;font-size:clamp(1.02rem,2.4vw,1.3rem);letter-spacing:.02em;margin-bottom:var(--s4)}
 .hero-mix.sm{font-size:.95rem;margin:0;color:var(--brand)}
@@ -196,7 +196,7 @@ html.js .reveal.in{opacity:1;transform:none}
   box-shadow:0 30px 60px -28px rgba(0,0,0,.85),var(--surface-hi);filter:grayscale(1) contrast(1.05)}
 .hero-cta-col{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:min(100%,560px);margin-top:var(--s2)}
 .hero-discover{width:100%;font-size:1.12rem;padding:1.1rem 2rem}
-@media(max-width:760px){.hero-duo{flex-direction:column;gap:1rem}.hero-photowrap{width:min(82%,320px)}.hero-duo-copy{text-align:center}}
+@media(max-width:760px){.hero-duo{flex-direction:column;gap:1rem}.hero-photowrap{width:min(94%,400px)}.hero-duo-copy{text-align:center}}
 .hero-tags{display:none}
 .tag{font-size:.82rem;color:var(--fg-soft);border:1px solid var(--line-strong);border-radius:999px;
   padding:.42rem 1rem;background:rgba(20,20,20,.6);backdrop-filter:blur(4px)}
@@ -877,6 +877,21 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 .tst-lb-body video{width:100%;max-height:80svh;border-radius:10px;background:#000;display:block}
 @media(prefers-reduced-motion:reduce){.tst-flip{transition:none}}
 @media(max-width:560px){.tst-card{flex-basis:158px;height:246px}.tst-nm{font-size:18px}}
+/* ===== 2 טבלאות נושאי מפגשים (סדנת דרך האתלט + בניית פרויקט עם AI) ===== */
+.wtabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;margin:1.1rem auto 0}
+.wtab{background:rgba(20,20,20,.6);border:1px solid rgba(201,168,76,.3);border-radius:14px;padding:14px 12px;text-align:start}
+.wtab--ai{border-color:rgba(90,169,230,.4)}
+.wtab__h{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:clamp(.92rem,2.3vw,1.15rem);color:var(--brand-2);text-align:center;margin:0 0 .7rem;line-height:1.2;min-height:2.4em;display:flex;align-items:center;justify-content:center}
+.wtab--ai .wtab__h{color:#8CC6F2}
+.wtab ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.wtab li{display:flex;align-items:flex-start;gap:.5rem;color:rgba(255,255,255,.92);font-size:clamp(.8rem,2vw,.95rem);font-weight:600;line-height:1.3}
+.wtab li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand);flex-shrink:0;margin-top:.5em}
+.wtab--ai li::before{background:#5AA9E6}
+.commx-lead{padding:clamp(3rem,8vh,6rem) 0 2.5rem;text-align:center}
+.commx-lead__h{font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;margin:.4rem 0 .3rem;line-height:1.15;font-weight:900}
+.commx-lead__t{color:var(--brand);font-weight:800;font-size:1rem;margin:.2rem 0 0}
+.commx-lead__note{color:rgba(255,255,255,.6);font-size:.9rem;margin:1rem 0 0}
+@media(max-width:380px){.wtabs{gap:8px}.wtab{padding:11px 8px}}
 </style>
 </head>
 <body>
@@ -919,8 +934,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <p class="hero-sub hero-mix">קאליסטניקס · אגרוף תאילנדי · פיתוח יכולות אתלטיות</p>
     <div class="hero-duo">
       <div class="hero-duo-copy">
-        <p>האימון הוא רק ההתחלה. אתה מקבל גם אפליקציה עם תוכנית אישית, מפגשי קהילה — ואותי, גם בין האימונים.</p>
-        <p class="hero-mix sm">אפליקציה · מפגשי קהילה · תוכנית אימון אישית</p>
+        <p>האימון הוא רק ההתחלה… תוכנית ליווי פרונטלית + אונליין לחבר'ה צעירים בגילאי <span class="ltr">14-25</span> שמחפשים להתאמן, להתחבר, ללמוד ולהתפתח יחד כקהילה.</p>
+        <p class="hero-mix sm">אימון קבוצה · תוכנית מותאמת אישית לכל מתאמן · מפגש קהילה שבועי</p>
       </div>
       <figure class="hero-photowrap">
         <figcaption class="coach-label">מאמן ראשי · סהר שמש</figcaption>
@@ -1062,7 +1077,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 </section>
 
 <!-- ===================== TESTIMONIALS — קיר המלצות (הועבר: בין האפליקציה להדרכות) ===================== -->
-<section class="trust tst-section">
+<section class="trust tst-section" id="testi">
   <div class="testimonials tst-head">
     <p class="tst-eyebrow reveal">מה מספרים המתאמנים</p>
     <h2 class="tst-title reveal">הם היו בדיוק במקום שלך</h2>
@@ -1186,19 +1201,41 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   </div>
 </section>
 
-<!-- ===================== TRUST ===================== -->
-<section class="trust">
-  <div class="wrap">
-    <div class="ti reveal"><div class="ic">★</div><div><b>ניסיון אמיתי</b><span>מעל <span class="ltr">12</span> שנה בלחימה, קאליסטניקס וליווי מתאמנים.</span></div></div>
-    <div class="ti reveal"><div class="ic">⚙</div><div><b>נבנה מהשטח</b><span>האפליקציה פותחה כדי לפתור את הבעיה הכי נפוצה: מה עושים בין האימונים?</span></div></div>
-    <div class="ti reveal"><div class="ic">♡</div><div><b>ליווי אישי</b><span>קבוצה קטנה, יחס אישי, ומעקב אחרי ההתקדמות של כל מתאמן.</span></div></div>
-  </div>
-  </section>
-
 <!-- ===================== SCENE 4 — COMMUNITY (scroll-driven slides) ===================== -->
 <section id="community" class="comm">
   <!-- DESKTOP: scroll-driven — הכותרת הכללית מוזגה לשקופית הראשונה -->
   <div class="commx-desktop">
+    <div class="commx-lead">
+      <div class="wrap">
+        <div class="cxtrack" style="text-align:center">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
+        <h2 class="commx-lead__h">לא רק מתאמנים יחד — מתפתחים יחד.</h2>
+        <p class="commx-lead__t">על מה מדברים במפגשים?</p>
+        <div class="wtabs">
+          <div class="wtab">
+            <div class="wtab__h">סדנת דרך האתלט</div>
+            <ul>
+              <li>מהי הצלחה</li>
+              <li>ההבדל בין הנאה לאושר</li>
+              <li>אינטליגנציה חיובית</li>
+              <li>כוחו של הרגל</li>
+              <li>התבוננות ככלי לצמיחה</li>
+              <li>עבודת המידות</li>
+            </ul>
+          </div>
+          <div class="wtab wtab--ai">
+            <div class="wtab__h">בניית פרויקט אישי עם בינה מלאכותית</div>
+            <ul>
+              <li>הכרות עם הכלים המובילים</li>
+              <li>אפיון פרויקט אישי</li>
+              <li>בניית תוכנית</li>
+              <li>סוכני בינה מלאכותית</li>
+              <li>אוטומציות</li>
+            </ul>
+          </div>
+        </div>
+        <p class="commx-lead__note">כל נושא הוא הרצאה שלמה — למטה מחכה לך טעימה מכל אחד.</p>
+      </div>
+    </div>
     <div class="commx-pin" id="commxPin">
       <div class="commx-inner">
         <div class="commx-text">
@@ -1243,16 +1280,31 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
         <div class="comm-intro__track">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
         <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
         <p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p>
-        <div class="comm-menu">
-          <div class="comm-menu__t">על מה מדברים במפגשים?</div>
-          <ul>
-            <li><span class="dot"></span>הצלחה — חיצונית מול פנימית</li>
-            <li><span class="dot"></span>הנאה מול אושר</li>
-            <li><span class="dot"></span>הקולות שבפנים</li>
-            <li class="ai"><span class="dot"></span>בינה מלאכותית — לבנות פרויקט אישי</li>
-          </ul>
-          <div class="comm-menu__note">כל נושא הוא הרצאה שלמה — כאן מחכה לך רק טעימה.</div>
+        <div class="comm-menu__t">על מה מדברים במפגשים?</div>
+        <div class="wtabs">
+          <div class="wtab">
+            <div class="wtab__h">סדנת דרך האתלט</div>
+            <ul>
+              <li>מהי הצלחה</li>
+              <li>ההבדל בין הנאה לאושר</li>
+              <li>אינטליגנציה חיובית</li>
+              <li>כוחו של הרגל</li>
+              <li>התבוננות ככלי לצמיחה</li>
+              <li>עבודת המידות</li>
+            </ul>
+          </div>
+          <div class="wtab wtab--ai">
+            <div class="wtab__h">בניית פרויקט אישי עם בינה מלאכותית</div>
+            <ul>
+              <li>הכרות עם הכלים המובילים</li>
+              <li>אפיון פרויקט אישי</li>
+              <li>בניית תוכנית</li>
+              <li>סוכני בינה מלאכותית</li>
+              <li>אוטומציות</li>
+            </ul>
+          </div>
         </div>
+        <div class="comm-menu__note">כל נושא הוא הרצאה שלמה — כאן מחכה לך רק טעימה.</div>
         <p class="comm-intro__hint">לחץ ״המשך״ — ונסה לגעת בכל דבר</p>
       </div>
       </div>
@@ -1280,7 +1332,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
             </div></div>
           </div>
           <div class="succ__votes"><button class="vote" data-p="a">שחקן א׳</button><button class="vote" data-p="b">שחקן ב׳</button></div>
-          <p class="succ__line">אנחנו נוטים להגדיר הצלחה דרך נתונים חיצוניים. התבוננות קטנה יכולה לעזור לנו לגלות שלא בהכרח.</p>
+          <p class="succ__line">אנחנו נוטים להגדיר הצלחה דרך נתונים חיצוניים, והתבוננות קטנה יכולה לעזור לנו לגלות שזו לא בהכרח האמת.</p>
           <button class="succ__re" type="button">↺ בחן שוב</button>
         </div>
       </section>
@@ -1636,7 +1688,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       if(e.key===' '||e.key==='PageDown'||e.key==='ArrowDown'){ e.preventDefault(); activeMScene.advance(); }
       else if(e.key==='PageUp'||e.key==='ArrowUp'){ e.preventDefault(); if(activeMScene.back) activeMScene.back(); }
     });
-    var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#community','.commx-mobile':'#check'};
+    var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#testi','.commx-mobile':'#check'};
     function goSection(sel){ scrollLocked=false; var t=sel&&document.querySelector(sel); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
     function pinMobileScene(msnapSel, endPct, onProgress){
       var wrap=document.querySelector(msnapSel);
@@ -1885,12 +1937,17 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   rail.scrollLeft=sw();
   rail.addEventListener('scroll',function(){var w=sw(); if(w<=0)return; if(rail.scrollLeft<w*0.5) rail.scrollLeft+=w; else if(rail.scrollLeft>w*1.5) rail.scrollLeft-=w;},{passive:true});
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* R (סהר): הנדידה האוטומטית רק במכשירי עכבר (hover). במגע היא נלחמה עם הגלילה
+     ותקעה את המשתמש אחרי סגירת המלצה — לכן כבויה לגמרי במגע. */
+  var canDrift = !reduce && matchMedia('(hover:hover) and (pointer:fine)').matches;
   var wantDrift=false, inView=false;
-  function tick(){ if(wantDrift&&inView&&!reduce) rail.scrollLeft+=0.4; requestAnimationFrame(tick); }
-  requestAnimationFrame(tick);
-  ['pointerenter','pointerdown','touchstart','focusin'].forEach(function(e){rail.addEventListener(e,function(){wantDrift=false;});});
-  rail.addEventListener('pointerleave',function(){wantDrift=true;});
-  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(en){inView=en.isIntersecting; if(inView) wantDrift=true;});},{threshold:.02}).observe(rail); } else { inView=true; wantDrift=true; }
+  function tick(){ if(wantDrift&&inView&&canDrift) rail.scrollLeft+=0.4; requestAnimationFrame(tick); }
+  if(canDrift){
+    requestAnimationFrame(tick);
+    ['pointerenter','pointerdown','focusin'].forEach(function(e){rail.addEventListener(e,function(){wantDrift=false;});});
+    rail.addEventListener('pointerleave',function(){wantDrift=true;});
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(en){inView=en.isIntersecting; if(inView) wantDrift=true;});},{threshold:.02}).observe(rail); } else { inView=true; wantDrift=true; }
+  }
   var lb=document.getElementById('tstLb'), body=document.getElementById('tstLbBody'), nm=document.getElementById('tstLbName');
   function openLB(key){ var d=DATA[key]; if(!d)return; nm.textContent=d.name+' · גיל '+d.age;
     body.innerHTML = d.video ? '<video src="'+d.src+'" poster="'+d.poster+'" autoplay controls playsinline preload="auto"></video>' : '<img src="'+d.src+'" alt="ההמלצה של '+d.name+'">';

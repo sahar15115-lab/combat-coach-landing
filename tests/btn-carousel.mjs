@@ -44,8 +44,12 @@ A('app LOCKED on entry (cannot skip)', await wheelBlocked()===true);
 await page.evaluate(()=>{const b=document.querySelector('.appx-mobile .mpanel.on .phone-cta'); if(b)b.click();}); await page.waitForTimeout(320);
 A('phone button → app slide 1', await onIdx('.appx-mobile')===1);
 await clickCue(); await clickCue(); A('app → slide 3 (last)', await onIdx('.appx-mobile')===3);
-await clickCue(); await page.waitForTimeout(900); // continue → #community
-A('after app completed → #community reached', await inView('#community'));
+await clickCue(); await page.waitForTimeout(900); // continue → #testi (testimonials wall)
+A('after app completed → #testi (testimonials) reached', await inView('#testi'));
+
+// testimonials is a normal section; scroll down through it to reach the community
+await page.evaluate(()=>document.querySelector('#community').scrollIntoView()); await page.waitForTimeout(700);
+A('scroll past testimonials → #community reached', await inView('#community'));
 
 // community: intro + 4 interactive kit slides; ai-mode at the AI slide (index 4)
 A('community starts on slide 0 (intro)', await onIdx('.commx-mobile')===0);
