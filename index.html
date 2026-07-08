@@ -837,6 +837,46 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .acc__inner li::before{content:'';position:absolute;inset-inline-start:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--b);}
   .acc__inner li b{color:var(--a-fg);font-weight:700;}
   @media(prefers-reduced-motion:reduce){.ait *{transition:none!important;}}
+
+/* ===== קיר המלצות מתאמנים (R-01) — כרטיס מתהפך + גלילה אינסופית + לייטבוקס ===== */
+.tst-head{text-align:center;display:block;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.tst-eyebrow{color:var(--brand);font-weight:800;font-size:.8rem;letter-spacing:.14em;margin:0 0 .4rem}
+.tst-title{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:clamp(1.6rem,5vw,2.3rem);margin:0 0 .3rem}
+.tst-sub{color:var(--muted);font-size:.95rem;margin:0}
+.tst-rail{display:flex;gap:16px;overflow-x:auto;padding:1.4rem 20px;direction:ltr;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.tst-rail::-webkit-scrollbar{display:none}
+.tst-card{flex:0 0 186px;height:270px;perspective:1300px;cursor:pointer;direction:rtl;outline:none;border-radius:16px}
+.tst-card:focus-visible{box-shadow:0 0 0 2px var(--brand)}
+.tst-flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.22,.61,.36,1);border-radius:16px}
+.tst-card.tst-open .tst-flip{transform:rotateY(180deg)}
+.tst-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(201,168,76,.28);background:var(--surface)}
+.tst-pf{width:100%;height:100%;object-fit:cover;object-position:center 28%;display:block}
+.tst-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.92) 12%,rgba(8,8,8,.12) 46%,transparent 70%)}
+.tst-badge{position:absolute;top:10px;inset-inline-start:10px;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(37,211,102,.16);color:#7ee6a3;border:1px solid rgba(37,211,102,.3)}
+.tst-badge-vid{background:rgba(201,168,76,.18);color:var(--brand-2);border-color:rgba(201,168,76,.4)}
+.tst-play-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-64%);width:56px;height:56px;border-radius:50%;background:rgba(201,168,76,.94);color:#0A0A0A;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(0,0,0,.5)}
+.tst-who{position:absolute;bottom:36px;inset-inline:14px;display:flex;flex-direction:column}
+.tst-nm{font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:20px;color:var(--brand-2);line-height:1.15}
+.tst-ag{color:#cfc9ba;font-size:13px;margin-top:1px}
+.tst-tap{position:absolute;bottom:12px;inset-inline:14px;color:var(--brand);font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;opacity:.92}
+.tst-back{transform:rotateY(180deg);display:flex;flex-direction:column;background:#0d0d0d}
+.tst-back-head{flex:none;padding:9px 12px;font-size:12.5px;font-weight:700;color:var(--brand-2);border-bottom:1px solid rgba(201,168,76,.28);text-align:center}
+.tst-shot{width:100%;flex:1;min-height:0;object-fit:contain;object-position:center;display:block;background:#0d0d0d;padding-bottom:42px}
+.tst-zoom{position:absolute;bottom:10px;inset-inline:12px;width:calc(100% - 24px);border:1px solid rgba(201,168,76,.28);background:rgba(10,10,10,.9);color:var(--brand-2);font-family:inherit;font-weight:700;font-size:12.5px;padding:8px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.tst-zoom:hover{border-color:var(--brand);color:var(--brand)}
+.tst-hint{text-align:center;color:var(--muted);font-size:.8rem;margin:0 auto;max-width:var(--max);padding-inline:var(--pad)}
+.tst-lb{position:fixed;inset:0;background:rgba(4,4,4,.92);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.tst-lb.tst-on{display:flex}
+.tst-lb-inner{max-width:440px;width:100%;max-height:92svh;display:flex;flex-direction:column;background:#0d0d0d;border:1px solid rgba(201,168,76,.28);border-radius:16px;overflow:hidden}
+.tst-lb-head{flex:none;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(201,168,76,.28)}
+.tst-lb-name{font-family:'Frank Ruhl Libre',serif;font-weight:900;color:var(--brand-2);font-size:17px}
+.tst-lb-close{background:none;border:1px solid rgba(201,168,76,.28);color:var(--fg);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;line-height:1}
+.tst-lb-close:hover{border-color:var(--brand);color:var(--brand)}
+.tst-lb-body{overflow-y:auto;padding:14px}
+.tst-lb-body img{width:100%;border-radius:10px;display:block}
+.tst-lb-body video{width:100%;max-height:80svh;border-radius:10px;background:#000;display:block}
+@media(prefers-reduced-motion:reduce){.tst-flip{transition:none}}
+@media(max-width:560px){.tst-card{flex-basis:158px;height:246px}.tst-nm{font-size:18px}}
 </style>
 </head>
 <body>
@@ -1028,16 +1068,128 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <div class="ti reveal"><div class="ic">⚙</div><div><b>נבנה מהשטח</b><span>האפליקציה פותחה כדי לפתור את הבעיה הכי נפוצה: מה עושים בין האימונים?</span></div></div>
     <div class="ti reveal"><div class="ic">♡</div><div><b>ליווי אישי</b><span>קבוצה קטנה, יחס אישי, ומעקב אחרי ההתקדמות של כל מתאמן.</span></div></div>
   </div>
-  <div class="wrap testimonials">
-    <h2 class="reveal" style="text-align:center">מה מתאמנים אומרים</h2>
-    <div class="tgrid">
-      <!-- ⚠️ החלף בציטוטים אמיתיים ממתאמנים. אל תמציא — אם אין עדיין, הסתר את הסקשן. -->
-      <div class="tcard reveal"><p>"[ציטוט אמיתי ממתאמן — מה השתנה אצלו בתהליך]"</p><div class="who">— שם המתאמן <span class="ph-note">(placeholder)</span></div></div>
-      <div class="tcard reveal"><p>"[ציטוט אמיתי ממתאמן — על האימון / האפליקציה / הקהילה]"</p><div class="who">— שם המתאמן <span class="ph-note">(placeholder)</span></div></div>
-      <div class="tcard reveal"><p>"[ציטוט אמיתי ממתאמן — התוצאה שקיבל]"</p><div class="who">— שם המתאמן <span class="ph-note">(placeholder)</span></div></div>
+  <div class="testimonials tst-head">
+    <p class="tst-eyebrow reveal">מה מספרים המתאמנים</p>
+    <h2 class="tst-title reveal">הם היו בדיוק במקום שלך</h2>
+    <p class="tst-sub reveal">לחץ על כרטיס כדי לראות את ההודעה שהם שלחו</p>
+  </div>
+  <div class="tst-rail" id="tstRail" role="list">
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של ירין גורן, גיל 25 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-yarin.webp" alt="ירין גורן" loading="lazy" decoding="async" style="object-position:center 26%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">ירין גורן</span><span class="tst-ag">גיל 25</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">ירין גורן · גיל 25</div>
+            <img class="tst-shot" src="media/testi-m-yarin.webp" alt="ההמלצה של ירין גורן" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="yarin"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של מור עדי, גיל 25 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-mor.webp" alt="מור עדי" loading="lazy" decoding="async" style="object-position:center 20%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">מור עדי</span><span class="tst-ag">גיל 25</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">מור עדי · גיל 25</div>
+            <img class="tst-shot" src="media/testi-m-mor.webp" alt="ההמלצה של מור עדי" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="mor"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+      <article class="tst-card tst-video" data-video="1" data-key="liam" tabindex="0" role="listitem" aria-label="המלצת וידאו של ליאם מצליח, גיל 22 — לחץ לצפייה">
+        <div class="tst-flip"><div class="tst-face tst-front">
+          <img class="tst-pf" src="media/testi-p-liam.webp" alt="ליאם מצליח" loading="lazy" decoding="async" style="object-position:center 32%">
+          <div class="tst-scrim"></div>
+          <span class="tst-badge tst-badge-vid"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px"><path d="M8 5v14l11-7z"/></svg> וידאו</span>
+          <div class="tst-play-badge"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="tst-who"><span class="tst-nm">ליאם מצליח</span><span class="tst-ag">גיל 22</span></div>
+          <span class="tst-tap"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px"><path d="M8 5v14l11-7z"/></svg> לחץ לצפייה בוידאו</span>
+        </div></div>
+      </article>
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של נועם מאור, גיל 21 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-noam.webp" alt="נועם מאור" loading="lazy" decoding="async" style="object-position:center 30%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">נועם מאור</span><span class="tst-ag">גיל 21</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">נועם מאור · גיל 21</div>
+            <img class="tst-shot" src="media/testi-m-noam.webp" alt="ההמלצה של נועם מאור" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="noam"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של אביב עשהאל, גיל 28 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-aviv.webp" alt="אביב עשהאל" loading="lazy" decoding="async" style="object-position:center 20%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">אביב עשהאל</span><span class="tst-ag">גיל 28</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">אביב עשהאל · גיל 28</div>
+            <img class="tst-shot" src="media/testi-m-aviv.webp" alt="ההמלצה של אביב עשהאל" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="aviv"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של רן שלום, גיל 19 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-ran.webp" alt="רן שלום" loading="lazy" decoding="async" style="object-position:center 30%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">רן שלום</span><span class="tst-ag">גיל 19</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">רן שלום · גיל 19</div>
+            <img class="tst-shot" src="media/testi-m-ran.webp" alt="ההמלצה של רן שלום" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="ran"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של שגיא עמר, גיל 17 — לחץ לקריאה">
+        <div class="tst-flip">
+          <div class="tst-face tst-front">
+            <img class="tst-pf" src="media/testi-p-sagi.webp" alt="שגיא עמר" loading="lazy" decoding="async" style="object-position:left 24%">
+            <div class="tst-scrim"></div>
+            <span class="tst-badge"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:-2px"><path d="M5 12l5 5L20 7"/></svg> וואטסאפ</span>
+            <div class="tst-who"><span class="tst-nm">שגיא עמר</span><span class="tst-ag">גיל 17</span></div>
+            <span class="tst-tap"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8"/><path d="M20 4v4h-4"/></svg> לחץ לקריאה</span>
+          </div>
+          <div class="tst-face tst-back">
+            <div class="tst-back-head">שגיא עמר · גיל 17</div>
+            <img class="tst-shot" src="media/testi-m-sagi.webp" alt="ההמלצה של שגיא עמר" loading="lazy" decoding="async">
+            <button class="tst-zoom" type="button" data-open="sagi"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg> הגדל לקריאה</button>
+          </div>
+        </div>
+      </article>
+  </div>
+  <p class="tst-hint">‹ גלול לצדדים — יש עוד הרבה ›</p>
+  <div class="tst-lb" id="tstLb" role="dialog" aria-modal="true" aria-label="הודעת המלצה">
+    <div class="tst-lb-inner">
+      <div class="tst-lb-head"><span class="tst-lb-name" id="tstLbName"></span>
+        <button class="tst-lb-close" id="tstLbClose" type="button" aria-label="סגור">✕</button></div>
+      <div class="tst-lb-body" id="tstLbBody"></div>
     </div>
   </div>
-</section>
+  </section>
 
 <!-- ===================== SCENE 4 — COMMUNITY (scroll-driven slides) ===================== -->
 <section id="community" class="comm">
@@ -1717,6 +1869,39 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 </script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
 <!-- Tally embed: מפעיל את ה-iframe (data-tally-src) ואת הפופאפים. אם חסום — הקישורים הישירים עובדים. -->
+<script>
+/* קיר המלצות (R-01): כרטיס מתהפך, גלילה אופקית אינסופית, לייטבוקס לקריאה/וידאו. */
+(function(){
+  var rail=document.getElementById('tstRail'); if(!rail) return;
+  var DATA={"yarin":{"name":"ירין גורן","age":25,"video":false,"src":"media/testi-m-yarin.webp","poster":""},"mor":{"name":"מור עדי","age":25,"video":false,"src":"media/testi-m-mor.webp","poster":""},"liam":{"name":"ליאם מצליח","age":22,"video":true,"src":"media/testi-liam.mp4","poster":"media/testi-p-liam.webp"},"noam":{"name":"נועם מאור","age":21,"video":false,"src":"media/testi-m-noam.webp","poster":""},"aviv":{"name":"אביב עשהאל","age":28,"video":false,"src":"media/testi-m-aviv.webp","poster":""},"ran":{"name":"רן שלום","age":19,"video":false,"src":"media/testi-m-ran.webp","poster":""},"sagi":{"name":"שגיא עמר","age":17,"video":false,"src":"media/testi-m-sagi.webp","poster":""}};
+  var original=rail.innerHTML;
+  rail.innerHTML=original+original+original;
+  var cards=[].slice.call(rail.querySelectorAll('.tst-card'));
+  function sw(){return rail.scrollWidth/3;}
+  rail.scrollLeft=sw();
+  rail.addEventListener('scroll',function(){var w=sw(); if(w<=0)return; if(rail.scrollLeft<w*0.5) rail.scrollLeft+=w; else if(rail.scrollLeft>w*1.5) rail.scrollLeft-=w;},{passive:true});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var wantDrift=false, inView=false;
+  function tick(){ if(wantDrift&&inView&&!reduce) rail.scrollLeft+=0.4; requestAnimationFrame(tick); }
+  requestAnimationFrame(tick);
+  ['pointerenter','pointerdown','touchstart','focusin'].forEach(function(e){rail.addEventListener(e,function(){wantDrift=false;});});
+  rail.addEventListener('pointerleave',function(){wantDrift=true;});
+  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(en){inView=en.isIntersecting; if(inView) wantDrift=true;});},{threshold:.02}).observe(rail); } else { inView=true; wantDrift=true; }
+  var lb=document.getElementById('tstLb'), body=document.getElementById('tstLbBody'), nm=document.getElementById('tstLbName');
+  function openLB(key){ var d=DATA[key]; if(!d)return; nm.textContent=d.name+' · גיל '+d.age;
+    body.innerHTML = d.video ? '<video src="'+d.src+'" poster="'+d.poster+'" autoplay controls playsinline preload="auto"></video>' : '<img src="'+d.src+'" alt="ההמלצה של '+d.name+'">';
+    lb.classList.add('tst-on'); }
+  function closeLB(){ var v=body.querySelector('video'); if(v){try{v.pause();}catch(_){}} lb.classList.remove('tst-on'); body.innerHTML=''; }
+  cards.forEach(function(c){
+    c.addEventListener('click',function(e){ if(e.target.closest('.tst-zoom'))return; if(c.dataset.video){openLB(c.dataset.key);return;} c.classList.toggle('tst-open'); });
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); if(c.dataset.video){openLB(c.dataset.key);} else {c.classList.toggle('tst-open');}} });
+  });
+  document.addEventListener('click',function(e){ var z=e.target.closest('.tst-zoom'); if(!z)return; e.stopPropagation(); openLB(z.getAttribute('data-open')); });
+  document.getElementById('tstLbClose').addEventListener('click',closeLB);
+  lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&lb.classList.contains('tst-on')) closeLB(); });
+})();
+</script>
 <script async src="https://tally.so/widgets/embed.js"></script>
 </body>
 </html>
