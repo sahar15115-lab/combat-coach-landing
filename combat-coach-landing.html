@@ -61,7 +61,7 @@
   --t-body:1.05rem; --t-sm:.9rem;
 
   --s1:.5rem; --s2:1rem; --s3:1.5rem; --s4:2rem; --s6:3rem; --s8:4rem;
-  --section-y:clamp(4.5rem,11vw,9rem);
+  --section-y:clamp(4.5rem,8vw,6.5rem);
   --radius:18px; --radius-sm:12px; --max:1160px; --pad:clamp(1.15rem,5vw,2.5rem);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -391,10 +391,11 @@ html.js .reveal.in{opacity:1;transform:none}
   display:flex;align-items:center;justify-content:center;margin:0 auto var(--s3);color:var(--ok);font-size:1.8rem}
 
 /* ============ FAQ ============ */
-.faq{max-width:760px;margin-inline:auto}
+.faq{max-width:680px;margin-inline:auto}
 .faq details{border-bottom:1px solid var(--line);padding:var(--s3) 0}
+/* R-31: ה-"+" צמוד לשאלה (במקום קצה נגדי רחוק) — נקרא כיחידה אחת בדסקטופ הרחב */
 .faq summary{cursor:pointer;font-weight:700;font-size:1.06rem;list-style:none;display:flex;
-  justify-content:space-between;align-items:center;gap:1rem}
+  justify-content:flex-start;align-items:center;gap:.7rem}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";color:var(--brand);font-weight:900;font-size:1.4rem;transition:transform .2s}
 .faq details[open] summary::after{transform:rotate(45deg)}
