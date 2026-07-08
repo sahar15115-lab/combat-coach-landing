@@ -1083,8 +1083,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <h2 class="tst-title reveal">הם היו בדיוק במקום שלך</h2>
     <p class="tst-sub reveal">לחץ על כרטיס כדי לראות את ההודעה שהם שלחו</p>
   </div>
-  <div class="tst-rail" id="tstRail" role="list">
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של ירין גורן, גיל 25 — לחץ לקריאה">
+  <div class="tst-rail" id="tstRail" aria-label="המלצות מתאמנים">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של ירין גורן, גיל 25 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-yarin.webp" alt="ירין גורן" loading="lazy" decoding="async" style="object-position:center 26%">
@@ -1100,7 +1100,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
       </article>
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של מור עדי, גיל 25 — לחץ לקריאה">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של מור עדי, גיל 25 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-mor.webp" alt="מור עדי" loading="lazy" decoding="async" style="object-position:center 20%">
@@ -1116,7 +1116,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
       </article>
-      <article class="tst-card tst-video" data-video="1" data-key="liam" tabindex="0" role="listitem" aria-label="המלצת וידאו של ליאם מצליח, גיל 22 — לחץ לצפייה">
+      <article class="tst-card tst-video" data-video="1" data-key="liam" tabindex="0" role="button" aria-label="המלצת וידאו של ליאם מצליח, גיל 22 — לחץ לצפייה">
         <div class="tst-flip"><div class="tst-face tst-front">
           <img class="tst-pf" src="media/testi-p-liam.webp" alt="ליאם מצליח" loading="lazy" decoding="async" style="object-position:center 32%">
           <div class="tst-scrim"></div>
@@ -1126,7 +1126,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           <span class="tst-tap"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px"><path d="M8 5v14l11-7z"/></svg> לחץ לצפייה בוידאו</span>
         </div></div>
       </article>
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של נועם מאור, גיל 21 — לחץ לקריאה">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של נועם מאור, גיל 21 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-noam.webp" alt="נועם מאור" loading="lazy" decoding="async" style="object-position:center 30%">
@@ -1142,7 +1142,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
       </article>
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של אביב עשהאל, גיל 28 — לחץ לקריאה">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של אביב עשהאל, גיל 28 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-aviv.webp" alt="אביב עשהאל" loading="lazy" decoding="async" style="object-position:center 20%">
@@ -1158,7 +1158,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
       </article>
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של רן שלום, גיל 19 — לחץ לקריאה">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של רן שלום, גיל 19 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-ran.webp" alt="רן שלום" loading="lazy" decoding="async" style="object-position:center 30%">
@@ -1174,7 +1174,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
       </article>
-      <article class="tst-card" tabindex="0" role="listitem" aria-label="המלצה של שגיא עמר, גיל 17 — לחץ לקריאה">
+      <article class="tst-card" tabindex="0" role="button" aria-label="המלצה של שגיא עמר, גיל 17 — לחץ לקריאה">
         <div class="tst-flip">
           <div class="tst-face tst-front">
             <img class="tst-pf" src="media/testi-p-sagi.webp" alt="שגיא עמר" loading="lazy" decoding="async" style="object-position:left 24%">
@@ -1666,6 +1666,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
     var activeMScene=null;   // האזור שמוצג כרגע
     var scrollLocked=false;  // כשדולק — האזור נועל את המסך עד שעוברים את כל שקופיותיו
+    var deepLinkActive=false; // R (QA): בזמן קפיצת deep-link — סצנות לא נועלות/קופצות, כדי לא לחטוף את הגלילה מהיעד
     // ===== מובייל: מצגת נעולה. כל אזור = מסך אחד (100svh, אותו CSS של .pin-active).
     //       מעבר בין שקופיות אך ורק בכפתור (המשך הצף / הכפתור בתוך הטלפון). כשאזור ממלא
     //       את המסך הוא נועל את הגלילה — אי אפשר לדלג הלאה עד שעברת את כל שקופיותיו;
@@ -1676,7 +1677,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       if(!scrollLocked) return;
       // מאפשרים גלילה פנימית בשקופית אינטראקטיבית גבוהה (overscroll-behavior:contain מונע דליפה לעמוד)
       if(e.target && e.target.closest && e.target.closest('.mpanel-kit')) return;
-      e.preventDefault();
+      if(e.cancelable) e.preventDefault(); // R (QA): רק אירוע בר-ביטול — מנקה רעש-קונסול
     }
     window.addEventListener('touchmove', blockScroll, {passive:false});
     window.addEventListener('wheel',     blockScroll, {passive:false});
@@ -1713,7 +1714,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       function engage(){
         activeMScene=ref;
         show(ref.disp); // R-22: הסצנה הגיעה למסך — מציתים עכשיו את הווידאו של הפאנל הנוכחי
-        if(ref.engaged || ref.completed) return;
+        if(ref.engaged || ref.completed || deepLinkActive) return;
         ref.engaged=true;
         window.scrollTo({top:wrap.getBoundingClientRect().top+scrollY, behavior:'auto'}); // יישור מיידי + עצירת מומנטום
         if(ref.disp<N-1) scrollLocked=true;
@@ -1765,6 +1766,29 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     pinMobileScene('.commx-mobile',1240,function(i){
       document.body.classList.toggle('ai-mode', i>=4); // שקופית 4 = פרויקט אישי/AI (כחול)
     }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
+
+    // R (QA): #testi הוא סקשן רגיל שיושב בין שתי סצנות נעולות (app↔community). מצב הנעילה
+    // הגלובלי (scrollLocked) נשאר דלוק כשנוחתים עליו → blockScroll חוסם גלילת-מגע קדימה
+    // והמשתמש נתקע לפני הקהילה/הטופס. תיקון חסין: כל עוד #testi ממלא חצי-מסך ומעלה,
+    // הנעילה משוחררת בכוח. כשגוללים למטה והקהילה ממלאת ≥60% — engage שלה נועל אותה כרגיל.
+    var testiSec=document.getElementById('testi');
+    if(testiSec && 'IntersectionObserver' in window){
+      new IntersectionObserver(function(es){ es.forEach(function(e){
+        if(e.isIntersecting && e.intersectionRatio>=0.5){ scrollLocked=false; activeMScene=null; }
+      }); }, {threshold:[0,0.5,1]}).observe(testiSec);
+    }
+
+    // R (QA): deep-link/רענון עם עוגן לסקשן שאחרי סצנה נעולה — הדפדפן היה נחטף לסצנה
+    // הנעולה במקום ליעד. אחרי שהסצנות מתייצבות, קופצים ליעד (מיידי) ומשחררים את הנעילה.
+    if(location.hash && location.hash.length>1){
+      var dlTarget=document.querySelector(location.hash);
+      if(dlTarget) window.addEventListener('load',function(){
+        deepLinkActive=true; scrollLocked=false; activeMScene=null;
+        var land=function(){ scrollLocked=false; dlTarget.scrollIntoView({behavior:'auto',block:'start'}); };
+        setTimeout(land,300); setTimeout(land,600); setTimeout(land,1000); // מחזיקים את היעד מול חטיפות
+        setTimeout(function(){ deepLinkActive=false; },1400); // אחרי שהתייצב — נעילה חוזרת לפעולה רגילה
+      });
+    }
 
     // כפתור "המשך" הצף — מקדם שקופית אחת בסצנה שבמסך; בשקופית האחרונה ממשיך לסקשן הבא.
     var cue=document.getElementById('scrollCue');
@@ -1949,19 +1973,35 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(en){inView=en.isIntersecting; if(inView) wantDrift=true;});},{threshold:.02}).observe(rail); } else { inView=true; wantDrift=true; }
   }
   var lb=document.getElementById('tstLb'), body=document.getElementById('tstLbBody'), nm=document.getElementById('tstLbName');
-  function openLB(key){ var d=DATA[key]; if(!d)return; nm.textContent=d.name+' · גיל '+d.age;
+  var closeBtn=document.getElementById('tstLbClose');
+  var lastTrigger=null; // R (QA): לניהול-פוקוס — מחזירים פוקוס לכרטיס בסגירה
+  function openLB(key, trigger){ var d=DATA[key]; if(!d)return; nm.textContent=d.name+' · גיל '+d.age;
     body.innerHTML = d.video ? '<video src="'+d.src+'" poster="'+d.poster+'" autoplay controls playsinline preload="auto"></video>' : '<img src="'+d.src+'" alt="ההמלצה של '+d.name+'">';
-    lb.classList.add('tst-on'); }
-  function closeLB(){ var v=body.querySelector('video'); if(v){try{v.pause();}catch(_){}} lb.classList.remove('tst-on'); body.innerHTML=''; }
+    lb.classList.add('tst-on');
+    lastTrigger = trigger || null;
+    try{ closeBtn.focus(); }catch(_){}
+  }
+  function closeLB(){ var v=body.querySelector('video'); if(v){try{v.pause();}catch(_){}} lb.classList.remove('tst-on'); body.innerHTML='';
+    if(lastTrigger){ try{ lastTrigger.focus(); }catch(_){} lastTrigger=null; }
+  }
   cards.forEach(function(c){
     function tkey(){ return c.dataset.key || (c.querySelector('.tst-zoom') && c.querySelector('.tst-zoom').getAttribute('data-open')); }
-    c.addEventListener('click',function(){ var k=tkey(); if(k) openLB(k); });
-    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); var k=tkey(); if(k) openLB(k);} });
+    c.addEventListener('click',function(){ var k=tkey(); if(k) openLB(k, c); });
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); var k=tkey(); if(k) openLB(k, c);} });
   });
-  document.addEventListener('click',function(e){ var z=e.target.closest('.tst-zoom'); if(!z)return; e.stopPropagation(); openLB(z.getAttribute('data-open')); });
-  document.getElementById('tstLbClose').addEventListener('click',closeLB);
+  document.addEventListener('click',function(e){ var z=e.target.closest('.tst-zoom'); if(!z)return; e.stopPropagation(); openLB(z.getAttribute('data-open'), e.target.closest('.tst-card')||z); });
+  closeBtn.addEventListener('click',closeLB);
   lb.addEventListener('click',function(e){ if(e.target===lb) closeLB(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&lb.classList.contains('tst-on')) closeLB(); });
+  // R (QA): מלכודת-פוקוס — Tab נשאר בתוך הלייטבוקס כל עוד הוא פתוח
+  lb.addEventListener('keydown',function(e){
+    if(e.key!=='Tab'||!lb.classList.contains('tst-on')) return;
+    var f=[].slice.call(lb.querySelectorAll('button,[href],video,[tabindex]:not([tabindex="-1"])')).filter(function(el){return el.offsetParent!==null;});
+    if(!f.length){ e.preventDefault(); try{closeBtn.focus();}catch(_){} return; }
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  });
 })();
 </script>
 <script async src="https://tally.so/widgets/embed.js"></script>
