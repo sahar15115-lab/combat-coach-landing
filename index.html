@@ -1061,13 +1061,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   </div>
 </section>
 
-<!-- ===================== TRUST ===================== -->
-<section class="trust">
-  <div class="wrap">
-    <div class="ti reveal"><div class="ic">★</div><div><b>ניסיון אמיתי</b><span>מעל <span class="ltr">12</span> שנה בלחימה, קאליסטניקס וליווי מתאמנים.</span></div></div>
-    <div class="ti reveal"><div class="ic">⚙</div><div><b>נבנה מהשטח</b><span>האפליקציה פותחה כדי לפתור את הבעיה הכי נפוצה: מה עושים בין האימונים?</span></div></div>
-    <div class="ti reveal"><div class="ic">♡</div><div><b>ליווי אישי</b><span>קבוצה קטנה, יחס אישי, ומעקב אחרי ההתקדמות של כל מתאמן.</span></div></div>
-  </div>
+<!-- ===================== TESTIMONIALS — קיר המלצות (הועבר: בין האפליקציה להדרכות) ===================== -->
+<section class="trust tst-section">
   <div class="testimonials tst-head">
     <p class="tst-eyebrow reveal">מה מספרים המתאמנים</p>
     <h2 class="tst-title reveal">הם היו בדיוק במקום שלך</h2>
@@ -1188,6 +1183,15 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
         <button class="tst-lb-close" id="tstLbClose" type="button" aria-label="סגור">✕</button></div>
       <div class="tst-lb-body" id="tstLbBody"></div>
     </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST ===================== -->
+<section class="trust">
+  <div class="wrap">
+    <div class="ti reveal"><div class="ic">★</div><div><b>ניסיון אמיתי</b><span>מעל <span class="ltr">12</span> שנה בלחימה, קאליסטניקס וליווי מתאמנים.</span></div></div>
+    <div class="ti reveal"><div class="ic">⚙</div><div><b>נבנה מהשטח</b><span>האפליקציה פותחה כדי לפתור את הבעיה הכי נפוצה: מה עושים בין האימונים?</span></div></div>
+    <div class="ti reveal"><div class="ic">♡</div><div><b>ליווי אישי</b><span>קבוצה קטנה, יחס אישי, ומעקב אחרי ההתקדמות של כל מתאמן.</span></div></div>
   </div>
   </section>
 
@@ -1893,8 +1897,9 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     lb.classList.add('tst-on'); }
   function closeLB(){ var v=body.querySelector('video'); if(v){try{v.pause();}catch(_){}} lb.classList.remove('tst-on'); body.innerHTML=''; }
   cards.forEach(function(c){
-    c.addEventListener('click',function(e){ if(e.target.closest('.tst-zoom'))return; if(c.dataset.video){openLB(c.dataset.key);return;} c.classList.toggle('tst-open'); });
-    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); if(c.dataset.video){openLB(c.dataset.key);} else {c.classList.toggle('tst-open');}} });
+    function tkey(){ return c.dataset.key || (c.querySelector('.tst-zoom') && c.querySelector('.tst-zoom').getAttribute('data-open')); }
+    c.addEventListener('click',function(){ var k=tkey(); if(k) openLB(k); });
+    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); var k=tkey(); if(k) openLB(k);} });
   });
   document.addEventListener('click',function(e){ var z=e.target.closest('.tst-zoom'); if(!z)return; e.stopPropagation(); openLB(z.getAttribute('data-open')); });
   document.getElementById('tstLbClose').addEventListener('click',closeLB);
