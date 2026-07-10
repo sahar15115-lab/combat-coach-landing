@@ -897,6 +897,43 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 /* R (QA): מטרת-מגע 44px בלי שינוי מראה — שכבת-לחיצה שקופה (::after) על הכפתורים/קישורים הזעירים */
 .nav .cta-primary,.nav .cta-secondary,.tst-lb-close,footer a{position:relative}
 .nav .cta-primary::after,.nav .cta-secondary::after,.tst-lb-close::after,footer a::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;min-width:44px;min-height:44px}
+/* ===== מובייל: אימון — קארוסל-כרטיסים אופקי (swipe נטיבי; הכרטיס הפעיל קופץ קדימה, הבא מציץ) ===== */
+@media(max-width:900px){
+  .trainx-mobile{display:flex;flex-direction:column;height:100svh;min-height:560px;
+    padding-top:calc(3rem + env(safe-area-inset-top,0px));padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px))}
+  .trail-top{padding-inline:var(--pad)}
+  .trail-segs{display:flex;gap:5px;margin-bottom:.8rem}
+  .trail-segs i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}
+  .trail-segs i.done{background:var(--brand-metal)}
+  .trail-segs i.cur{position:relative}
+  .trail-segs i.cur::after{content:"";position:absolute;inset:0;background:var(--brand-metal);transform-origin:right;animation:trailFill .5s ease forwards}
+  @keyframes trailFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .trail-title{text-align:center;color:#fff;font-weight:800;font-size:clamp(1.1rem,4.4vw,1.45rem);line-height:1.35;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+  .trail{flex:1;display:flex;gap:14px;align-items:center;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;
+    padding-inline:11%;margin-top:1rem}
+  .trail::-webkit-scrollbar{display:none}
+  .tcard{flex:0 0 78%;height:70svh;max-height:640px;scroll-snap-align:center;scroll-snap-stop:always;
+    position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+    transform:scale(.88);opacity:.5;transition:transform .42s cubic-bezier(.2,.7,.2,1),opacity .42s,box-shadow .42s}
+  .tcard.active{transform:scale(1);opacity:1;box-shadow:var(--glow-gold-strong),0 24px 60px -20px rgba(0,0,0,.8);border-color:rgba(201,168,76,.4)}
+  .tcard-media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  .tcard-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .tcard-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.25),rgba(10,10,10,0) 34%,rgba(10,10,10,.78) 82%,rgba(10,10,10,.95))}
+  .tcard-num{position:absolute;top:16px;inset-inline-start:18px;z-index:2;color:var(--brand-2);font-weight:900;font-size:.95rem;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+  .tcard-copy{position:absolute;z-index:2;inset-inline:20px;bottom:26px;opacity:0;transform:translateY(16px);transition:opacity .5s ease .1s,transform .55s cubic-bezier(.2,.7,.2,1) .1s}
+  .tcard.active .tcard-copy{opacity:1;transform:none}
+  .tcard-copy h3{color:#fff;font-weight:900;font-size:clamp(1.7rem,6vw,2.1rem);line-height:1.05;margin-bottom:.4rem;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+  .tcard-copy p{color:rgba(255,255,255,.93);font-size:1rem;line-height:1.4;max-width:28ch;text-shadow:0 1px 10px rgba(0,0,0,.65)}
+  .trail-bot{display:flex;justify-content:center;padding-top:.8rem}
+  .trail-hint{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.85);font-weight:700;font-size:.82rem;background:rgba(20,20,20,.5);backdrop-filter:blur(4px);padding:.34rem .85rem;border-radius:999px;border:1px solid var(--line)}
+  .trail-hint .ar{color:var(--brand-2);font-size:1.05rem;animation:trailSwp 1.5s ease-in-out infinite}
+  @keyframes trailSwp{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+  .trainx-mobile.seen .trail-hint{display:none}
+}
+@media(max-width:900px) and (prefers-reduced-motion:reduce){
+  .tcard,.tcard-copy{transition:none}.trail-hint .ar,.trail-segs i.cur::after{animation:none}.trail-segs i.cur::after{transform:none}
+}
 </style>
 </head>
 <body>
@@ -983,30 +1020,39 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     </div>
   </div>
 
-  <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
-  <div class="trainx-mobile msnap">
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="txscene txscene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
-      <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
+  <!-- MOBILE: קארוסל-כרטיסים אופקי — הכרטיס הפעיל קופץ קדימה, הבא מציץ בצד (swipe, גלילה נטיבית) -->
+  <div class="trainx-mobile">
+    <div class="trail-top">
+      <div class="trail-segs" id="trailSegs" aria-hidden="true"><i class="cur"></i><i></i><i></i><i></i></div>
+      <div class="trail-title">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
     </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלך.</p></div>
+    <div class="trail" id="trainRail" role="group" aria-roledescription="קארוסל" aria-label="שלבי האימון">
+      <article class="tcard" data-i="0" aria-roledescription="שקופית" aria-label="1 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-warmup.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">01</span> · חימום</div>
+        <div class="tcard-copy"><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
+      </article>
+      <article class="tcard" data-i="1" aria-roledescription="שקופית" aria-label="2 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-calisthenics.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">02</span> · קאליסטניקס</div>
+        <div class="tcard-copy"><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלך.</p></div>
+      </article>
+      <article class="tcard" data-i="2" aria-roledescription="שקופית" aria-label="3 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-athletics.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">03</span> · אתלטיות</div>
+        <div class="tcard-copy"><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
+      </article>
+      <article class="tcard" data-i="3" aria-roledescription="שקופית" aria-label="4 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-muaythai.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">04</span> · אגרוף תאילנדי</div>
+        <div class="tcard-copy"><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
+      </article>
     </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
-    </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
-    </div>
+    <div class="trail-bot"><div class="trail-hint" id="trainHint" aria-hidden="true"><span class="ar">←</span><span>החלק לצד</span></div></div>
   </div>
 </section>
 
@@ -1758,10 +1804,30 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       return ref;
     }
 
-    // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
-    var trMobMedia=gsap.utils.toArray('.trainx-mobile .mpanel-media');
-    if(document.querySelector('.trainx-mobile .mpanel'))
-      pinMobileScene('.trainx-mobile',520,function(i){ playOnly(trMobMedia,i); }, 700);
+    // ---- אימון: קארוסל-כרטיסים אופקי (swipe נטיבי) — הכרטיס הפעיל קופץ קדימה, בלי נעילה ----
+    (function(){
+      var rail=document.getElementById('trainRail'); if(!rail) return;
+      var cards=[].slice.call(rail.querySelectorAll('.tcard'));
+      var segsEl=document.getElementById('trailSegs');
+      var segs=segsEl?[].slice.call(segsEl.children):[];
+      var wrap=document.querySelector('.trainx-mobile');
+      function paint(i){ segs.forEach(function(s,j){ s.classList.remove('done','cur'); if(j<i)s.classList.add('done'); else if(j===i)s.classList.add('cur'); }); }
+      if('IntersectionObserver' in window){
+        var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.6){
+            var i=+e.target.dataset.i;
+            cards.forEach(function(c){ c.classList.toggle('active', c===e.target); });
+            paint(i); if(i>0 && wrap) wrap.classList.add('seen'); playOnly(cards,i);
+          }
+        }); }, {root:rail, threshold:[0.6]});
+        cards.forEach(function(c){ io.observe(c); });
+        var tsec=document.getElementById('train');
+        if(tsec) new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(!e.isIntersecting) cards.forEach(function(c){ var v=c.querySelector('video'); if(v&&v.pause)v.pause(); });
+        }); },{threshold:0}).observe(tsec);
+      }
+      if(cards[0]) cards[0].classList.add('active');
+    })();
 
     // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
     // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
