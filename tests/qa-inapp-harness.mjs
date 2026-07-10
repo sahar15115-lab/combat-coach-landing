@@ -31,21 +31,23 @@ await cue(); // into first interactive slide
 await p.waitForTimeout(500);
 
 // --- B) scroll-jump test: toggle viewport height (simulate address-bar show/hide) ---
-const sy0 = await p.evaluate(() => Math.round(scrollY));
+// METRIC = VISUAL: the locked scene's wrap should stay at viewport top (rect.top ~= 0).
+// NOTE: scrollY itself DOES change on toggle (the re-align tracks the wrap's shifted document
+// position to keep it visually pinned) — so scrollY is the wrong metric; rect.top is the truth.
+const wrapVisTop = () => p.evaluate(() => Math.round(document.querySelector('.commx-mobile').getBoundingClientRect().top));
 const onIdx0 = await p.evaluate(() => [...document.querySelectorAll('.commx-mobile .mpanel')].findIndex(x => x.classList.contains('on')));
 const heights = [760, 690, 760, 690, 760];
-const jumps = [];
+const tops = [];
 for (const h of heights) {
   await p.setViewportSize({ width: 390, height: h });
   await p.waitForTimeout(250);
-  const sy = await p.evaluate(() => Math.round(scrollY));
-  const idx = await p.evaluate(() => [...document.querySelectorAll('.commx-mobile .mpanel')].findIndex(x => x.classList.contains('on')));
-  jumps.push({ h, sy, idx });
+  tops.push({ h, top: await wrapVisTop(), sy: await p.evaluate(() => Math.round(scrollY)) });
 }
-const maxJump = Math.max(...jumps.map(j => Math.abs(j.sy - sy0)));
-console.log('[VIEWPORT-TOGGLE] start sy=' + sy0 + ' idx=' + onIdx0);
-jumps.forEach(j => console.log('  h=' + j.h + ' -> sy=' + j.sy + ' idx=' + j.idx + (Math.abs(j.sy - sy0) > 40 ? '  JUMP' : '')));
-console.log('  maxJump=' + maxJump + 'px => ' + (maxJump > 40 ? 'UNSTABLE (jumps on chrome toggle)' : 'stable'));
+const maxDrift = Math.max(...tops.map(t => Math.abs(t.top)));
+console.log('[VIEWPORT-TOGGLE] idx=' + onIdx0 + ' (metric = scene wrap visual top; pinned means ~0)');
+tops.forEach(t => console.log('  h=' + t.h + ' -> wrapTop=' + t.top + ' (sy=' + t.sy + ')' + (Math.abs(t.top) > 12 ? '  DRIFT' : '')));
+const maxJump = maxDrift; // keep var name for downstream compatibility
+console.log('  maxDrift=' + maxDrift + 'px => ' + (maxDrift > 12 ? 'UNSTABLE (scene drifts off top)' : 'pinned (scene stays at top)'));
 
 // --- A) top-content-under-nav / notch test at a few scenes ---
 async function topCheck(label) {

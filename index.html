@@ -1686,6 +1686,24 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     }
     window.addEventListener('touchmove', blockScroll, {passive:false});
     window.addEventListener('wheel',     blockScroll, {passive:false});
+    // R (QA מכשיר אמיתי): בדפדפן-פנימי (אינסטגרם/וואטסאפ) ה-preventDefault נכשל (touchmove לא-בטל),
+    // וגם סרגל-הכתובת נפתח/נסגר בגלילה ומשנה את גובה ה-viewport (svh) → הדף "בורח" מהסצנה הנעולה
+    // ונשאר קפוץ עד לחיצת "המשך". תיקון חסין בלי לשנות מבנה: כל עוד נעול, מיישרים בחזרה את הסצנה
+    // הפעילה לראש-המסך בכל scroll/resize. גלילה פנימית בשקופית (.mpanel-kit) לא מפעילה scroll של
+    // החלון ולכן לא מושפעת. בדפדפן רגיל (preventDefault עובד) הגלילה נחסמת מלכתחילה והיישור לא רץ.
+    var realigning=false;
+    function alignActive(){
+      if(!scrollLocked || !activeMScene || deepLinkActive || realigning) return;
+      var w=activeMScene.wrap; if(!w) return;
+      var y=Math.round(w.getBoundingClientRect().top + (window.scrollY||window.pageYOffset||0));
+      if(Math.abs((window.scrollY||window.pageYOffset||0) - y) > 2){
+        realigning=true;
+        window.scrollTo(0, y);            // מחזיר את הסצנה לראש-המסך — פינינג ויזואלי יציב
+        requestAnimationFrame(function(){ realigning=false; });
+      }
+    }
+    window.addEventListener('scroll', alignActive, {passive:true});
+    window.addEventListener('resize', alignActive);
     // R-26: מקלדת — Space/PageDown/↓ שוות-ערך ללחיצה על "המשך" כשנעול (אחרת עוקפות את הנעילה
     // בלי מקביל־מגע, ומשתמש-מקלדת שלא לוחץ Tab על הכפתור נתקע). PageUp/↑ = חזרה בשקופית.
     window.addEventListener('keydown', function(e){
