@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>אב-טיפוס — אימון (scroll-snap)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A; --surface:#141414; --fg:#F4F4F4; --muted:#8C8C8C;
+  --brand:#C9A84C; --brand-2:#E4C978;
+  --line:rgba(255,255,255,.12);
+  --glow-gold:0 10px 30px -8px rgba(201,168,76,.5);
+  --pad:clamp(1.15rem,5vw,2.5rem);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Heebo',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ---- simple nav (context) ---- */
+.nav{position:fixed;inset-inline:0;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem var(--pad);padding-top:calc(.7rem + env(safe-area-inset-top,0px));
+  background:linear-gradient(180deg,rgba(10,10,10,.85),transparent);backdrop-filter:blur(10px)}
+.nav b{color:var(--brand);font-weight:900;letter-spacing:.02em}
+
+/* ---- teasers above/below (to show the natural vertical flow between areas) ---- */
+.teaser{min-height:60svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.8rem;padding:var(--pad)}
+.teaser h1{font-size:clamp(2rem,7vw,3rem);font-weight:900;line-height:1.15}
+.teaser p{color:var(--muted);max-width:32ch}
+.teaser .cue{margin-top:1rem;color:var(--brand);font-weight:700;font-size:.9rem;letter-spacing:.08em;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.teaser .cue span:last-child{font-size:1.3rem;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ============ THE SCENE: one full screen, horizontal snap rail inside ============ */
+.scene{height:100svh;min-height:520px;position:relative;overflow:hidden}
+.rail{height:100%;display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  overscroll-behavior-x:contain}
+.rail::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;overflow:hidden;display:block}
+.slide .media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.slide .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,10,.15) 0%,rgba(10,10,10,.05) 38%,rgba(10,10,10,.72) 82%,rgba(10,10,10,.92) 100%)}
+
+/* scene-level fixed title (rides above the rail, same on every slide) */
+.scene-hero{position:absolute;top:calc(9svh + env(safe-area-inset-top,0px));inset-inline:1.4rem;z-index:4;text-align:center;
+  font-size:clamp(1.25rem,4.6vw,1.6rem);font-weight:800;line-height:1.4;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.7);
+  pointer-events:none}
+
+/* per-slide copy (bottom) */
+.copy{position:absolute;z-index:3;inset-inline:1.5rem;bottom:calc(15svh + env(safe-area-inset-bottom,0px));
+  opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.slide.in .copy{opacity:1;transform:none}
+.copy .txn{color:var(--brand);font-weight:900;font-size:1rem;letter-spacing:.06em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.copy .txn .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.copy h3{color:#fff;margin:.35rem 0 .5rem;font-size:clamp(1.9rem,7vw,2.3rem);line-height:1.1;text-shadow:0 2px 22px rgba(0,0,0,.6)}
+.copy p{color:rgba(255,255,255,.94);font-size:1.05rem;max-width:30ch;text-shadow:0 1px 12px rgba(0,0,0,.65)}
+
+/* dots + counter + swipe hint (scene chrome) */
+.chrome{position:absolute;z-index:5;inset-inline:0;bottom:calc(6svh + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;pointer-events:none}
+.dots{display:flex;gap:.5rem}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.34);transition:.3s}
+.dots i.on{background:var(--brand);width:22px;border-radius:4px;box-shadow:var(--glow-gold)}
+.hint{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.85);font-weight:700;font-size:.82rem;letter-spacing:.04em;
+  background:rgba(20,20,20,.5);backdrop-filter:blur(4px);padding:.34rem .8rem;border-radius:999px;border:1px solid var(--line)}
+.hint .ar{color:var(--brand);font-size:1.05rem;animation:swp 1.5s ease-in-out infinite}
+@keyframes swp{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+.scene.done .hint{opacity:0;transition:opacity .4s}
+
+/* prev/next arrows (desktop / a11y) */
+.arw{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(20,20,20,.5);backdrop-filter:blur(4px);color:#fff;font-size:1.3rem;
+  display:flex;align-items:center;justify-content:center;cursor:pointer}
+.arw:disabled{opacity:.25;cursor:default}
+.arw.prev{inset-inline-end:.7rem}   /* RTL: "prev" (חזרה) is on the right */
+.arw.next{inset-inline-start:.7rem}
+@media(hover:none){.arw{display:none}}   /* touch → rely on swipe */
+
+/* continue button (optional, not a lock) */
+.cont{position:fixed;bottom:calc(1.4rem + env(safe-area-inset-bottom,0px));inset-inline-start:50%;transform:translateX(-50%);
+  z-index:44;background:linear-gradient(160deg,#F3E1A6,#C9A84C 55%,#B58E36);color:#0A0A0A;font-weight:900;
+  border:0;border-radius:999px;padding:.8rem 1.7rem;font-size:1rem;box-shadow:var(--glow-gold);cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .35s}
+.cont.show{opacity:1;pointer-events:auto}
+
+@media(prefers-reduced-motion:reduce){.copy{opacity:1;transform:none}.hint .ar,.teaser .cue span:last-child{animation:none}}
+</style>
+</head>
+<body>
+<div class="nav"><b>קומבאט אתלט</b><span style="color:var(--muted);font-size:.85rem">אב-טיפוס · אימון</span></div>
+
+<!-- teaser above → shows the natural scroll INTO the scene -->
+<section class="teaser">
+  <h1>האימון הוא רק ההתחלה.</h1>
+  <p>תוכנית ליווי פרונטלית + אונליין לצעירים בגילאי 14–25.</p>
+  <div class="cue"><span>גלול למטה</span><span>↓</span></div>
+</section>
+
+<!-- ===== THE TRAINING SCENE — full screen, horizontal swipe rail ===== -->
+<section class="scene" id="train" aria-label="האימון הפרונטלי">
+  <div class="scene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
+
+  <div class="rail" id="rail">
+    <div class="slide" data-i="0">
+      <div class="media" style="background-image:url('media/train-warmup.webp')"></div>
+      <div class="scrim"></div>
+      <div class="copy"><div class="txn"><span class="ltr">01</span> · חימום</div>
+        <h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
+    </div>
+    <div class="slide" data-i="1">
+      <div class="media" style="background-image:url('media/train-calisthenics.webp')"></div>
+      <div class="scrim"></div>
+      <div class="copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div>
+        <h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלך.</p></div>
+    </div>
+    <div class="slide" data-i="2">
+      <div class="media" style="background-image:url('media/train-athletics.webp')"></div>
+      <div class="scrim"></div>
+      <div class="copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div>
+        <h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה.</p></div>
+    </div>
+    <div class="slide" data-i="3">
+      <div class="media" style="background-image:url('media/train-muaythai.webp')"></div>
+      <div class="scrim"></div>
+      <div class="copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div>
+        <h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
+    </div>
+  </div>
+
+  <button class="arw prev" id="prev" aria-label="הקודם" disabled>›</button>
+  <button class="arw next" id="next" aria-label="הבא">‹</button>
+
+  <div class="chrome">
+    <div class="hint" id="hint"><span class="ar">←</span><span>החלק לצד לעוד</span></div>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<button class="cont" id="cont">המשך ↓</button>
+
+<!-- teaser below → shows the scene RELEASES to natural scroll (no lock) -->
+<section class="teaser" id="afterTrain">
+  <h1 style="color:var(--brand)">אזור הבא: האפליקציה</h1>
+  <p>הגלילה משוחררת לגמרי — אין תקיעה. כל אזור נתפס למסך מלא בכניסה.</p>
+</section>
+
+<script>
+(function(){
+  var rail=document.getElementById('rail');
+  var slides=[].slice.call(rail.querySelectorAll('.slide'));
+  var dots=[].slice.call(document.getElementById('dots').children);
+  var scene=document.getElementById('train');
+  var prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cont=document.getElementById('cont'), hint=document.getElementById('hint');
+  var cur=0;
+
+  // active slide = the one filling the rail viewport (entrance anim + dots + counter)
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && e.intersectionRatio>=0.6){
+        var i=+e.target.dataset.i;
+        cur=i;
+        slides.forEach(function(s){ s.classList.toggle('in', s===e.target); });
+        dots.forEach(function(d,j){ d.classList.toggle('on', j===i); });
+        prev.disabled = i===0;
+        next.disabled = i===slides.length-1;
+        if(i>0) scene.classList.add('done');           // hide swipe hint once they moved
+        if(i===slides.length-1){ scene.classList.add('seen'); cont.classList.add('show'); }
+      }
+    });
+  }, {root:rail, threshold:[0.6]});
+  slides.forEach(function(s){ io.observe(s); });
+  slides[0].classList.add('in');
+
+  // RTL-safe programmatic scroll to a slide (arrows) — use scrollIntoView (handles rtl sign)
+  function go(i){ i=Math.max(0,Math.min(slides.length-1,i)); slides[i].scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'}); }
+  next.addEventListener('click',function(){ go(cur+1); });
+  prev.addEventListener('click',function(){ go(cur-1); });
+
+  // continue → natural smooth scroll to the next area (NOT a lock)
+  cont.addEventListener('click',function(){ document.getElementById('afterTrain').scrollIntoView({behavior:'smooth'}); });
+
+  // show continue button only while the scene fills the screen
+  var sio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(!e.isIntersecting) cont.classList.remove('show');
+      else if(scene.classList.contains('seen')) cont.classList.add('show'); });
+  }, {threshold:[0.55]});
+  sio.observe(scene);
+})();
+</script>
+</body>
+</html>
