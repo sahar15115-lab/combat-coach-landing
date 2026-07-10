@@ -3,7 +3,7 @@
 <head>
 <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>קומבאט אתלט — תוכנית ליווי: קאליסטניקס, אגרוף תאילנדי, אתלטיות</title>
 <meta name="description" content="קומבאט אתלט — תוכנית הליווי היחידה מסוגה בארץ שמשלבת קאליסטניקס, אגרוף תאילנדי ופיתוח יכולות אתלטיות, עם אפליקציה אישית, מפגשי קהילה ותוכנית אימון מותאמת.">
 <meta property="og:title" content="קומבאט אתלט — לא עוד אימון כושר. תוכנית ליווי.">
@@ -117,6 +117,7 @@ body.ai-mode .nav .btn,body.ai-mode .sticky-cta .btn{
 
 /* nav */
 .nav{position:fixed;inset-inline:0;top:0;z-index:50;backdrop-filter:blur(12px);
+  padding-top:env(safe-area-inset-top,0px); /* notch clearance (עם viewport-fit=cover) */
   background:rgba(10,10,10,.5);border-bottom:1px solid transparent;transition:.3s}
 .nav.scrolled{border-color:var(--line);background:rgba(10,10,10,.85)}
 /* הפס העליון נעלם בפתיחה (מסך ראשון נקי) ומופיע בעדינות רק אחרי גלילה. בלי JS — תמיד גלוי. */
@@ -522,7 +523,7 @@ html.js .tally-fallback{display:none}
 /* ה-CTA הצף מתחבא בסצנות שבהן הכיתוב יושב למטה (אימון/אפליקציה/קהילה) — לא מסתיר תוכן */
 body.cta-hide .sticky-cta{opacity:0!important;transform:translateY(14px)!important;pointer-events:none!important}
 /* כפתור "המשך" — מופיע כשה-CTA מוסתר (בתוך הסצנות). לחיצה=קידום מסך אחד; הגלילה ממשיכה לעבוד לצידו. */
-.scroll-cue{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:44;
+.scroll-cue{position:fixed;bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:44;
   display:inline-flex;align-items:center;gap:.5rem;pointer-events:none;opacity:0;
   transition:opacity .4s,filter .2s,transform .12s;cursor:pointer;font-family:inherit;
   background:linear-gradient(160deg,#F6E4A9,#C9A84C 55%,#B0862E);
