@@ -897,6 +897,43 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 /* R (QA): מטרת-מגע 44px בלי שינוי מראה — שכבת-לחיצה שקופה (::after) על הכפתורים/קישורים הזעירים */
 .nav .cta-primary,.nav .cta-secondary,.tst-lb-close,footer a{position:relative}
 .nav .cta-primary::after,.nav .cta-secondary::after,.tst-lb-close::after,footer a::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;min-width:44px;min-height:44px}
+/* ===== מובייל: אימון — קארוסל-כרטיסים אופקי (swipe נטיבי; הכרטיס הפעיל קופץ קדימה, הבא מציץ) ===== */
+@media(max-width:900px){
+  .trainx-mobile{display:flex;flex-direction:column;height:100svh;min-height:560px;
+    padding-top:calc(4.6rem + env(safe-area-inset-top,0px));padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px))}
+  .trail-top{padding-inline:var(--pad)}
+  .trail-segs{display:flex;gap:5px;margin-bottom:.8rem}
+  .trail-segs i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}
+  .trail-segs i.done{background:var(--brand-metal)}
+  .trail-segs i.cur{position:relative}
+  .trail-segs i.cur::after{content:"";position:absolute;inset:0;background:var(--brand-metal);transform-origin:right;animation:trailFill .5s ease forwards}
+  @keyframes trailFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .trail-title{text-align:center;color:#fff;font-weight:800;font-size:clamp(1.1rem,4.4vw,1.45rem);line-height:1.35;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+  .trail{flex:1;display:flex;gap:14px;align-items:center;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;
+    padding-inline:11%;margin-top:1rem}
+  .trail::-webkit-scrollbar{display:none}
+  .tcard{flex:0 0 78%;height:70svh;max-height:640px;scroll-snap-align:center;scroll-snap-stop:always;
+    position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+    transform:scale(.88);opacity:.5;transition:transform .42s cubic-bezier(.2,.7,.2,1),opacity .42s,box-shadow .42s}
+  .tcard.active{transform:scale(1);opacity:1;box-shadow:var(--glow-gold-strong),0 24px 60px -20px rgba(0,0,0,.8);border-color:rgba(201,168,76,.4)}
+  .tcard-media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  .tcard-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .tcard-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.25),rgba(10,10,10,0) 34%,rgba(10,10,10,.78) 82%,rgba(10,10,10,.95))}
+  .tcard-num{position:absolute;top:16px;inset-inline-start:18px;z-index:2;color:var(--brand-2);font-weight:900;font-size:.95rem;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+  .tcard-copy{position:absolute;z-index:2;inset-inline:20px;bottom:26px;opacity:0;transform:translateY(16px);transition:opacity .5s ease .1s,transform .55s cubic-bezier(.2,.7,.2,1) .1s}
+  .tcard.active .tcard-copy{opacity:1;transform:none}
+  .tcard-copy h3{color:#fff;font-weight:900;font-size:clamp(1.7rem,6vw,2.1rem);line-height:1.05;margin-bottom:.4rem;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+  .tcard-copy p{color:rgba(255,255,255,.93);font-size:1rem;line-height:1.4;max-width:28ch;text-shadow:0 1px 10px rgba(0,0,0,.65)}
+  .trail-bot{display:flex;justify-content:center;padding-top:.8rem}
+  .trail-hint{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.85);font-weight:700;font-size:.82rem;background:rgba(20,20,20,.5);backdrop-filter:blur(4px);padding:.34rem .85rem;border-radius:999px;border:1px solid var(--line)}
+  .trail-hint .ar{color:var(--brand-2);font-size:1.05rem;animation:trailSwp 1.5s ease-in-out infinite}
+  @keyframes trailSwp{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+  .trainx-mobile.seen .trail-hint{display:none}
+}
+@media(max-width:900px) and (prefers-reduced-motion:reduce){
+  .tcard,.tcard-copy{transition:none}.trail-hint .ar,.trail-segs i.cur::after{animation:none}.trail-segs i.cur::after{transform:none}
+}
 </style>
 </head>
 <body>
@@ -983,30 +1020,39 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     </div>
   </div>
 
-  <!-- MOBILE: full-screen panels — וידאו אמיתי בכל שלב, כותרת הסצנה מוזגה לפאנל 1 -->
-  <div class="trainx-mobile msnap">
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="txscene txscene-hero">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">01</span> · חימום</div><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
-      <div class="mswipe" aria-hidden="true"><span>החלק למעלה</span><span>↑</span></div>
+  <!-- MOBILE: קארוסל-כרטיסים אופקי — הכרטיס הפעיל קופץ קדימה, הבא מציץ בצד (swipe, גלילה נטיבית) -->
+  <div class="trainx-mobile">
+    <div class="trail-top">
+      <div class="trail-segs" id="trailSegs" aria-hidden="true"><i class="cur"></i><i></i><i></i><i></i></div>
+      <div class="trail-title">האימון הפרונטלי · שעה אחת. שלושה עולמות.</div>
     </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">02</span> · קאליסטניקס</div><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלך.</p></div>
+    <div class="trail" id="trainRail" role="group" aria-roledescription="קארוסל" aria-label="שלבי האימון">
+      <article class="tcard" data-i="0" aria-roledescription="שקופית" aria-label="1 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-warmup.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">01</span> · חימום</div>
+        <div class="tcard-copy"><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
+      </article>
+      <article class="tcard" data-i="1" aria-roledescription="שקופית" aria-label="2 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-calisthenics.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-calisthenics.webp"><source src="media/train-calisthenics.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">02</span> · קאליסטניקס</div>
+        <div class="tcard-copy"><h3>אימוני משקל גוף</h3><p>כל אחד עובד לפי הרמה שלו — עד לעמידת הידיים ועליית הכוח הראשונות שלך.</p></div>
+      </article>
+      <article class="tcard" data-i="2" aria-roledescription="שקופית" aria-label="3 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-athletics.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">03</span> · אתלטיות</div>
+        <div class="tcard-copy"><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
+      </article>
+      <article class="tcard" data-i="3" aria-roledescription="שקופית" aria-label="4 מתוך 4">
+        <div class="tcard-media" style="background-image:url('media/train-muaythai.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
+        <div class="tcard-scrim" aria-hidden="true"></div>
+        <div class="tcard-num"><span class="ltr">04</span> · אגרוף תאילנדי</div>
+        <div class="tcard-copy"><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
+      </article>
     </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-athletics.webp"><source src="media/train-athletics.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">03</span> · אתלטיות</div><h3>פיתוח מיומנויות אתלטיות</h3><p>כוח מתפרץ · זריזות · קואורדינציה · גמישות · סיבולת לב-ריאה</p></div>
-    </div>
-    <div class="mpanel">
-      <div class="mpanel-media"><video muted loop playsinline aria-hidden="true" preload="none" data-poster="media/train-muaythai.webp"><source src="media/train-muaythai.mp4" type="video/mp4"></video></div>
-      <div class="mpanel-scrim" aria-hidden="true"></div>
-      <div class="mpanel-copy"><div class="txn"><span class="ltr">04</span> · אגרוף תאילנדי</div><h3>לימוד יסודות האגרוף התאילנדי</h3><p>ארגז הכלים שיעזור לך להיות מוכן יותר לכל סיטואציה ברחוב.</p></div>
-    </div>
+    <div class="trail-bot"><div class="trail-hint" id="trainHint" aria-hidden="true"><span class="ar">←</span><span>החלק לצד</span></div></div>
   </div>
 </section>
 
@@ -1667,158 +1713,62 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
         if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=3);
         document.body.classList.toggle('ai-mode',i>=3); }); }
   } else {
-    // ===== מובייל: "מוחלף במקום" — אותו מנגנון crossfade כמו בדסקטופ, על מבנה ה-.mpanel הקיים.
-    // בטוח מטבעו: אם ה-pin נכשל (דפדפן/שגיאה), .pin-active לא מתווסף והפאנלים נשארים בזרימה רגילה (גלויים תמיד). =====
-    var activeMScene=null;   // האזור שמוצג כרגע
-    var scrollLocked=false;  // כשדולק — האזור נועל את המסך עד שעוברים את כל שקופיותיו
-    var deepLinkActive=false; // R (QA): בזמן קפיצת deep-link — סצנות לא נועלות/קופצות, כדי לא לחטוף את הגלילה מהיעד
-    // ===== מובייל: מצגת נעולה. כל אזור = מסך אחד (100svh, אותו CSS של .pin-active).
-    //       מעבר בין שקופיות אך ורק בכפתור (המשך הצף / הכפתור בתוך הטלפון). כשאזור ממלא
-    //       את המסך הוא נועל את הגלילה — אי אפשר לדלג הלאה עד שעברת את כל שקופיותיו;
-    //       בשקופית האחרונה הנעילה משתחררת וממשיכים לאזור הבא. אין "חטיפת-גלילה" ואין
-    //       scroll-snap (שניהם גרמו לבאגים) — רק נעילה נקייה + כפתור. הדסקטופ לא מושפע. =====
-    // נעילת-גלילה: חוסמת את מחוות הגלילה (touchmove/wheel) כשנעול. מעבר קדימה רק בכפתור.
-    function blockScroll(e){
-      if(!scrollLocked) return;
-      // מאפשרים גלילה פנימית בשקופית אינטראקטיבית גבוהה (overscroll-behavior:contain מונע דליפה לעמוד)
-      if(e.target && e.target.closest && e.target.closest('.mpanel-kit')) return;
-      if(e.cancelable) e.preventDefault(); // R (QA): רק אירוע בר-ביטול — מנקה רעש-קונסול
-    }
-    window.addEventListener('touchmove', blockScroll, {passive:false});
-    window.addEventListener('wheel',     blockScroll, {passive:false});
-    // R (QA מכשיר אמיתי): בדפדפן-פנימי (אינסטגרם/וואטסאפ) ה-preventDefault נכשל (touchmove לא-בטל),
-    // וגם סרגל-הכתובת נפתח/נסגר בגלילה ומשנה את גובה ה-viewport (svh) → הדף "בורח" מהסצנה הנעולה
-    // ונשאר קפוץ עד לחיצת "המשך". תיקון חסין בלי לשנות מבנה: כל עוד נעול, מיישרים בחזרה את הסצנה
-    // הפעילה לראש-המסך בכל scroll/resize. גלילה פנימית בשקופית (.mpanel-kit) לא מפעילה scroll של
-    // החלון ולכן לא מושפעת. בדפדפן רגיל (preventDefault עובד) הגלילה נחסמת מלכתחילה והיישור לא רץ.
-    var realigning=false;
-    function alignActive(){
-      if(!scrollLocked || !activeMScene || deepLinkActive || realigning) return;
-      var w=activeMScene.wrap; if(!w) return;
-      var y=Math.round(w.getBoundingClientRect().top + (window.scrollY||window.pageYOffset||0));
-      if(Math.abs((window.scrollY||window.pageYOffset||0) - y) > 2){
-        realigning=true;
-        window.scrollTo(0, y);            // מחזיר את הסצנה לראש-המסך — פינינג ויזואלי יציב
-        requestAnimationFrame(function(){ realigning=false; });
+    // ===== מובייל: גלילה נטיבית לחלוטין — בלי נעילת-גלילה (חסין בדפדפנים פנימיים) =====
+    // אין preventDefault / re-align / body-fixed. אימון = קארוסל אופקי; אפליקציה = טלפון +
+    // כפתור-פנימי שמקדם מסך; קהילה = גלילה אנכית רגילה. וידאו: רק הפעיל מנגן.
+
+    // ---- אימון: קארוסל-כרטיסים אופקי (swipe נטיבי) ----
+    (function(){
+      var rail=document.getElementById('trainRail'); if(!rail) return;
+      var cards=[].slice.call(rail.querySelectorAll('.tcard'));
+      var segsEl=document.getElementById('trailSegs');
+      var segs=segsEl?[].slice.call(segsEl.children):[];
+      var wrap=document.querySelector('.trainx-mobile');
+      function paint(i){ segs.forEach(function(s,j){ s.classList.remove('done','cur'); if(j<i)s.classList.add('done'); else if(j===i)s.classList.add('cur'); }); }
+      if('IntersectionObserver' in window){
+        var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.6){
+            var i=+e.target.dataset.i;
+            cards.forEach(function(c){ c.classList.toggle('active', c===e.target); });
+            paint(i); if(i>0 && wrap) wrap.classList.add('seen'); playOnly(cards,i);
+          }
+        }); }, {root:rail, threshold:[0.6]});
+        cards.forEach(function(c){ io.observe(c); });
+        var tsec=document.getElementById('train');
+        if(tsec) new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(!e.isIntersecting) cards.forEach(function(c){ var v=c.querySelector('video'); if(v&&v.pause)v.pause(); });
+        }); },{threshold:0}).observe(tsec);
       }
-    }
-    window.addEventListener('scroll', alignActive, {passive:true});
-    window.addEventListener('resize', alignActive);
-    // R-26: מקלדת — Space/PageDown/↓ שוות-ערך ללחיצה על "המשך" כשנעול (אחרת עוקפות את הנעילה
-    // בלי מקביל־מגע, ומשתמש-מקלדת שלא לוחץ Tab על הכפתור נתקע). PageUp/↑ = חזרה בשקופית.
-    window.addEventListener('keydown', function(e){
-      if(!scrollLocked || !activeMScene) return;
-      if(e.target && e.target.closest && e.target.closest('.mpanel-kit,input,textarea,[contenteditable]')) return;
-      if(e.key===' '||e.key==='PageDown'||e.key==='ArrowDown'){ e.preventDefault(); activeMScene.advance(); }
-      else if(e.key==='PageUp'||e.key==='ArrowUp'){ e.preventDefault(); if(activeMScene.back) activeMScene.back(); }
-    });
-    var NEXT_SECTION={'.trainx-mobile':'#app','.appx-mobile':'#testi','.commx-mobile':'#check'};
-    function goSection(sel){ scrollLocked=false; var t=sel&&document.querySelector(sel); if(t) scrollToY(t.getBoundingClientRect().top+scrollY); }
-    function pinMobileScene(msnapSel, endPct, onProgress){
-      var wrap=document.querySelector(msnapSel);
-      if(!wrap) return null;
-      var panels=gsap.utils.toArray(wrap.querySelectorAll('.mpanel'));
-      var N=panels.length; if(!N) return null;
-      var ref={N:N, disp:0, wrap:wrap, completed:(N<=1), engaged:false};
-      function show(i,silent){
-        i=Math.max(0,Math.min(N-1,i));
-        ref.disp=i;
-        panels.forEach(function(p,j){ p.classList.toggle('on',j===i); });
-        if(i>=N-1){ ref.completed=true; scrollLocked=false; }   // שקופית אחרונה → משחררים את הנעילה
-        if(onProgress&&!silent) onProgress(i, 0.5, panels[i], i+0.5, N); // raw≈i+0.5 → מדיה/רוטציה מתייצבות
-      }
-      ref.show=show;
-      ref.advance=function(){
-        if(ref.disp<N-1){ show(ref.disp+1); }
-        else { goSection(NEXT_SECTION[msnapSel]); }
-      };
-      ref.back=function(){ if(ref.disp>0) show(ref.disp-1); };
-      // נעילת האזור כשהוא ממלא את המסך (וטרם עברנו את כל שקופיותיו)
-      function engage(){
-        activeMScene=ref;
-        show(ref.disp); // R-22: הסצנה הגיעה למסך — מציתים עכשיו את הווידאו של הפאנל הנוכחי
-        if(ref.engaged || ref.completed || deepLinkActive) return;
-        ref.engaged=true;
-        window.scrollTo({top:wrap.getBoundingClientRect().top+scrollY, behavior:'auto'}); // יישור מיידי + עצירת מומנטום
-        if(ref.disp<N-1) scrollLocked=true;
-      }
-      try{
-        wrap.classList.add('pin-active');
-        show(0,true); /* R-22: אתחול שקט — הווידאו מוצת רק ב-engage (כניסה אמיתית למסך) */
-        panels.forEach(function(p){
-          p.querySelectorAll('[data-mnext]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); ref.advance(); }); });
-          p.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ ref.completed=true; goSection(b.dataset.goto); }); });
-        });
-        if('IntersectionObserver' in window){
-          new IntersectionObserver(function(es){ es.forEach(function(e){
-            if(e.isIntersecting && e.intersectionRatio>=0.6) engage();
-          }); }, {threshold:[0.6]}).observe(wrap);
-        } else if(!activeMScene){ activeMScene=ref; }
-      }catch(e3){ wrap.classList.remove('pin-active'); scrollLocked=false; return null; }
-      return ref;
-    }
+      if(cards[0]) cards[0].classList.add('active');
+    })();
 
-    // קצב רגוע: יותר "אורך גלילה" לכל שלב לפני החלפה (לפי בקשת סהר — פחות קפיצות)
-    var trMobMedia=gsap.utils.toArray('.trainx-mobile .mpanel-media');
-    if(document.querySelector('.trainx-mobile .mpanel'))
-      pinMobileScene('.trainx-mobile',520,function(i){ playOnly(trMobMedia,i); }, 700);
-
-    // ספין 360 מצטבר במעברים: יציב בזמן קריאה, סיבוב מלא בין מסכים, כיוון מתחלף (מצד לצד).
-    // הרוטציה מצטברת (לא מתאפסת) — כדי שהטוין לעולם לא "יתגלגל אחורה".
-    var mPhones=null;
-    function spinRot(raw,N){
-      var rot=0;
-      for(var k=1;k<N;k++){
-        var dir=(k%2?1:-1)*360;
-        if(raw>=k+0.25){ rot+=dir; }
-        else if(raw>k-0.25){ var t=(raw-(k-0.25))/0.5, e=t*t*(3-2*t); rot+=dir*e; break; }
-        else break;
-      }
-      return rot;
-    }
-    var appMobScreens=gsap.utils.toArray('.appx-mobile .phone-screen');
-    pinMobileScene('.appx-mobile',900,function(i,local,panel,raw,N){
-      playOnly(appMobScreens,i);
-      if(!mPhones) mPhones=gsap.utils.toArray('.appx-mobile .phone');
-      if(!mPhones.length) return;
-      var rot=spinRot(raw,N) + (local-0.5)*14; // + נטייה קלה בזמן קריאה לתחושת תלת-ממד
-      gsap.to(mPhones,{rotationY:rot,duration:.35,ease:'power2.out',overwrite:'auto',
-        transformPerspective:900,transformOrigin:'50% 50%'});
-    }, 800); // dwell ארוך — מסך אפליקציה לא יתחלף מהר
-
-    pinMobileScene('.commx-mobile',1240,function(i){
-      document.body.classList.toggle('ai-mode', i>=4); // שקופית 4 = פרויקט אישי/AI (כחול)
-    }, 900); // dwell הכי ארוך — 8 שקופיות, כל אחת מקבלת זמן קריאה
-
-    // R (QA): #testi הוא סקשן רגיל שיושב בין שתי סצנות נעולות (app↔community). מצב הנעילה
-    // הגלובלי (scrollLocked) נשאר דלוק כשנוחתים עליו → blockScroll חוסם גלילת-מגע קדימה
-    // והמשתמש נתקע לפני הקהילה/הטופס. תיקון חסין: כל עוד #testi ממלא חצי-מסך ומעלה,
-    // הנעילה משוחררת בכוח. כשגוללים למטה והקהילה ממלאת ≥60% — engage שלה נועל אותה כרגיל.
-    var testiSec=document.getElementById('testi');
-    if(testiSec && 'IntersectionObserver' in window){
-      new IntersectionObserver(function(es){ es.forEach(function(e){
-        if(e.isIntersecting && e.intersectionRatio>=0.5){ scrollLocked=false; activeMScene=null; }
-      }); }, {threshold:[0,0.5,1]}).observe(testiSec);
-    }
-
-    // R (QA): deep-link/רענון עם עוגן לסקשן שאחרי סצנה נעולה — הדפדפן היה נחטף לסצנה
-    // הנעולה במקום ליעד. אחרי שהסצנות מתייצבות, קופצים ליעד (מיידי) ומשחררים את הנעילה.
-    if(location.hash && location.hash.length>1){
-      var dlTarget=document.querySelector(location.hash);
-      if(dlTarget) window.addEventListener('load',function(){
-        deepLinkActive=true; scrollLocked=false; activeMScene=null;
-        var land=function(){ scrollLocked=false; dlTarget.scrollIntoView({behavior:'auto',block:'start'}); };
-        setTimeout(land,300); setTimeout(land,600); setTimeout(land,1000); // מחזיקים את היעד מול חטיפות
-        setTimeout(function(){ deepLinkActive=false; },1400); // אחרי שהתייצב — נעילה חוזרת לפעולה רגילה
+    // ---- אפליקציה: הטלפון נשאר; כפתור "המשך" שבתוכו מקדם מסך; הדף נגלל חופשי (בלי נעילה) ----
+    (function(){
+      var wrap=document.querySelector('.appx-mobile'); if(!wrap) return;
+      wrap.classList.add('pin-active'); // crossfade ויזואלי בלבד — הנעילה הוסרה
+      var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
+      var disp=0;
+      function show(i){ i=Math.max(0,Math.min(panels.length-1,i)); disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
+      panels.forEach(function(p){
+        p.querySelectorAll('[data-mnext]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); show(disp+1); }); });
+        p.querySelectorAll('[data-goto]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); var t=document.querySelector(btn.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY); }); });
       });
-    }
+      show(0);
+    })();
 
-    // כפתור "המשך" הצף — מקדם שקופית אחת בסצנה שבמסך; בשקופית האחרונה ממשיך לסקשן הבא.
-    var cue=document.getElementById('scrollCue');
-    if(cue) cue.addEventListener('click',function(){
-      if(activeMScene && activeMScene.advance){ activeMScene.advance(); }
-      else { scrollToY(scrollY+innerHeight*0.92); }
-    });
+    // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI כששקופית ה-AI במסך (בלי נעילה) ----
+    (function(){
+      var wrap=document.querySelector('.commx-mobile'); if(!wrap) return;
+      var panels=[].slice.call(wrap.querySelectorAll('.mpanel')); // נשארים בזרימה רגילה
+      if('IntersectionObserver' in window) panels.forEach(function(p,i){
+        new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.55){ playOnly(panels,i); document.body.classList.toggle('ai-mode', i>=4); }
+        }); },{threshold:[0.55]}).observe(p);
+      });
+    })();
+
+    // ניווט נטיבי → כפתור "המשך" הצף מיותר
+    var _cue=document.getElementById('scrollCue'); if(_cue) _cue.style.display='none';
   }
 
   // מצב-AI — כיבוי בטוח: חוזר לזהב כשמגיעים לטופס ההרשמה (רגע ההמרה), ונכבה גם בגלילה חזרה מעל הקהילה

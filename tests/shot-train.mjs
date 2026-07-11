@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b=await chromium.launch();
+const c=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:3});
+const p=await c.newPage();
+await p.goto('http://localhost:8137/',{waitUntil:'load'});
+await p.waitForTimeout(1300);
+await p.evaluate(()=>document.getElementById('train').scrollIntoView());
+await p.waitForTimeout(900);
+await p.screenshot({path:'C:/Users/sahar/AppData/Local/Temp/claude/C--Users-sahar-OneDrive-Desktop-----------------/0f925eef-3e49-4e83-8748-84e9be7eb4c0/scratchpad/proto/real-train.png'});
+await b.close();
+console.log('shot saved');
