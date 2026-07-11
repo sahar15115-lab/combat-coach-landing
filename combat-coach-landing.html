@@ -934,6 +934,11 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
 @media(max-width:900px) and (prefers-reduced-motion:reduce){
   .tcard,.tcard-copy{transition:none}.trail-hint .ar,.trail-segs i.cur::after{animation:none}.trail-segs i.cur::after{transform:none}
 }
+/* קהילה במובייל = גלילה אנכית רגילה (בלי נעילה): כל שקופית ממורכזת אנכית, גדלה אם צריך */
+@media(max-width:900px){
+  .commx-mobile .mpanel{display:flex;flex-direction:column;justify-content:center;height:auto;min-height:100svh;
+    padding-top:calc(4.4rem + env(safe-area-inset-top,0px));padding-bottom:calc(1.6rem + env(safe-area-inset-bottom,0px))}
+}
 </style>
 </head>
 <body>
