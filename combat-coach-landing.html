@@ -495,16 +495,18 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy{opacity:1!important;transform:none!important}
+  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy,.tcard,.tcard-copy{opacity:1!important;transform:none!important}
   .appx-desktop,.trainx-desktop,.commx-desktop{display:none!important}
-  .appx-mobile,.trainx-mobile,.commx-mobile{display:block!important}
+  .appx-mobile,.commx-mobile{display:block!important}
   .ps,.ax,.tx,.tv,.cx,.cslide{opacity:1!important}
   .msnap.pin-active{height:auto!important;overflow:visible!important}
   .msnap.pin-active .mpanel{position:relative!important;inset:auto!important;height:100svh!important;opacity:1!important}
 }
-/* no-JS fallback: pinned scenes need JS — show stacked blocks so content is visible */
+/* no-JS fallback: תוכן חייב להיות גלוי בלי JS. אפליקציה/קהילה = בלוקים מוערמים;
+   אימון = רצועת-כרטיסים (scroll-snap עובד נטיבית) עם כל הכרטיסים גלויים ולא מעומעמים. */
 html.no-js .appx-desktop,html.no-js .trainx-desktop,html.no-js .commx-desktop{display:none}
-html.no-js .appx-mobile,html.no-js .trainx-mobile,html.no-js .commx-mobile{display:block}
+html.no-js .appx-mobile,html.no-js .commx-mobile{display:block}
+html.no-js .tcard,html.no-js .tcard .tcard-copy{opacity:1;transform:none}
 
 /* ============ תוספות: כותרת ממוזגת, מסכי אפליקציה אמיתיים, כפתורי מסע, CTA מסתתר ============ */
 .txscene{color:var(--brand);font-weight:900;font-size:.95rem;letter-spacing:.05em;margin-bottom:.9rem;text-shadow:0 2px 12px rgba(0,0,0,.6)}

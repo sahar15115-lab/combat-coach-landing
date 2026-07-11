@@ -46,7 +46,7 @@ const browser = await chromium.launch();
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const page = await ctx.newPage();
   await page.goto(URL, { waitUntil: 'load' }); await page.waitForTimeout(1800);
-  check('mobile: 3 pinned scenes', await page.evaluate(() => document.querySelectorAll('.msnap.pin-active').length === 3));
+  check('mobile: native-scroll layout (train rail + app crossfade + community unlocked)', await page.evaluate(() => !!document.getElementById('trainRail') && document.querySelector('.appx-mobile').classList.contains('pin-active') && !document.querySelector('.commx-mobile').classList.contains('pin-active')));
   check('mobile: hero title below nav area', await page.evaluate(() => document.querySelector('.hero-title').getBoundingClientRect().top > 80));
   check('mobile: 4 journey buttons', await page.locator('.appx-mobile .phone-cta').count() === 4);
   check('mobile: scroll-cue exists', await page.locator('.scroll-cue').count() === 1);
@@ -62,7 +62,7 @@ const browser = await chromium.launch();
   check('no-js: reveals visible', await page.evaluate(() => getComputedStyle(document.querySelector('.reveal')).opacity === '1'));
   check('no-js: mobile panels shown', await page.evaluate(() => getComputedStyle(document.querySelector('.trainx-mobile')).display !== 'none'));
   check('no-js: nav visible', await page.evaluate(() => getComputedStyle(document.querySelector('#nav')).opacity === '1'));
-  check('no-js: panel copy visible', await page.evaluate(() => getComputedStyle(document.querySelector('.mpanel-copy')).opacity === '1'));
+  check('no-js: training card copy visible', await page.evaluate(() => getComputedStyle(document.querySelector('.tcard-copy')).opacity === '1'));
   await page.screenshot({ path: 'tests/shots/nojs-mobile.png' });
   await ctx.close();
 }
@@ -73,7 +73,7 @@ const browser = await chromium.launch();
   const page = await ctx.newPage();
   await page.goto(URL, { waitUntil: 'load' }); await page.waitForTimeout(800);
   check('reduced: reveals visible', await page.evaluate(() => getComputedStyle(document.querySelector('.reveal')).opacity === '1'));
-  check('reduced: mobile stacks shown', await page.evaluate(() => getComputedStyle(document.querySelector('.trainx-mobile')).display === 'block'));
+  check('reduced: mobile training shown', await page.evaluate(() => getComputedStyle(document.querySelector('.trainx-mobile')).display !== 'none'));
   await ctx.close();
 }
 
