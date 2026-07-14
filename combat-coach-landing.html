@@ -951,10 +951,15 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .acard-cap.accent .sx-n{color:var(--accent)}
   .acard-cap h3{color:#fff;font-weight:800;font-size:clamp(1.05rem,4.3vw,1.32rem);line-height:1.3;margin-top:.35rem;max-width:26ch;margin-inline:auto}
 }
-/* קהילה במובייל = גלילה אנכית רגילה (בלי נעילה): כל שקופית ממורכזת אנכית, גדלה אם צריך */
+/* קהילה במובייל = זרימה אנכית טבעית בגובה-תוכן (בלי רצפת 100svh שיצרה "סלֶבּים" ריקים).
+   שקופית קצרה נשארת קומפקטית; שקופית אינטראקטיבית גבוהה (חבלנים וכו') מקבלת את הגובה שהיא צריכה. */
 @media(max-width:900px){
-  .commx-mobile .mpanel{display:flex;flex-direction:column;justify-content:center;height:auto;min-height:100svh;
-    padding-top:calc(4.4rem + env(safe-area-inset-top,0px));padding-bottom:calc(1.6rem + env(safe-area-inset-bottom,0px))}
+  .commx-mobile .mpanel{display:flex;flex-direction:column;justify-content:center;height:auto;min-height:0;
+    padding-top:clamp(2.4rem,7vh,3.8rem);padding-bottom:clamp(2rem,6vh,3.4rem)}
+  .commx-mobile .mpanel:first-child{padding-top:calc(4.4rem + env(safe-area-inset-top,0px))}
+  .commx-mobile .mpanel:last-child{padding-bottom:calc(2.4rem + env(safe-area-inset-bottom,0px))}
+  /* מפריד עדין בין שקופיות כדי שיישארו מובחנות בזרימה רציפה (במקום הפרדת מסך-מלא) */
+  .commx-mobile .mpanel + .mpanel{border-top:1px solid rgba(255,255,255,.07)}
 }
 </style>
 </head>
@@ -1373,7 +1378,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
           </div>
         </div>
         <div class="comm-menu__note">כל נושא הוא הרצאה שלמה — כאן מחכה לך רק טעימה.</div>
-        <p class="comm-intro__hint">לחץ ״המשך״ — ונסה לגעת בכל דבר</p>
+        <p class="comm-intro__hint">גלול מטה — ונסה לגעת בכל דבר ↓</p>
       </div>
       </div>
     </div>
