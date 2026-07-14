@@ -303,11 +303,6 @@ html.js .reveal.in{opacity:1;transform:none}
 .gcard .st{color:var(--brand);font-size:.68rem;font-weight:700}
 /* mobile app cards */
 .appx-mobile{display:none}
-.appx-cards{display:grid;gap:var(--s3);margin-top:var(--s4)}
-.acard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--s3);
-  display:grid;grid-template-columns:auto 1fr;gap:var(--s3)}
-.acard .n{font-weight:900;color:var(--brand);font-size:1.3rem;min-width:2rem}
-.acard h3{margin-bottom:.3rem}.acard p{color:var(--fg-soft);font-size:.95rem}
 @media(max-width:900px){.appx-desktop{display:none}.appx-mobile{display:block}}
 
 /* ============ TRUST STRIP ============ */
@@ -495,7 +490,7 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy,.tcard,.tcard-copy{opacity:1!important;transform:none!important}
+  .reveal,.mpanel-appcopy,.tcard,.tcard-copy{opacity:1!important;transform:none!important}
   .appx-desktop,.trainx-desktop,.commx-desktop{display:none!important}
   .appx-mobile,.commx-mobile{display:block!important}
   .ps,.ax,.tx,.tv,.cx,.cslide{opacity:1!important}
@@ -516,7 +511,6 @@ html.no-js .tcard,html.no-js .tcard .tcard-copy{opacity:1;transform:none}
 .psfull{position:absolute;left:0;right:0;bottom:0;width:100%;height:105.5%;object-fit:cover;object-position:50% 100%}
 .axbtn{margin-top:var(--s3);align-self:flex-start}
 .mpanel-app .axbtn{align-self:center;margin-top:0}
-.mpanel-media video{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
 /* Tally: ה-iframe נטען רק עם JS; בלי JS מוצג קישור ישיר לטופס */
 html.no-js iframe[data-tally-src]{display:none}
 html.js .tally-fallback{display:none}
@@ -581,33 +575,13 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .msnap.pin-active{position:relative;height:100svh;overflow:hidden}
   .msnap.pin-active .mpanel{position:absolute;inset:0;height:100%;min-height:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
   .msnap.pin-active .mpanel.on{opacity:1;pointer-events:auto}
-  /* כל החלפה = כניסת טקסט מחודשת (דינמי, לא "תקוע") */
-  .msnap.pin-active .mpanel .mpanel-copy,.msnap.pin-active .mpanel .mpanel-appcopy,.msnap.pin-active .mpanel .mpanel-commcopy{
+  /* כל החלפה = כניסת טקסט מחודשת (דינמי, לא "תקוע") — רק האפליקציה משתמשת ב-pin-active/crossfade */
+  .msnap.pin-active .mpanel .mpanel-appcopy{
     opacity:0;transform:translateY(22px);transition:opacity .5s ease .12s,transform .55s cubic-bezier(.2,.7,.2,1) .12s}
-  .msnap.pin-active .mpanel.on .mpanel-copy,.msnap.pin-active .mpanel.on .mpanel-appcopy,.msnap.pin-active .mpanel.on .mpanel-commcopy{
-    opacity:1;transform:none}
-  /* מיקומי טקסט מובחנים לכל שלב (כמו בדסקטופ): תחתון-ימין → תחתון-שמאל → עליון → תחתון-מרכז */
-  .trainx-mobile.pin-active .mpanel:nth-child(2) .mpanel-copy{text-align:end}
-  .trainx-mobile.pin-active .mpanel:nth-child(3) .mpanel-copy{top:16svh;bottom:auto}
-  .trainx-mobile.pin-active .mpanel:nth-child(4) .mpanel-copy{text-align:center}
-  /* קהילה: גיוון מיקום/יישור בין שקופיות */
-  .commx-mobile.pin-active .mpanel:nth-child(even) .mpanel-commcopy{text-align:end}
-  .commx-mobile.pin-active .mpanel:nth-child(3) .mpanel-commcopy,.commx-mobile.pin-active .mpanel:nth-child(6) .mpanel-commcopy{top:16svh;bottom:auto}
+  .msnap.pin-active .mpanel.on .mpanel-appcopy{opacity:1;transform:none}
   /* אפליקציה: לסירוגין הטקסט מעל/מתחת לטלפון (הכפתור תמיד אחרון) */
   .appx-mobile.pin-active .mpanel:nth-child(even) .mpanel-appcopy{order:2}
   .appx-mobile.pin-active .mpanel:nth-child(even) .axbtn{order:3}
-  /* video/media panel (training) */
-  .mpanel-media{position:absolute;inset:0;z-index:0}
-  .mpanel-media .vph{position:absolute;inset:0}
-  .mpanel-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(to top,rgba(8,8,8,.93) 0%,rgba(8,8,8,.45) 32%,rgba(8,8,8,.08) 60%,rgba(8,8,8,.5) 100%)}
-  .mpanel-copy{position:absolute;z-index:2;inset-inline:1.5rem;bottom:13svh}
-  .mpanel-copy .txn{color:var(--brand);font-weight:900;font-size:1rem;letter-spacing:.08em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
-  .mpanel-copy h3{color:#fff;margin:.35rem 0 .5rem;font-size:2.2rem;text-shadow:0 2px 22px rgba(0,0,0,.55)}
-  .mpanel-copy p{color:rgba(255,255,255,.92);font-size:1.05rem;max-width:30ch;text-shadow:0 1px 12px rgba(0,0,0,.6)}
-  /* כותרת-הסצנה בשקופית 1 (חימום) — עליון, לא ממורכז (top:16svh, אותו ערך מוכח-בטוח
-     כמו שורה 587), ומוגדלת (בקשת סהר) */
-  .trainx-mobile .mpanel .txscene-hero{position:absolute;top:16svh;inset-inline:1.4rem;z-index:2;margin:0;text-align:center;font-size:1.5rem;line-height:1.4}
   /* app phone panel */
   .mpanel-app{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
     padding:calc(3.5rem + env(safe-area-inset-top,0px)) 1.3rem 4svh;text-align:center}
@@ -615,28 +589,10 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .mpanel-appcopy.accent .sx-n{color:var(--accent)}
   .mpanel-appcopy h3{font-size:1.4rem;max-width:20ch;margin:.3rem auto 0;line-height:1.25}
   .mpanel-app .phone{width:auto;height:min(56svh,470px)}
-  /* community slide panel */
-  .mpanel-comm{padding:0;display:block}
-  .mpanel-comm .mpanel-slide{position:absolute;inset:0;width:auto;max-width:none;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
-  .mpanel-comm .mpanel-slide::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(to top,rgba(8,8,8,.92),rgba(8,8,8,.12) 55%,rgba(8,8,8,.4))}
-  .mpanel-slide .sph{position:absolute;inset:0}
-  .mpanel-commcopy{position:absolute;z-index:2;inset-inline:1.5rem;bottom:13svh;text-align:start}
-  .mpanel-commcopy .cxtrack{font-weight:900;font-size:.9rem;letter-spacing:.05em;color:var(--brand);margin-bottom:.35rem;text-shadow:0 2px 12px rgba(0,0,0,.6)}
-  .mpanel-commcopy.ai .cxtrack{color:var(--accent)}
-  .mpanel-commcopy h3{font-size:2rem;margin-bottom:.4rem;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.55)}
-  .mpanel-commcopy.ai h3{color:#EAF4FF}
-  .mpanel-commcopy p{color:rgba(255,255,255,.92);font-size:1.05rem;max-width:34ch;text-shadow:0 1px 10px rgba(0,0,0,.6)}
-  /* תחושת "רגע נכנס" לכל פאנל — כניסה עדינה בלי scroll-snap (gated ב-html.js, נדלק ע"י IntersectionObserver) */
-  html.js .mpanel .mpanel-copy,html.js .mpanel .mpanel-appcopy,html.js .mpanel .mpanel-commcopy{
+  /* תחושת "רגע נכנס" לכל פאנל — כניסה עדינה (gated ב-html.js, נדלק ע"י IntersectionObserver) */
+  html.js .mpanel .mpanel-appcopy{
     opacity:0;transform:translateY(30px);transition:opacity .55s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
-  html.js .mpanel.mseen .mpanel-copy,html.js .mpanel.mseen .mpanel-appcopy,html.js .mpanel.mseen .mpanel-commcopy{
-    opacity:1;transform:none}
-  /* swipe hint on first panel of each scene */
-  .mswipe{position:absolute;z-index:3;bottom:5svh;inset-inline-start:50%;transform:translateX(-50%);
-    color:rgba(255,255,255,.6);font-size:.8rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:.2rem;animation:mbob 1.8s ease-in-out infinite}
-  .mswipe{display:none}  /* מוסתר — הניווט כפתור-בלבד, אין יותר "החלק למעלה" */
-  @keyframes mbob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+  html.js .mpanel.mseen .mpanel-appcopy{opacity:1;transform:none}
 }
 
 /* ============ קהילה: שקופיות אינטראקטיביות (kit) ============ */
