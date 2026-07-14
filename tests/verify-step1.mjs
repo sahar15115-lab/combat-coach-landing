@@ -29,14 +29,13 @@ async function run(label, reducedMotion){
     const tcards = [...document.querySelectorAll('.trainx-mobile .tcard')];
     const tActive = tcards.filter(c=>c.classList.contains('active')).length;
     const appx = document.querySelector('.appx-mobile');
-    const appPanels = appx ? [...appx.querySelectorAll('.mpanel')] : [];
-    const appOn = appPanels.filter(p=>p.classList.contains('on')).length;
+    const appCards = appx ? [...appx.querySelectorAll('.acard')] : [];
+    const appActive = appCards.filter(c=>c.classList.contains('active')).length;
     const commx = document.querySelector('.commx-mobile');
     return {
       screens:+(docH/vh).toFixed(1), docH,
       tcards:tcards.length, tActive,
-      appPinActive: appx ? appx.classList.contains('pin-active') : null,
-      appPanels: appPanels.length, appOn,
+      appCards: appCards.length, appActive,
       commPanels: commx ? commx.querySelectorAll('.mpanel').length : null,
       cueHidden: (()=>{ const c=document.getElementById('scrollCue'); return c? getComputedStyle(c).display==='none' : 'no-cue'; })()
     };
@@ -58,13 +57,13 @@ async function run(label, reducedMotion){
 
   // core = the Step-1 regression proof: mobile inits at all. ai-mode is required specifically
   // in the reduce path (previously the whole mobile init was dead behind `if(reduce)return`).
-  const core = m.tcards>0 && m.tActive===1 && m.appPinActive===true && m.appOn===1 && errors.length===0;
+  const core = m.tcards>0 && m.tActive===1 && m.appCards===4 && m.appActive===1 && errors.length===0;
   const pass = core && (reducedMotion==='reduce' ? aiSeen : true);
 
   console.log(`\n[${label}]  ${pass?'✅ PASS':'❌ FAIL'}`);
   console.log('  screens:', m.screens, ' docH:', m.docH);
   console.log('  train tcards:', m.tcards, ' active:', m.tActive);
-  console.log('  app pin-active:', m.appPinActive, ' panels:', m.appPanels, ' on:', m.appOn);
+  console.log('  app cards:', m.appCards, ' active:', m.appActive);
   console.log('  community panels:', m.commPanels, ' ai-mode after scroll:', aiSeen);
   console.log('  scrollCue hidden:', m.cueHidden);
   if(errors.length) console.log('  JS ERRORS:', errors);

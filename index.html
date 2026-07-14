@@ -495,9 +495,9 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy,.tcard,.tcard-copy{opacity:1!important;transform:none!important}
+  .reveal,.mpanel-copy,.mpanel-appcopy,.mpanel-commcopy,.tcard,.tcard-copy,.acard-cap{opacity:1!important;transform:none!important}
   .appx-desktop,.trainx-desktop,.commx-desktop{display:none!important}
-  .appx-mobile,.commx-mobile{display:block!important}
+  .commx-mobile{display:block!important} /* אפליקציה = קארוסל flex (כמו אימון) — לא נכפה עליו block */
   .ps,.ax,.tx,.tv,.cx,.cslide{opacity:1!important}
   .msnap.pin-active{height:auto!important;overflow:visible!important}
   .msnap.pin-active .mpanel{position:relative!important;inset:auto!important;height:100svh!important;opacity:1!important}
@@ -505,8 +505,8 @@ footer a{color:var(--fg-soft);text-decoration:none}footer a:hover{color:var(--br
 /* no-JS fallback: תוכן חייב להיות גלוי בלי JS. אפליקציה/קהילה = בלוקים מוערמים;
    אימון = רצועת-כרטיסים (scroll-snap עובד נטיבית) עם כל הכרטיסים גלויים ולא מעומעמים. */
 html.no-js .appx-desktop,html.no-js .trainx-desktop,html.no-js .commx-desktop{display:none}
-html.no-js .appx-mobile,html.no-js .commx-mobile{display:block}
-html.no-js .tcard,html.no-js .tcard .tcard-copy{opacity:1;transform:none}
+html.no-js .commx-mobile{display:block}
+html.no-js .tcard,html.no-js .tcard .tcard-copy,html.no-js .acard-cap{opacity:1;transform:none}
 
 /* ============ תוספות: כותרת ממוזגת, מסכי אפליקציה אמיתיים, כפתורי מסע, CTA מסתתר ============ */
 .txscene{color:var(--brand);font-weight:900;font-size:.95rem;letter-spacing:.05em;margin-bottom:.9rem;text-shadow:0 2px 12px rgba(0,0,0,.6)}
@@ -934,7 +934,22 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   .trainx-mobile.seen .trail-hint{display:none}
 }
 @media(max-width:900px) and (prefers-reduced-motion:reduce){
-  .tcard,.tcard-copy{transition:none}.trail-hint .ar,.trail-segs i.cur::after{animation:none}.trail-segs i.cur::after{transform:none}
+  .tcard,.tcard-copy,.acard-cap{transition:none}.trail-hint .ar,.trail-segs i.cur::after{animation:none}.trail-segs i.cur::after{transform:none}
+}
+/* ===== מובייל: אפליקציה — אותו קארוסל כמו האימון; כרטיס = צילום-מסך מוכל + כיתוב (מילות סהר) ===== */
+@media(max-width:900px){
+  .appx-mobile{display:flex;flex-direction:column;height:100svh;min-height:560px;
+    padding-top:calc(4.6rem + env(safe-area-inset-top,0px));padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px))}
+  .acard{background:linear-gradient(180deg,#151515,#0c0c0c);display:flex;flex-direction:column}
+  .acard-shot{flex:1;min-height:0;display:flex;align-items:flex-end;justify-content:center;padding:18px 16px 0}
+  .acard-shot img{max-height:100%;max-width:86%;width:auto;object-fit:contain;border-radius:16px 16px 0 0;
+    box-shadow:0 -6px 34px rgba(0,0,0,.55)}
+  .acard-cap{padding:14px 18px 20px;text-align:center;opacity:0;transform:translateY(14px);
+    transition:opacity .5s ease .1s,transform .55s cubic-bezier(.2,.7,.2,1) .1s}
+  .acard.active .acard-cap{opacity:1;transform:none}
+  .acard-cap .sx-n{color:var(--brand-2);font-weight:900;font-size:.9rem;letter-spacing:.04em}
+  .acard-cap.accent .sx-n{color:var(--accent)}
+  .acard-cap h3{color:#fff;font-weight:800;font-size:clamp(1.05rem,4.3vw,1.32rem);line-height:1.3;margin-top:.35rem;max-width:26ch;margin-inline:auto}
 }
 /* קהילה במובייל = גלילה אנכית רגילה (בלי נעילה): כל שקופית ממורכזת אנכית, גדלה אם צריך */
 @media(max-width:900px){
@@ -1102,35 +1117,30 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   </div>
 
   <!-- MOBILE: full-screen scroll-snap panels — real phone, one screen each -->
-  <div class="appx-mobile msnap">
-    <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">01</span></div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט אתלט</h3></div>
-      <div class="phone"><div class="phone-screen">
-        <div class="ps media on"><img class="psfull" data-src="media/app-home.webp" alt="מסך הבית של אפליקציית קומבאט אתלט" loading="lazy" decoding="async"></div>
-        <button type="button" class="phone-cta" data-mnext>איך זה עובד?</button>
-      </div></div>
+  <div class="appx-mobile">
+    <div class="trail-top">
+      <div class="trail-segs" id="appSegs" aria-hidden="true"><i class="cur"></i><i></i><i></i><i></i></div>
+      <div class="trail-title">האפליקציה שמלווה אותך גם בין האימונים</div>
     </div>
-    <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">02</span></div><h3>שאלון קצר — והאפליקציה מבינה את הרמה, המטרות והציוד שלך</h3></div>
-      <div class="phone"><div class="phone-screen">
-        <div class="ps media on"><img class="psfull" data-src="media/app-quiz.webp" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
-        <button type="button" class="phone-cta" data-mnext>תראה לי עוד</button>
-      </div></div>
+    <div class="trail" id="appRail" role="group" aria-roledescription="קארוסל" aria-label="מסכי האפליקציה">
+      <article class="tcard acard" data-i="0" aria-roledescription="שקופית" aria-label="1 מתוך 4">
+        <div class="acard-shot"><img data-src="media/app-home.webp" alt="מסך הבית של אפליקציית קומבאט אתלט" loading="lazy" decoding="async"></div>
+        <div class="acard-cap"><div class="sx-n"><span class="ltr">01</span> · תוכנית אישית</div><h3>תוכנית ליווי מותאמת אישית — דרך אפליקציית קומבאט אתלט</h3></div>
+      </article>
+      <article class="tcard acard" data-i="1" aria-roledescription="שקופית" aria-label="2 מתוך 4">
+        <div class="acard-shot"><img data-src="media/app-quiz.webp" alt="שאלון ההתאמה באפליקציה" loading="lazy"></div>
+        <div class="acard-cap"><div class="sx-n"><span class="ltr">02</span> · שאלון</div><h3>שאלון קצר — והאפליקציה מבינה את הרמה, המטרות והציוד שלך</h3></div>
+      </article>
+      <article class="tcard acard" data-i="2" aria-roledescription="שקופית" aria-label="3 מתוך 4">
+        <div class="acard-shot"><img data-src="media/app-building.webp" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
+        <div class="acard-cap"><div class="sx-n"><span class="ltr">03</span> · עדכון אוטומטי</div><h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3></div>
+      </article>
+      <article class="tcard acard" data-i="3" aria-roledescription="שקופית" aria-label="4 מתוך 4">
+        <div class="acard-shot"><img data-src="media/app-guides.webp" alt="הדרכות באפליקציה" loading="lazy" decoding="async"></div>
+        <div class="acard-cap accent"><div class="sx-n"><span class="ltr">04</span> · הדרכות</div><h3>וגם: הדרכות תזונה, שינה והרגלים — כל מה שקורה בין האימונים</h3></div>
+      </article>
     </div>
-    <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy"><div class="sx-n"><span class="ltr">03</span></div><h3>האימון מתעדכן אוטומטית לפי ההתקדמות שלך</h3></div>
-      <div class="phone"><div class="phone-screen">
-        <div class="ps media on"><img class="psfull" data-src="media/app-building.webp" alt="האפליקציה בונה תוכנית אישית" loading="lazy"></div>
-        <button type="button" class="phone-cta" data-mnext>גלה לי עוד</button>
-      </div></div>
-    </div>
-    <div class="mpanel mpanel-app">
-      <div class="mpanel-appcopy accent"><div class="sx-n"><span class="ltr">04</span></div><h3>וגם: הדרכות תזונה, שינה והרגלים — כל מה שקורה בין האימונים</h3></div>
-      <div class="phone"><div class="phone-screen">
-        <div class="ps media accent on"><img class="psfull" data-src="media/app-guides.webp" alt="הדרכות באפליקציה" loading="lazy" decoding="async"></div>
-        <button type="button" class="phone-cta accent" data-goto="#testi">להמשך המסע ↓</button>
-      </div></div>
-    </div>
+    <div class="trail-bot"><div class="trail-hint" id="appHint" aria-hidden="true"><span class="ar">←</span><span>החלק לצד</span></div></div>
   </div>
 </section>
 
@@ -1638,18 +1648,25 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       if(cards[0]) cards[0].classList.add('active');
     })();
 
-    // ---- אפליקציה: הטלפון נשאר; כפתור "המשך" שבתוכו מקדם מסך; הדף נגלל חופשי (בלי נעילה) ----
+    // ---- אפליקציה: קארוסל-כרטיסים אופקי (swipe נטיבי, זהה לאימון) ----
     (function(){
-      var wrap=document.querySelector('.appx-mobile'); if(!wrap) return;
-      wrap.classList.add('pin-active'); // crossfade ויזואלי בלבד — הנעילה הוסרה
-      var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
-      var disp=0;
-      function show(i){ i=Math.max(0,Math.min(panels.length-1,i)); disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
-      panels.forEach(function(p){
-        p.querySelectorAll('[data-mnext]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); show(disp+1); }); });
-        p.querySelectorAll('[data-goto]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); var t=document.querySelector(btn.dataset.goto); if(t)mScrollToY(t.getBoundingClientRect().top+scrollY); }); });
-      });
-      show(0);
+      var rail=document.getElementById('appRail'); if(!rail) return;
+      var cards=[].slice.call(rail.querySelectorAll('.acard'));
+      var segsEl=document.getElementById('appSegs');
+      var segs=segsEl?[].slice.call(segsEl.children):[];
+      var wrap=document.querySelector('.appx-mobile');
+      function paint(i){ segs.forEach(function(s,j){ s.classList.remove('done','cur'); if(j<i)s.classList.add('done'); else if(j===i)s.classList.add('cur'); }); }
+      if('IntersectionObserver' in window){
+        var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.6){
+            var i=+e.target.dataset.i;
+            cards.forEach(function(c){ c.classList.toggle('active', c===e.target); });
+            paint(i); if(i>0 && wrap) wrap.classList.add('seen');
+          }
+        }); }, {root:rail, threshold:[0.6]});
+        cards.forEach(function(c){ io.observe(c); });
+      }
+      if(cards[0]) cards[0].classList.add('active');
     })();
 
     // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI כששקופית ה-AI במסך (בלי נעילה) ----

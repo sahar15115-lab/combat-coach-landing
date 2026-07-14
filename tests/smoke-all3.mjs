@@ -13,14 +13,11 @@ A('mobile: no JS errors (syntax OK)',errs.length===0);if(errs.length)console.log
 await p.evaluate(()=>document.getElementById('train').scrollIntoView());await p.waitForTimeout(700);
 A('train: card active',await p.evaluate(()=>!!document.querySelector('.tcard.active')));
 A('train: floating cue hidden',await p.evaluate(()=>{var c=document.getElementById('scrollCue');return !c||getComputedStyle(c).display==='none';}));
-// app: crossfade advance via phone button
+// app: horizontal card carousel (same pattern as training)
 await p.evaluate(()=>document.getElementById('app').scrollIntoView());await p.waitForTimeout(700);
-const appOn0=await p.evaluate(()=>[...document.querySelectorAll('.appx-mobile .mpanel')].findIndex(x=>x.classList.contains('on')));
-A('app: panel 0 shown initially',appOn0===0);
-await p.evaluate(()=>{var b=document.querySelector('.appx-mobile .mpanel.on [data-mnext]');if(b)b.click();});await p.waitForTimeout(300);
-const appOn1=await p.evaluate(()=>[...document.querySelectorAll('.appx-mobile .mpanel')].findIndex(x=>x.classList.contains('on')));
-A('app: phone button advances to panel 1',appOn1===1);
-A('app: pin-active crossfade class present',await p.evaluate(()=>document.querySelector('.appx-mobile').classList.contains('pin-active')));
+A('app: card active',await p.evaluate(()=>!!document.querySelector('.appx-mobile .acard.active')));
+A('app: 4 cards present',await p.evaluate(()=>document.querySelectorAll('.appx-mobile .acard').length===4));
+A('app: no leftover pin-active/mpanel',await p.evaluate(()=>!document.querySelector('.appx-mobile.pin-active')&&document.querySelectorAll('.appx-mobile .mpanel').length===0));
 // app free scroll: page can scroll past app without lock
 const beforeY=await p.evaluate(()=>Math.round(scrollY));
 await p.evaluate(()=>window.scrollBy(0,600));await p.waitForTimeout(200);
