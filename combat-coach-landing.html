@@ -1600,6 +1600,73 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     }
   })();
 
+  // ===== מובייל: אתחול עצמאי — רץ תמיד, גם בלי GSAP וגם ב-reduced-motion =====
+  // באג-שורש שתוקן: כל לוגיקת המובייל ישבה בתוך initBelowTheFold אחרי ה-return של
+  // reduce/GSAP (למטה), ולכן מתה בדיוק בדפדפן-הפנימי של וואטסאפ/אינסטגרם (GSAP חסום)
+  // וב-reduced-motion → הדף נפל ל-13 פאנלים בגובה-מסך-מלא ("19 מסכים"). המובייל לא צריך
+  // GSAP בכלל — רק IntersectionObserver + CSS. לכן הוא מחולץ לכאן, לפני כל gate.
+  function initMobile(){
+    if(innerWidth>900) return;
+    var mReduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mSaveData=!!(navigator.connection&&navigator.connection.saveData);
+    function mPlay(list,i){ list.forEach(function(el,j){ var v=el.querySelector&&el.querySelector('video'); if(!v)return;
+      if(j===i){ if(mSaveData||mReduce) return; var p=v.play&&v.play(); if(p&&p.catch)p.catch(function(){}); } else v.pause&&v.pause(); }); }
+    function mScrollToY(y){ window.scrollTo({top:y,behavior:mReduce?'auto':'smooth'}); }
+
+    // ---- אימון: קארוסל-כרטיסים אופקי (swipe נטיבי) ----
+    (function(){
+      var rail=document.getElementById('trainRail'); if(!rail) return;
+      var cards=[].slice.call(rail.querySelectorAll('.tcard'));
+      var segsEl=document.getElementById('trailSegs');
+      var segs=segsEl?[].slice.call(segsEl.children):[];
+      var wrap=document.querySelector('.trainx-mobile');
+      function paint(i){ segs.forEach(function(s,j){ s.classList.remove('done','cur'); if(j<i)s.classList.add('done'); else if(j===i)s.classList.add('cur'); }); }
+      if('IntersectionObserver' in window){
+        var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.6){
+            var i=+e.target.dataset.i;
+            cards.forEach(function(c){ c.classList.toggle('active', c===e.target); });
+            paint(i); if(i>0 && wrap) wrap.classList.add('seen'); mPlay(cards,i);
+          }
+        }); }, {root:rail, threshold:[0.6]});
+        cards.forEach(function(c){ io.observe(c); });
+        var tsec=document.getElementById('train');
+        if(tsec) new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(!e.isIntersecting) cards.forEach(function(c){ var v=c.querySelector('video'); if(v&&v.pause)v.pause(); });
+        }); },{threshold:0}).observe(tsec);
+      }
+      if(cards[0]) cards[0].classList.add('active');
+    })();
+
+    // ---- אפליקציה: הטלפון נשאר; כפתור "המשך" שבתוכו מקדם מסך; הדף נגלל חופשי (בלי נעילה) ----
+    (function(){
+      var wrap=document.querySelector('.appx-mobile'); if(!wrap) return;
+      wrap.classList.add('pin-active'); // crossfade ויזואלי בלבד — הנעילה הוסרה
+      var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
+      var disp=0;
+      function show(i){ i=Math.max(0,Math.min(panels.length-1,i)); disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
+      panels.forEach(function(p){
+        p.querySelectorAll('[data-mnext]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); show(disp+1); }); });
+        p.querySelectorAll('[data-goto]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); var t=document.querySelector(btn.dataset.goto); if(t)mScrollToY(t.getBoundingClientRect().top+scrollY); }); });
+      });
+      show(0);
+    })();
+
+    // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI כששקופית ה-AI במסך (בלי נעילה) ----
+    (function(){
+      var wrap=document.querySelector('.commx-mobile'); if(!wrap) return;
+      var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
+      if('IntersectionObserver' in window) panels.forEach(function(p,i){
+        new IntersectionObserver(function(es){ es.forEach(function(e){
+          if(e.isIntersecting && e.intersectionRatio>=0.55){ mPlay(panels,i); document.body.classList.toggle('ai-mode', i>=4); }
+        }); },{threshold:[0.55]}).observe(p);
+      });
+    })();
+
+    var _cue=document.getElementById('scrollCue'); if(_cue) _cue.style.display='none';
+  }
+  requestAnimationFrame(function(){ setTimeout(initMobile,0); });
+
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce){ return; }
 
@@ -1719,63 +1786,6 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       pinScene('.commx-pin',[coCx,coSl],coDots,420,function(i){ playOnly(coSl,i);
         if(commxPinEl)commxPinEl.classList.toggle('is-ai',i>=3);
         document.body.classList.toggle('ai-mode',i>=3); }); }
-  } else {
-    // ===== מובייל: גלילה נטיבית לחלוטין — בלי נעילת-גלילה (חסין בדפדפנים פנימיים) =====
-    // אין preventDefault / re-align / body-fixed. אימון = קארוסל אופקי; אפליקציה = טלפון +
-    // כפתור-פנימי שמקדם מסך; קהילה = גלילה אנכית רגילה. וידאו: רק הפעיל מנגן.
-
-    // ---- אימון: קארוסל-כרטיסים אופקי (swipe נטיבי) ----
-    (function(){
-      var rail=document.getElementById('trainRail'); if(!rail) return;
-      var cards=[].slice.call(rail.querySelectorAll('.tcard'));
-      var segsEl=document.getElementById('trailSegs');
-      var segs=segsEl?[].slice.call(segsEl.children):[];
-      var wrap=document.querySelector('.trainx-mobile');
-      function paint(i){ segs.forEach(function(s,j){ s.classList.remove('done','cur'); if(j<i)s.classList.add('done'); else if(j===i)s.classList.add('cur'); }); }
-      if('IntersectionObserver' in window){
-        var io=new IntersectionObserver(function(es){ es.forEach(function(e){
-          if(e.isIntersecting && e.intersectionRatio>=0.6){
-            var i=+e.target.dataset.i;
-            cards.forEach(function(c){ c.classList.toggle('active', c===e.target); });
-            paint(i); if(i>0 && wrap) wrap.classList.add('seen'); playOnly(cards,i);
-          }
-        }); }, {root:rail, threshold:[0.6]});
-        cards.forEach(function(c){ io.observe(c); });
-        var tsec=document.getElementById('train');
-        if(tsec) new IntersectionObserver(function(es){ es.forEach(function(e){
-          if(!e.isIntersecting) cards.forEach(function(c){ var v=c.querySelector('video'); if(v&&v.pause)v.pause(); });
-        }); },{threshold:0}).observe(tsec);
-      }
-      if(cards[0]) cards[0].classList.add('active');
-    })();
-
-    // ---- אפליקציה: הטלפון נשאר; כפתור "המשך" שבתוכו מקדם מסך; הדף נגלל חופשי (בלי נעילה) ----
-    (function(){
-      var wrap=document.querySelector('.appx-mobile'); if(!wrap) return;
-      wrap.classList.add('pin-active'); // crossfade ויזואלי בלבד — הנעילה הוסרה
-      var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
-      var disp=0;
-      function show(i){ i=Math.max(0,Math.min(panels.length-1,i)); disp=i; panels.forEach(function(p,j){ p.classList.toggle('on',j===i); }); }
-      panels.forEach(function(p){
-        p.querySelectorAll('[data-mnext]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); show(disp+1); }); });
-        p.querySelectorAll('[data-goto]').forEach(function(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); var t=document.querySelector(btn.dataset.goto); if(t)scrollToY(t.getBoundingClientRect().top+scrollY); }); });
-      });
-      show(0);
-    })();
-
-    // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI כששקופית ה-AI במסך (בלי נעילה) ----
-    (function(){
-      var wrap=document.querySelector('.commx-mobile'); if(!wrap) return;
-      var panels=[].slice.call(wrap.querySelectorAll('.mpanel')); // נשארים בזרימה רגילה
-      if('IntersectionObserver' in window) panels.forEach(function(p,i){
-        new IntersectionObserver(function(es){ es.forEach(function(e){
-          if(e.isIntersecting && e.intersectionRatio>=0.55){ playOnly(panels,i); document.body.classList.toggle('ai-mode', i>=4); }
-        }); },{threshold:[0.55]}).observe(p);
-      });
-    })();
-
-    // ניווט נטיבי → כפתור "המשך" הצף מיותר
-    var _cue=document.getElementById('scrollCue'); if(_cue) _cue.style.display='none';
   }
 
   // מצב-AI — כיבוי בטוח: חוזר לזהב כשמגיעים לטופס ההרשמה (רגע ההמרה), ונכבה גם בגלילה חזרה מעל הקהילה
