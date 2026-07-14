@@ -13,11 +13,16 @@ A('mobile: no JS errors (syntax OK)',errs.length===0);if(errs.length)console.log
 await p.evaluate(()=>document.getElementById('train').scrollIntoView());await p.waitForTimeout(700);
 A('train: card active',await p.evaluate(()=>!!document.querySelector('.tcard.active')));
 A('train: floating cue hidden',await p.evaluate(()=>{var c=document.getElementById('scrollCue');return !c||getComputedStyle(c).display==='none';}));
-// app: horizontal card carousel (same pattern as training)
+// app: phone crossfade + in-phone stepper button + "1/4" affordance
 await p.evaluate(()=>document.getElementById('app').scrollIntoView());await p.waitForTimeout(700);
-A('app: card active',await p.evaluate(()=>!!document.querySelector('.appx-mobile .acard.active')));
-A('app: 4 cards present',await p.evaluate(()=>document.querySelectorAll('.appx-mobile .acard').length===4));
-A('app: no leftover pin-active/mpanel',await p.evaluate(()=>!document.querySelector('.appx-mobile.pin-active')&&document.querySelectorAll('.appx-mobile .mpanel').length===0));
+A('app: 4 phone screens',await p.evaluate(()=>document.querySelectorAll('.appx-mobile .mpanel-app').length===4));
+A('app: pin-active crossfade',await p.evaluate(()=>document.querySelector('.appx-mobile').classList.contains('pin-active')));
+A('app: panel 0 shown initially',await p.evaluate(()=>[...document.querySelectorAll('.appx-mobile .mpanel')].findIndex(x=>x.classList.contains('on'))===0));
+A('app: "1/4" progress affordance x4',await p.evaluate(()=>document.querySelectorAll('.appx-mobile .ph-prog').length===4));
+A('app: coach-mark on screen 1 only',await p.evaluate(()=>document.querySelectorAll('.appx-mobile .ph-coach').length===1));
+await p.evaluate(()=>{var b=document.querySelector('.appx-mobile .mpanel.on [data-mnext]');if(b)b.click();});await p.waitForTimeout(300);
+A('app: in-phone button advances to panel 1',await p.evaluate(()=>[...document.querySelectorAll('.appx-mobile .mpanel')].findIndex(x=>x.classList.contains('on'))===1));
+A('app: nudge hidden after tap (app-tapped)',await p.evaluate(()=>document.getElementById('app').classList.contains('app-tapped')));
 // app free scroll: page can scroll past app without lock
 const beforeY=await p.evaluate(()=>Math.round(scrollY));
 await p.evaluate(()=>window.scrollBy(0,600));await p.waitForTimeout(200);
