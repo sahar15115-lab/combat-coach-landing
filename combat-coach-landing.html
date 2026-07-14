@@ -1674,14 +1674,18 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
       if(cards[0]) cards[0].classList.add('active');
     })();
 
-    // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI כששקופית ה-AI במסך (בלי נעילה) ----
+    // ---- קהילה: גלילה אנכית רגילה דרך השקופיות; מצב-AI (כחול) כששקופית ה-AI במסך (בלי נעילה) ----
+    // חשוב: שקופית ה-AI (i>=4) גם *מכבה* את ai-mode כשהיא יוצאת מהמסך — כדי שאזור הטופס/ההמרה
+    // יחזור לזהב. בלי זה ai-mode "נתקע" דלוק עד הטופס (העוגן היחיד לכיבוי היה ScrollTrigger של
+    // GSAP, שלא רץ תחת reduced-motion). כאן זה חסין ובלתי-תלוי ב-GSAP.
     (function(){
       var wrap=document.querySelector('.commx-mobile'); if(!wrap) return;
       var panels=[].slice.call(wrap.querySelectorAll('.mpanel'));
       if('IntersectionObserver' in window) panels.forEach(function(p,i){
         new IntersectionObserver(function(es){ es.forEach(function(e){
           if(e.isIntersecting && e.intersectionRatio>=0.55){ mPlay(panels,i); document.body.classList.toggle('ai-mode', i>=4); }
-        }); },{threshold:[0.55]}).observe(p);
+          else if(i>=4){ document.body.classList.remove('ai-mode'); }
+        }); },{threshold:[0,0.55]}).observe(p);
       });
     })();
 
