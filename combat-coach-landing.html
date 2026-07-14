@@ -915,12 +915,15 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;
     padding-inline:11%;margin-top:1rem}
   .trail::-webkit-scrollbar{display:none}
-  .tcard{flex:0 0 78%;height:70svh;max-height:640px;scroll-snap-align:center;scroll-snap-stop:always;
+  .tcard{flex:0 0 82%;height:74svh;max-height:680px;scroll-snap-align:center;scroll-snap-stop:always;
     position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);
     transform:scale(.88);opacity:.5;transition:transform .42s cubic-bezier(.2,.7,.2,1),opacity .42s,box-shadow .42s}
   .tcard.active{transform:scale(1);opacity:1;box-shadow:var(--glow-gold-strong),0 24px 60px -20px rgba(0,0,0,.8);border-color:rgba(201,168,76,.4)}
   .tcard-media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
   .tcard-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  /* וידאו החימום: האיש עומד ~64% מרוחב הפריים; ממרכזים עליו את חיתוך ה-cover (במקום "קיר") */
+  .trainx-mobile .tcard[data-i="0"] .tcard-media{background-position:66% 50%}
+  .trainx-mobile .tcard[data-i="0"] .tcard-media video{object-position:66% 50%}
   .tcard-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.25),rgba(10,10,10,0) 34%,rgba(10,10,10,.78) 82%,rgba(10,10,10,.95))}
   .tcard-num{position:absolute;top:16px;inset-inline-start:18px;z-index:2;color:var(--brand-2);font-weight:900;font-size:.95rem;text-shadow:0 2px 10px rgba(0,0,0,.7)}
   .tcard-copy{position:absolute;z-index:2;inset-inline:20px;bottom:26px;opacity:0;transform:translateY(16px);transition:opacity .5s ease .1s,transform .55s cubic-bezier(.2,.7,.2,1) .1s}
@@ -1055,7 +1058,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     </div>
     <div class="trail" id="trainRail" role="group" aria-roledescription="קארוסל" aria-label="שלבי האימון">
       <article class="tcard" data-i="0" aria-roledescription="שקופית" aria-label="1 מתוך 4">
-        <div class="tcard-media" style="background-image:url('media/train-warmup.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-warmup.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
+        <div class="tcard-media" style="background-image:url('media/train-warmup-v2.webp')"><video muted loop playsinline aria-hidden="true" preload="none" poster="media/train-warmup-v2.webp"><source src="media/train-warmup.mp4" type="video/mp4"></video></div>
         <div class="tcard-scrim" aria-hidden="true"></div>
         <div class="tcard-num"><span class="ltr">01</span> · חימום</div>
         <div class="tcard-copy"><h3>מדליקים את הגוף</h3><p>כמה דקות שמכניסות את הדופק ואת הראש למצב אימון.</p></div>
