@@ -254,6 +254,13 @@ html.js .reveal.in{opacity:1;transform:none}
 .appx-stage h3{font-size:clamp(1.5rem,3vw,2.1rem);margin:.4rem 0 .6rem}
 .appx-stage p{color:var(--fg-soft);max-width:38ch}
 .appx-hint{margin-top:var(--s3);color:var(--muted);font-size:.82rem}
+/* באדג' זהב — מסמן חלק ששייך לחבילת הפרימיום ולא לאימון הסטנדרטי (מפגשי הקהילה) */
+.prem-badge{display:inline-flex;align-items:center;
+  background:var(--brand-sheen);color:var(--brand-ink);
+  font-weight:800;font-size:.72rem;letter-spacing:.06em;
+  padding:.32rem .8rem;border-radius:999px;
+  box-shadow:var(--glow-gold),inset 0 1px 0 rgba(255,255,255,.45);
+  margin-bottom:.55rem}
 .appx-dots{position:absolute;bottom:8vh;left:var(--pad);right:auto;display:flex;gap:.5rem}
 .appx-dots i{width:30px;height:4px;border-radius:99px;background:var(--surface-3);transition:.3s}
 .appx-dots i.on{background:var(--brand)}
@@ -982,7 +989,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <p class="hero-sub hero-mix">קאליסטניקס · אגרוף תאילנדי · פיתוח יכולות אתלטיות</p>
     <div class="hero-duo">
       <div class="hero-duo-copy">
-        <p>האימון הוא רק ההתחלה… תוכנית ליווי פרונטלית + אונליין לחבר'ה צעירים בגילאי <span class="ltr">14-25</span> שמחפשים להתאמן, להתחבר, ללמוד ולהתפתח יחד כקהילה.</p>
+        <p>האימון הוא רק ההתחלה… תוכנית ליווי פרונטלית + אונליין לכל מי שמחפש להתאמן, להתחבר, ללמוד ולהתפתח יחד כקהילה.</p>
         <p class="hero-mix sm">אימון קבוצה · תוכנית אישית · מפגש קהילה שבועי</p>
       </div>
       <figure class="hero-photowrap">
@@ -1269,6 +1276,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
   <div class="commx-desktop">
     <div class="commx-lead">
       <div class="wrap">
+        <span class="prem-badge">חבילת הפרימיום</span>
         <div class="cxtrack" style="text-align:center">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
         <h2 class="commx-lead__h">לא רק מתאמנים יחד — מתפתחים יחד.</h2>
         <p class="commx-lead__t">על מה מדברים במפגשים?</p>
@@ -1339,6 +1347,7 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <div class="mpanel mpanel-kit">
       <div class="kit-wrap">
       <div class="comm-intro">
+        <span class="prem-badge">חבילת הפרימיום</span>
         <div class="comm-intro__track">📍 מפגש שבועי · מרכז הצעירים בבאר יעקב</div>
         <h3>לא רק מתאמנים יחד — מתפתחים יחד.</h3>
         <p>אחת לשבוע ניפגש למפגשי קהילה ונפתח גם את הראש ולא רק את הגוף.</p>
@@ -1510,8 +1519,8 @@ body.app-scene .scroll-cue:active{transform:translateX(-50%) scale(.82)}
     <h2 class="reveal" style="text-align:center">שאלות נפוצות</h2>
     <div class="faq" style="margin-top:var(--s6)">
       <details class="reveal"><summary>צריך ניסיון קודם?</summary><p>לא. האימונים והתוכנית באפליקציה מותאמים לרמה שלך, ואני מלווה אותך צעד-צעד. כל אחד מתחיל מאיפה שהוא נמצא.</p></details>
-      <details class="reveal"><summary>לאיזה גילאים זה מתאים?</summary><p>התהליך בנוי לצעירים בגילאי <span class="ltr">14-25</span>. אם אתה לא בטוח שזה מתאים לך, תשלח לי הודעה ונבדוק ביחד.</p></details>
-      <details class="reveal"><summary>איפה מתקיימים האימונים?</summary><p>מפגש הקהילה מתקיים במרכז הצעירים בבאר יעקב. את פרטי מיקום האימונים המדויקים נסגור יחד כשתמלא את השאלון.</p></details>
+      <details class="reveal"><summary>לאיזה גילאים זה מתאים?</summary><p>השיטה פתוחה לכולם. כל אחד מתחיל מהמקום שבו הוא נמצא, והתוכנית נבנית לפי הרמה שלו. אם אתה לא בטוח שזה מתאים לך, תשלח לי הודעה ונבדוק ביחד.</p></details>
+      <details class="reveal"><summary>איפה מתקיימים האימונים?</summary><p>מפגש הקהילה מתקיים במרכז הצעירים בבאר יעקב (המפגשים הם חלק מחבילת הפרימיום). את פרטי מיקום האימונים המדויקים נסגור יחד כשתמלא את השאלון.</p></details>
       <details class="reveal"><summary>מה כולל האימון השבועי?</summary><p>אימון קבוצה של כשעה: חימום, קאליסטניקס, אתלטיות ואגרוף תאילנדי — כוח, שליטה בגוף וביטחון.</p></details>
       <details class="reveal"><summary>האפליקציה כלולה בתהליך?</summary><p>כן. גישה לאפליקציית קומבאט אתלט היא חלק מהתהליך — תוכנית אישית, מעקב ביצועים והדרכות.</p></details>
       <details class="reveal"><summary>צריך ציוד בבית?</summary><p>לא בהכרח. התוכנית באפליקציה נבנית לפי הציוד שיש לך — גם אם זה רק משקל גוף.</p></details>
